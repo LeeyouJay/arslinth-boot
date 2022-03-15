@@ -1,0 +1,22 @@
+server:
+  port: 8091
+  servlet:
+    context-path: /archives-api
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/admin-design?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+  redis:
+    password: root
+    database: 0
+
+logging:
+  config: classpath:log4j2/log4j2-spring-dev.xml
+
+file:
+  #图片上传真实路径
+  imgFolder: C:/Users/Arslinth/Pictures/btxc-archives/
+  #上传文件的真实路径
+  uploadFolder: C:/Users/Arslinth/Documents/北投项目/ftpDownload/file/upload/

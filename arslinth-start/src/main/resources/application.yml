@@ -1,0 +1,81 @@
+#springboot数据库相关
+spring:
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      #最大单个上传文件大小
+      max-file-size: 60MB
+      #最大总文件上传大小
+      max-request-size: 100MB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      stat-view-servlet:
+        login-username: druid
+        login-password: d123
+        url-pattern: /druid/*
+        # IP 白名单，没有配置或者为空，则允许所有访问
+        allow: 127.0.0.1
+        # IP 黑名单，若白名单也存在，则优先使用
+        #deny: 192.168.31.253
+      #初始化大小、最小、最大
+      initial-size: 5
+      min-idle: 10
+      max-active: 20
+      # 配置获取连接等待超时的时间，单位毫秒
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存时间
+      min-evictable-idle-time-millis: 300000
+      validationQuery: select 1
+      # 配置监控统计拦截的 Filter，去掉后监控界面 SQL 无法统计，wall 用于防火墙
+      filters: stat,wall
+  redis:
+    host: localhost
+    port: 6379
+    #连接超时时间
+    timeout: 5000ms
+    lettuce:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制） 默认 8
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+        max-wait: -1ms
+        # 连接池中的最大空闲连接 默认 8
+        max-idle: 8
+        # 连接池中的最小空闲连接 默认 0
+        min-idle: 0
+
+#mybatis配置
+mybatis-plus:
+  type-aliases-package: com.btxc.entity
+  global-config:
+    banner: false
+
+# token配置
+token:
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌密钥
+  secret: aclwefnslfweuslfaerklklqoa
+  # 令牌有效期（默认60分钟）
+  expireTime: 60
+  # 令牌刷新间隔时间（默认15分钟）
+  interval: 15
+
+file:
+  #图片资源对外暴露的访问路径
+  imgStaticPath: /loadImg/
+  #上传文件资源对外暴露的访问路径
+  uploadStaticPath: /file/
+
+mica:
+  xss:
+    enabled: true
+    # clear 清理（默认），escape 转义
+    mode: escape
