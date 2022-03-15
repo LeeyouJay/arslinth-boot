@@ -14,10 +14,10 @@
     <name>arslinth-start</name>
     <description>系统启动模块</description>
     <dependencies>
-        <!--        <dependency>-->
-        <!--            <groupId>com.arslinth</groupId>-->
-        <!--            <artifactId>arslinth-system</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.arslinth</groupId>
+            <artifactId>arslinth-system</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.arslinth</groupId>
             <artifactId>arslinth-operation</artifactId>
@@ -31,6 +31,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- 敏感信息加密 -->
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>3.0.4</version>
         </dependency>
     </dependencies>
 

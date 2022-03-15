@@ -34,9 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.authorizeRequests().
                 anyRequest().
-                authenticated().//所有请求都需要被认证
-//                permitAll().//所有请求通过
-        and().exceptionHandling().authenticationEntryPoint(jwtAuthorizedEntryPoint).//未登入和未授权时的处理
+//                authenticated().//所有请求都需要被认证
+        permitAll().//所有请求通过
+                and().exceptionHandling().authenticationEntryPoint(jwtAuthorizedEntryPoint).//未登入和未授权时的处理
                 and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).//关闭session  用token验证，所以关闭session
                 and().addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

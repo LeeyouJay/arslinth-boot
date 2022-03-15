@@ -53,7 +53,7 @@ spring:
 
 #mybatis配置
 mybatis-plus:
-  type-aliases-package: com.btxc.entity
+  type-aliases-package: com.arslinth.entity
   global-config:
     banner: false
 
