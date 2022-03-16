@@ -3,6 +3,7 @@ package com.archiveboot;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
@@ -14,7 +15,7 @@ import java.net.UnknownHostException;
 
 @EnableAsync // 开启@Async注解
 @EnableCaching //开启Redis缓存注解
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 @MapperScan("com.archiveboot.dao")
 public class ArslinthBootApplication {
     //关闭druid使用ping方法超过60秒丢弃连接设置
