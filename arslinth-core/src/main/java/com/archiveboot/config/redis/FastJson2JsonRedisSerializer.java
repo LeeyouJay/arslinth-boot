@@ -13,9 +13,10 @@ import org.springframework.util.Assert;
 import java.nio.charset.Charset;
 
 /**
- * Redis使用FastJson序列化
- *
- * @author ruoyi
+ * @author: Arslinth
+ * @description: Redis使用FastJson序列化
+ * @ClassName FastJson2JsonRedisSerializer
+ * @date: 2022/3/16
  */
 public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
     @SuppressWarnings("unused")
