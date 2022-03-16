@@ -14,7 +14,6 @@ import ElementUI from 'element-ui'
 Vue.use(ElementUI, {size: 'small'})
 
 Vue.prototype.$api = api;
-
 Vue.config.productionTip = false
 
 new Vue({

@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "e-icon-picker": "^1.1.7",
     "echarts": "^4.7.0",
     "element-ui": "^2.13.0",
     "file-saver": "^2.0.2",

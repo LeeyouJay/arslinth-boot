@@ -65,7 +65,7 @@ export default {
         }
         if (valid) {
           setToken("arslinth")
-          this.$router.push({ path: this.redirect || '/' })
+          this.$router.push({ path: this.redirect || '/home' })
           // this.loading = true
           // login(data).then(res => {
           //   this.loading = false
