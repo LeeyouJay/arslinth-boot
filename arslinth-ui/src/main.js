@@ -5,10 +5,10 @@ import store from './store'
 import api from './api'
 
 import './router/auth'
-
 import './assets/icon-fonts/iconfont.css'
 import './assets/icon-fonts/iconfont'
 import 'element-ui/lib/theme-chalk/index.css'
+
 import ElementUI from 'element-ui'
 
 Vue.use(ElementUI, {size: 'small'})

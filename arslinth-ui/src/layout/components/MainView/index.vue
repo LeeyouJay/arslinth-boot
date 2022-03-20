@@ -22,15 +22,19 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .main-view {
-  padding: 15px 25px;
-  box-sizing: border-box;
+  min-height: calc(100vh - 50px);
+  width: calc(100% - 50px);;
+  padding: 25px;
+  position: relative;
+  overflow: hidden;
 }
 /* fade-transform */
 .fade-transform-leave-active,
 .fade-transform-enter-active {
-  transition: all .5s;
+  transition: all 0.5s;
+  text-align: left;
 }
 
 .fade-transform-enter {

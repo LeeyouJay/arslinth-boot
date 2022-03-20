@@ -179,7 +179,6 @@
 
 <script>
 import { getTableList } from '../../api'
-import excel from '../../utils/excel'
 import Pagination from '../../components/Pagination'
 import Upload from '../../components/Upload'
 import Hints from '../../components/Hints'
@@ -359,7 +358,6 @@ export default {
           fileName: '综合表格',
           bookType: type
         }
-        excel.exportDataToExcel(params)
         this.exportVisible = false
       }
     },

@@ -5,30 +5,20 @@
 		</div>
 
 		<!-- 编辑弹出框 -->
-		<el-dialog :visible.sync="formVisible" width="50%" center>
+		<el-dialog :visible.sync="formVisible" width="40%" center>
 			<template slot="title">
 				<span class="dialog-title">修改</span>
 			</template>
 			<el-form ref="formTable" :model="form" label-width="80px" :rules="rules">
 				<el-row :gutter="20">
 					<el-col :span="24">
-						<el-form-item label="上级权限">
-							<el-select v-model="slelectLable" placeholder="点击选择页面" ref="selectUpResId">
+						<el-form-item label="上级菜单">
+							<el-select v-model="slelectLable" placeholder="点击选择页面" >
 
 							</el-select>
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
-						<el-form-item label="权限名称" prop="authorityName">
-							<el-input v-model="form.authorityName"></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :span="12">
-						<el-form-item label="权限标识" prop="authority">
-							<el-input v-model="form.authority"></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :span="12">
+					<el-col :span="24">
 						<el-form-item label="类型">
 							<el-radio-group v-model="form.menuType">
 								<el-radio label="M">目录</el-radio>
@@ -37,14 +27,24 @@
 							</el-radio-group>
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
-						<el-form-item label="显示排序" prop="sorted">
-							<el-input-number v-model="form.sorted" :min="0"></el-input-number>
-						</el-form-item>
-					</el-col>
 					<el-col :span="24">
 						<el-form-item label="图标">
-							<e-icon-picker ref="eIconPicker" v-model="icon" :options="options" />
+							<e-icon-picker ref="eIconPicker" v-model="form.icon" :options="options" />
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="菜单名称" prop="name">
+							<el-input v-model="form.name"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="路径地址" prop="path">
+							<el-input v-model="form.path"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="显示排序" prop="indexNum">
+							<el-input-number v-model="form.indexNum" :min="0"></el-input-number>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -62,7 +62,7 @@
 		EIconPicker
 	} from 'e-icon-picker';
 	export default {
-		name: 'SystemMenu',
+		name: 'SysMenu',
 		components: {
 			EIconPicker
 		},
@@ -71,23 +71,21 @@
 				formVisible: false,
 				form: {},
 				slelectLable: '',
-				icon: '',
 				options: {
-					FontAwesome: true,
-					ElementUI: false,
+					ElementUI: true,
 				},
 				rules: {
-					authorityName: [{
+					name: [{
 						required: true,
-						message: '请输入权限名称',
+						message: '请输入菜单名称',
 						trigger: 'blur'
 					}],
-					authority: [{
+					path: [{
 						required: true,
-						message: '请输入权限标示',
+						message: '请输入菜单路由',
 						trigger: 'blur'
 					}],
-					sorted: [{
+					indexNum: [{
 						required: true,
 						message: '请选择排序大小',
 						trigger: 'blur'
@@ -104,11 +102,10 @@
 		},
 		methods: {
 			handleCreate() {
-				// this.$refs['eIconPicker'].show()
 				this.formVisible = true
 			},
 			submit() {
-
+				console.log(this.form)
 			}
 		}
 

@@ -2,9 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/layout'
 import InnerLink from '@/layout/components/InnerLink'
-import {
-  asyncRoutes
-} from './routes'
+import ParentView from '@/layout/components/ParentView'
 
 Vue.use(Router)
 
@@ -29,6 +27,20 @@ export const constantRoutes = [{
   {
     path: '/',
     component: Layout,
+    hidden: true,
+    children: [{
+      path: '403',
+      name: 'Page403',
+      component: () => import('../views/error-page/Page403'),
+      meta: {
+        title: '权限不足',
+        keepAlive: true
+      }
+    }]
+  },
+  {
+    path: '/',
+    component: Layout,
     children: [{
       path: 'home',
       name: 'Home',
@@ -42,37 +54,11 @@ export const constantRoutes = [{
     }]
   },
   {
-    path: '/',
-    component: Layout,
-    hidden: true,
-    children: [{
-      path: '403',
-      name: 'Page403',
-      component: () => import('../views/error-page/Page403'),
-      meta: {
-        title: '资源不存在'
-      }
-    }]
-  }, {
-    path: '/',
+    path: '/external-link',
     component: Layout,
     children: [{
-      path: 'sysmenu',
-      name: 'sysmenu',
-      component: () => import('@/views/system/menu'),
-      meta: {
-        title: '菜单',
-        icon: 'vue-dsn-icon-wendang',
-        keepAlive: true
-      }
-    }]
-  },
-  {
-    path: '/',
-    component: Layout,
-    children: [{
-      path: 'external-link',
-      name: 'external-link',
+      path: 'inner-link',
+      name: 'InnerLink',
       component: InnerLink,
       meta: {
         title: '内链',
@@ -82,16 +68,57 @@ export const constantRoutes = [{
     }]
   },
   {
-    path: '/',
+    path: '/outlink',
     component: Layout,
     children: [{
       path: 'https://github.com/baimingxuan/vue-admin-design.git',
-      name: 'outlink',
+      name: 'Outlink',
       meta: {
         title: '外链',
         icon: 'vue-dsn-icon-wendang'
       }
     }]
+  },
+  {
+    path: '/catalog',
+    name: 'Catalog',
+    component: Layout,
+    meta: {
+      title: '目录',
+      icon: 'vue-dsn-icon-zujian'
+    },
+    children: [{
+      path: 'child-catalog',
+      name: 'ChildCatalog',
+      component: ParentView,
+      meta: {
+        title: '子目录',
+      },
+      children: [{
+        path: 'child-catalog1',
+        name: 'ChildCatalog1',
+        component: ParentView,
+        meta: {
+          title: '子目录1',
+        },
+      },
+        {
+          path: 'child-catalog12',
+          name: 'ChildCatalog12',
+          component: ParentView,
+          meta: {
+            title: '子目录2',
+          },
+        }]
+    },
+      {
+        path: 'catalog3',
+        name: 'Catalog3',
+        component: ParentView,
+        meta: {
+          title: '目录3',
+        },
+      }]
   },
   {
     path: '/',
@@ -108,12 +135,8 @@ export const constantRoutes = [{
   }
 ]
 
-// const routes = [...constantRoutes, ...asyncRoutes]
-
 export default new Router({
   mode: 'history', // 去掉url中的#
-  scrollBehavior: () => ({
-    y: 0
-  }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })

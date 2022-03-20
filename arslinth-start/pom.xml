@@ -22,6 +22,7 @@
             <groupId>com.arslinth</groupId>
             <artifactId>arslinth-operation</artifactId>
         </dependency>
+        <!-- 测试模块 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test</artifactId>

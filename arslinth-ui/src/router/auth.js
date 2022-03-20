@@ -1,7 +1,6 @@
 import router from './index'
-import {getToken} from '../utils/cookie'
+import {getToken} from '@/utils/cookie'
 import store from '../store'
-import {asyncRoutes} from '@/router/routes.js'
 import Layout from '@/layout'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -20,7 +19,7 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       if (!store.getters.hasGetRoute) {
-        store.dispatch("getRouters", asyncRoutes).then(res => {
+        store.dispatch("getRouters").then(res => {
           res.push({
             path: '*',
             redirect: '/404',
@@ -30,7 +29,7 @@ router.beforeEach((to, from, next) => {
               path: '404',
               name: 'Page404',
               component: () => import('../views/error-page/Page404'),
-              meta: {title: '资源不存在'}
+              meta: {title: '资源不存在', keepAlive: true}
             }]
           })
           router.addRoutes(res)

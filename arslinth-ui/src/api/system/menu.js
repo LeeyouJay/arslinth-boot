@@ -1,10 +1,9 @@
-import axios from '@/utils/request';
+import axios from '@/request';
 import base from '@/api/base.js'
 
 const menu = {
-
-  getMenuList(params) {
-    return axios.post(`${base.localUrl}/menu/list`, params);
+  generateRoutes(params) {
+    return axios.get(`${base.requestUrl}/menu/generateRoutes`, params);
   }
 
 }

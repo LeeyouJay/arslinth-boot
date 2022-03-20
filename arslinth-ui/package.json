@@ -11,12 +11,11 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "e-icon-picker": "^1.1.7",
     "echarts": "^4.7.0",
-    "element-ui": "^2.13.0",
-    "file-saver": "^2.0.2",
+    "element-ui": "^2.15.6",
     "js-cookie": "^2.2.1",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
@@ -24,16 +23,14 @@
     "nprogress": "^0.2.0",
     "screenfull": "^5.0.2",
     "v-org-tree": "^1.0.12",
-    "vue": "^2.6.11",
+    "vue": "^2.6.14",
     "vue-count-to": "^1.0.13",
     "vue-cropper": "^0.5.4",
     "vue-drr": "^1.0.9",
     "vue-router": "^3.2.0",
-    "vue-video-player": "^5.0.2",
     "vuedraggable": "^2.23.2",
-    "vuex": "^3.4.0",
-    "wangeditor": "^3.1.1",
-    "xlsx": "^0.16.1"
+    "vuex": "^3.6.0",
+    "wangeditor": "^3.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.0",
@@ -51,7 +48,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {
     "root": true,

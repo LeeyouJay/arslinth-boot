@@ -17,276 +17,220 @@ export const asyncRoutes = [{
   path: '/system',
   component: Layout,
   meta: {
-    title: '系统菜单',
+    title: '系统设置',
     icon: 'vue-dsn-icon-biaoge'
   },
   children: [{
     path: 'menu',
-    name: 'SystemMenu',
+    name: 'SysMenu',
     component: () => import('@/views/system/menu'),
     meta: {
-      keepAlive: true,
-      title: '系统菜单'
-    }
-  }]
-},
-  {
-    path: '/form-table',
-    component: Layout,
-    meta: {
-      title: '表格&表单',
+      title: '菜单管理',
       icon: 'vue-dsn-icon-biaoge'
-    },
-    children: [{
-      path: 'table-classic',
-      name: 'TableClassic',
-      component: () => import('@/views/form-table/TableClassic'),
+    }
+  },
+    {
+      path: 'user',
+      name: 'SysUser',
+      component: () => import('@/views/system/user'),
       meta: {
-        keepAlive: true,
-        title: '综合表格'
+        title: '用户管理',
+        icon: 'vue-dsn-icon-biaoge'
       }
     },
-      {
-        path: 'form-list',
-        name: 'FormList',
-        component: () => import('../views/form-table/FormList'),
+    {
+      path: 'role',
+      name: 'SysRole',
+      component: () => import('@/views/system/role'),
+      meta: {
+        title: '角色管理'
+      }
+    },
+    {
+      path: 'dict',
+      name: 'SysDict',
+      component: () => import('@/views/system/dict'),
+      meta: {
+        title: '字典管理'
+      }
+    },
+    {
+      path: 'log',
+      name: 'SysLog',
+      component: ParentView,
+      meta: {
+        title: '系统日志'
+      },
+      children: [{
+        path: 'loginlog',
+        name: 'Loginlog',
+        component: () => import('@/views/system/log/loginlog'),
         meta: {
-          title: '表单列表',
-          keepAlive: true,
+          title: '登入日志'
         }
       },
-      {
-        path: 'table-inline-edit',
-        name: 'TableInlineEdit',
-        component: () => import('../views/form-table/TableInlineEdit'),
-        meta: {
-          keepAlive: true,
-          title: '行内编辑表格'
-        }
-      }
-    ]
-  },
-  {
-    path: '/image',
-    component: Layout,
-    meta: {
-      title: '图片处理',
-      icon: 'vue-dsn-icon-picture'
-    },
-    children: [{
-      path: 'image-cropper',
-      name: 'ImageCropper',
-      component: () => import('../views/image/ImageCropper'),
-      meta: {
-        title: '图片裁剪'
-      }
-    },
-      {
-        path: 'image-compress',
-        name: 'ImageCompress',
-        component: () => import('../views/image/ImageCompress'),
-        meta: {
-          title: '图片压缩'
-        }
-      },
-      {
-        path: 'image-synthesizer',
-        name: 'ImageSynthesizer',
-        component: () => import('../views/image/ImageSynthesizer'),
-        meta: {
-          title: '图片合成'
-        }
-      }
-    ]
-  },
-  {
-    path: '/video',
-    component: Layout,
-    meta: {
-      title: '视频处理',
-      icon: 'vue-dsn-icon-video'
-    },
-    children: [{
-      path: 'video-player',
-      name: 'VideoPlayer',
-      component: () => import('../views/video/VideoPlayer'),
-      meta: {
-        title: '视频播放器'
-      }
-    },
-      {
-        path: 'video-mark',
-        name: 'VideoMark',
-        component: () => import('../views/video/VideoMark'),
-        meta: {
-          title: '视频水印'
-        }
-      }
-    ]
-  },
-  {
-    path: '/tools',
-    component: Layout,
-    meta: {
-      title: '组件',
-      icon: 'vue-dsn-icon-zujian'
-    },
-    children: [{
-      path: 'image-upload',
-      name: 'ImageUpload',
-      component: () => import('../views/tools/ImageUpload'),
-      meta: {
-        title: '图片上传'
-      }
-    },
-      {
-        path: 'drag',
-        component: ParentView,
-        meta: {
-          title: '拖拽'
-        },
-        children: [{
-          path: 'drag-list',
-          name: 'DragList',
-          component: () => import('../views/tools/Drag/DragList'),
+        {
+          path: 'operlog',
+          name: 'Operlog',
+          component: () => import('@/views/system/log/operlog'),
           meta: {
-            title: '列表拖拽'
+            title: '操作日志'
           }
-        },
-          {
-            path: 'vue-drr',
-            name: 'VueDrr',
-            component: () => import('../views/tools/Drag/VueDrrTool'),
-            meta: {
-              title: '组件拖拽'
-            }
-          }
-        ]
-      },
-      {
-        path: 'transfer',
-        name: 'Transfer',
-        component: () => import('../views/tools/TransferPage'),
-        meta: {
-          title: '穿梭框'
-        }
-      },
-      {
-        path: 'count-to',
-        name: 'CountTo',
-        component: () => import('../views/tools/CountToPage'),
-        meta: {
-          title: '数字滚动'
-        }
-      }
-    ]
-  },
-  {
-    path: '/editors',
-    name: 'Editors',
-    component: Layout,
-    redirect: '/editors/markdown',
-    meta: {
-      title: '编辑器',
-      icon: 'vue-dsn-icon-bianjiqi'
-    },
-    children: [{
-      path: 'markdown',
-      name: 'Markdown',
-      component: () => import('../views/editors/MarkdownEditor'),
-      meta: {
-        title: 'Markdown编辑器'
-      }
-    },
-      {
-        path: 'rich-text',
-        name: 'ImageRichText',
-        component: () => import('../views/editors/RichTextEditor'),
-        meta: {
-          title: '富文本编辑器'
-        }
-      }
-    ]
-  },
-  {
-    path: '/tree',
-    name: 'Tree',
-    component: Layout,
-    redirect: '/tree/org-tree',
-    meta: {
-      title: '树形结构',
-      icon: 'vue-dsn-icon-shuxing'
-    },
-    children: [{
-      path: 'org-tree',
-      name: 'OrgTree',
-      component: () => import('../views/tree/OrgTree'),
-      meta: {
-        title: '组织树'
-      }
-    },
-      {
-        path: 'ele-tree',
-        name: 'EleTree',
-        component: () => import('../views/tree/EleTree'),
-        meta: {
-          title: '控件树'
-        }
-      }
-    ]
-  },
-  {
-    path: '/excel',
-    name: 'Excel',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    meta: {
-      title: 'Excel',
-      icon: 'vue-dsn-icon-excel'
-    },
-    children: [{
-      path: 'export-excel',
-      name: 'ExportExcel',
-      component: () => import('../views/excel/ExportExcel'),
-      meta: {
-        title: '导出Excel'
-      }
-    },
-      {
-        path: 'import-excel',
-        name: 'ImportExcel',
-        component: () => import('../views/excel/ImportExcel'),
-        meta: {
-          title: '导入Excel'
-        }
-      }
-    ]
-  },
+        }]
+    }]
+},
   // {
-  //   path: '/error-page',
-  //   name: 'ErrorPage',
+  //   path: '/form-table',
   //   component: Layout,
-  //   redirect: '/error-page/page-401',
   //   meta: {
-  //     title: '错误页面',
-  //     icon: 'vue-dsn-icon-bug'
+  //     title: '表格&表单',
+  //     icon: 'vue-dsn-icon-biaoge'
   //   },
   //   children: [{
-  //       path: 'page-401',
-  //       name: 'Page401',
-  //       component: () => import('../views/error-page/401'),
+  //     path: 'table-classic',
+  //     name: 'TableClassic',
+  //     component: () => import('@/views/form-table/TableClassic'),
+  //     meta: {
+  //       title: '综合表格'
+  //     }
+  //   },
+  //     {
+  //       path: 'form-list',
+  //       name: 'FormList',
+  //       component: () => import('../views/form-table/FormList'),
   //       meta: {
-  //         title: '401页面'
+  //         title: '表单列表',
   //       }
   //     },
   //     {
-  //       path: 'page-404',
-  //       name: 'Page404',
-  //       component: () => import('../views/error-page/404'),
+  //       path: 'table-inline-edit',
+  //       name: 'TableInlineEdit',
+  //       component: () => import('../views/form-table/TableInlineEdit'),
   //       meta: {
-  //         title: '404页面'
+  //         keepAlive: true,
+  //         title: '行内编辑表格'
   //       }
   //     }
   //   ]
-  // }
+  // },
+  // {
+  //   path: '/image',
+  //   component: Layout,
+  //   meta: {
+  //     title: '图片处理',
+  //     icon: 'vue-dsn-icon-picture'
+  //   },
+  //   children: [{
+  //     path: 'image-cropper',
+  //     name: 'ImageCropper',
+  //     component: () => import('../views/image/ImageCropper'),
+  //     meta: {
+  //       title: '图片裁剪'
+  //     }
+  //   },
+  //     {
+  //       path: 'image-compress',
+  //       name: 'ImageCompress',
+  //       component: () => import('../views/image/ImageCompress'),
+  //       meta: {
+  //         title: '图片压缩'
+  //       }
+  //     },
+  //     {
+  //       path: 'image-synthesizer',
+  //       name: 'ImageSynthesizer',
+  //       component: () => import('../views/image/ImageSynthesizer'),
+  //       meta: {
+  //         title: '图片合成'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/tools',
+  //   component: Layout,
+  //   meta: {
+  //     title: '组件',
+  //     icon: 'vue-dsn-icon-zujian'
+  //   },
+  //   children: [{
+  //     path: 'image-upload',
+  //     name: 'ImageUpload',
+  //     component: () => import('../views/tools/ImageUpload'),
+  //     meta: {
+  //       title: '图片上传'
+  //     }
+  //   },
+  //     {
+  //       path: 'transfer',
+  //       name: 'Transfer',
+  //       component: () => import('../views/tools/TransferPage'),
+  //       meta: {
+  //         title: '穿梭框'
+  //       }
+  //     },
+  //     {
+  //       path: 'count-to',
+  //       name: 'CountTo',
+  //       component: () => import('../views/tools/CountToPage'),
+  //       meta: {
+  //         title: '数字滚动'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/editors',
+  //   name: 'Editors',
+  //   component: Layout,
+  //   redirect: '/editors/markdown',
+  //   meta: {
+  //     title: '编辑器',
+  //     icon: 'vue-dsn-icon-bianjiqi'
+  //   },
+  //   children: [{
+  //     path: 'markdown',
+  //     name: 'Markdown',
+  //     component: () => import('../views/editors/MarkdownEditor'),
+  //     meta: {
+  //       title: 'Markdown编辑器'
+  //     }
+  //   },
+  //     {
+  //       path: 'rich-text',
+  //       name: 'ImageRichText',
+  //       component: () => import('../views/editors/RichTextEditor'),
+  //       meta: {
+  //         title: '富文本编辑器'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/tree',
+  //   name: 'Tree',
+  //   component: Layout,
+  //   redirect: '/tree/org-tree',
+  //   meta: {
+  //     title: '树形结构',
+  //     icon: 'vue-dsn-icon-shuxing'
+  //   },
+  //   children: [{
+  //     path: 'org-tree',
+  //     name: 'OrgTree',
+  //     component: () => import('../views/tree/OrgTree'),
+  //     meta: {
+  //       title: '组织树'
+  //     }
+  //   },
+  //     {
+  //       path: 'ele-tree',
+  //       name: 'EleTree',
+  //       component: () => import('../views/tree/EleTree'),
+  //       meta: {
+  //         title: '控件树'
+  //       }
+  //     }
+  //   ]
+  // },
 ]
