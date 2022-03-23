@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.arslinthboot.common.Constants.SLIDER_PREFIX;
 import static com.arslinthboot.common.ResponseCode.FAIL;
 import static com.arslinthboot.common.ResponseCode.SUCCESS;
 
@@ -43,7 +44,7 @@ public class SliderController {
 
             xPosCache = imageResult.getXpos();
             String captchaUUid = IdUtil.simpleUUID();
-            redisTool.setCacheObject(captchaUUid, xPosCache, 5, TimeUnit.MINUTES);
+            redisTool.setCacheObject(SLIDER_PREFIX + captchaUUid, xPosCache, 5, TimeUnit.MINUTES);
             imageResult.setXpos(0);
 
             Map<String, Object> img = JSON.parseObject(JSON.toJSONString(imageResult));

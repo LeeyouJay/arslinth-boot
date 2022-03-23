@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { getTableList } from '../../api'
+	
 import Hints from '../../components/Hints'
 
 export default {
@@ -53,28 +53,10 @@ export default {
     }
   },
   created() {
-    this.fetchData()
+    // this.fetchData()
   },
   methods: {
-    // 获取数据列表
-    fetchData() {
-      this.listLoading = true
-      // 获取数据列表接口
-      getTableList(this.listQuery).then(res => {
-        const data = res.data
-        if (data.code === 0) {
-          this.tableList = data.data.list.map(item => {
-            this.$set(item, 'editable', false)
-            item.originalHobby = item.hobby
-            return item
-          })
-          console.log(this.tableList)
-          this.listLoading = false
-        }
-      }).catch(() => {
-        this.listLoading = false
-      })
-    },
+  
     cancelEdit(row) {
       row.hobby = row.originalHobby
       row.editable = false

@@ -10,7 +10,7 @@ spring:
     password: ENC(VGTlPiXxcPB6hobqjgQVGzr1Swo76/1j2f6f1eRuXrDDiiqUsA4eJHDVNZQb3T/1)
   redis:
     password: root
-    database: 0
+    database: 1
 
 logging:
   config: classpath:log4j2/log4j2-spring-dev.xml

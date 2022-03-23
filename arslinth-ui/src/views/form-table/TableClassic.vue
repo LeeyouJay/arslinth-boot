@@ -178,7 +178,6 @@
 </template>
 
 <script>
-import { getTableList } from '../../api'
 import Pagination from '../../components/Pagination'
 import Upload from '../../components/Upload'
 import Hints from '../../components/Hints'
@@ -234,7 +233,7 @@ export default {
     }
   },
   created() {
-    this.fetchData()
+    // this.fetchData()
   },
   methods: {
     // 多选操作
@@ -297,18 +296,7 @@ export default {
     },
     // 获取数据列表
     fetchData() {
-      this.listLoading = true
-      // 获取数据列表接口
-      getTableList(this.listQuery).then(res => {
-        const data = res.data
-        if (data.code === 0) {
-          this.total = data.data.total
-          this.tableData = data.data.list
-          this.listLoading = false
-        }
-      }).catch(() => {
-        this.listLoading = false
-      })
+			
     },
     // 查询数据
     onSubmit() {

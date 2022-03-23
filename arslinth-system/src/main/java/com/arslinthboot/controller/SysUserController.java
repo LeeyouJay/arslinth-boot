@@ -30,8 +30,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.arslinthboot.common.Constants.LOGIN_TIMES;
-import static com.arslinthboot.common.Constants.MOVE_CHECK_ERROR;
+import static com.arslinthboot.common.Constants.*;
 import static com.arslinthboot.common.ResponseCode.*;
 
 
@@ -87,11 +86,11 @@ public class SysUserController {
             return ApiResponse.code(FAIL).message("验证的值不能为空！");
         }
 
-        if (!redisTool.exists(captchaUUid)) {
+        if (!redisTool.exists(SLIDER_PREFIX + captchaUUid)) {
             return ApiResponse.code(FAIL).message("验证已过期！");
         }
         //验证拼图
-        Integer value = redisTool.getCacheObject(captchaUUid);
+        Integer value = redisTool.getCacheObject(SLIDER_PREFIX + captchaUUid);
         int X = Integer.parseInt(moveX);
         if (!((X < (value + MOVE_CHECK_ERROR))
                 && (X > (value - MOVE_CHECK_ERROR)))) {
