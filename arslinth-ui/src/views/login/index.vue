@@ -2,7 +2,7 @@
   <div class="login-wrapper" :style="'background-image:url('+ Background +')'">
     <div class="form-box">
       <div class="form-title">
-        <img src="../assets/img/logo.png" alt="icon">
+        <img src="@/assets/img/logo.png" alt="icon">
         <p>账 号 登 录</p>
       </div>
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-width="0px" class="login-form">
@@ -11,9 +11,6 @@
         </el-form-item>
         <el-form-item prop="password">
           <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="请输入密码" prefix-icon="el-icon-lock" @keyup.enter.native="handleLogin" />
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button :loading="loading" size="small" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
@@ -27,8 +24,8 @@
 </template>
 
 <script>
-import { setToken } from '../utils/cookie'
-import Background from '../assets/img/login-background.jpg'
+import { setToken } from '@/utils/cookie'
+import Background from '@/assets/img/login-background.jpg'
 
 export default {
   name: 'Login',
@@ -38,7 +35,6 @@ export default {
       loginForm: {
         username: 'admin',
         password: 'admin123',
-        rememberMe: true
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', message: '用户名不能为空' }],

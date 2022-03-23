@@ -18,7 +18,7 @@ Vue.use(Router)
 export const constantRoutes = [{
   path: '/login',
   name: 'Login',
-  component: () => import('../views/Login'),
+  component: () => import('../views/login'),
   hidden: true,
   meta: {
     title: '登录'

@@ -13,9 +13,9 @@
 				<el-row :gutter="20">
 					<el-col :span="24">
 						<el-form-item label="上级菜单">
-							<el-select v-model="slelectLable" placeholder="点击选择页面" >
-
-							</el-select>
+							<el-option hidden  :value="slelectVale" :label="slelectLable" style="height: auto"></el-option>
+								<el-tree :data="tableTree"  node-key="id" ref="tree" highlight-current 
+								:props="defaultProps" :expand-on-click-node="false" :check-on-click-node="true" @node-click="handleNodeClick"></el-tree>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -106,6 +106,9 @@
 			},
 			submit() {
 				console.log(this.form)
+			},
+			handleNodeClick(data) {
+				
 			}
 		}
 

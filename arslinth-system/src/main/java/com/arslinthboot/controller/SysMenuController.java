@@ -54,4 +54,11 @@ public class SysMenuController {
 
         return ApiResponse.code(SUCCESS).data("routes", treeList);
     }
+
+    @GetMapping({"/list/{menuName}", "/list"})
+    public ApiResponse list(@PathVariable(required = false) String menuName) {
+
+
+        return ApiResponse.code(SUCCESS).data("menuName", menuName);
+    }
 }
