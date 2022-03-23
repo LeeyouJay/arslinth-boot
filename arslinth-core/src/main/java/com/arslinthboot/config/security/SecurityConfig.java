@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //所有请求都需要被认证
 //                authenticated().
                 //所有请求通过
-                        permitAll().
+                 permitAll().
                 //未登入和未授权时的处理
                         and().exceptionHandling().authenticationEntryPoint(jwtAuthorizedEntryPoint).
                 //关闭session  用token验证，所以关闭session

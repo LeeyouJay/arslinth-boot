@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.arslinthboot.common.Constants.LOGIN_TIMES;
 import static com.arslinthboot.common.Constants.MOVE_CHECK_ERROR;
@@ -50,8 +52,6 @@ public class SysUserController {
     private final TokenService tokenService;
 
     private final SysUserService sysUserService;
-
-    private final SysRoleService sysRoleService;
 
     private final UploadService uploadService;
 
@@ -117,12 +117,11 @@ public class SysUserController {
             return ApiResponse.code(FAIL).message("密码错误次数过多，请稍候尝试！");
         }
 
-        SysRole sysRole = sysRoleService.getRoleById(user.getRoleId());
-
-        Set<String> auths = Optional.ofNullable(sysRole).map(SysRole::getPermissions).orElse(CollUtil.newHashSet("dashboard"));
+        Set<String> auths = user.getPermissions();
 
         //初始化登入信息
         LoginUser<SysUser> loginUser = SecurityUtils.initLoginUser(user, user.getId(), "sysUser", auths);
+
         //生成token返回前台
         String jwtToken = tokenService.createJwtToken(loginUser);
 

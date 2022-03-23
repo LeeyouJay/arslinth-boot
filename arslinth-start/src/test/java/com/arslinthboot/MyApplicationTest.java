@@ -1,15 +1,19 @@
 package com.arslinthboot;
 
+import cn.hutool.core.collection.CollUtil;
 import com.arslinthboot.dao.SysMenuDao;
 import com.arslinthboot.dao.SysRoleDao;
+import com.arslinthboot.dao.SysUserDao;
 import com.arslinthboot.entity.SysMenu;
 import com.arslinthboot.entity.SysRole;
+import com.arslinthboot.entity.SysUser;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Arslinth
@@ -28,6 +32,9 @@ public class MyApplicationTest {
 
     @Autowired
     private StringEncryptor encryptor;
+
+    @Autowired
+    private SysUserDao sysUserDao;
 
 
     @Test
@@ -64,6 +71,39 @@ public class MyApplicationTest {
         System.out.println(password);
         System.out.println(redisPassword);
         System.out.println(encryptor.encrypt("root"));
+    }
+    @Test
+    void sysUserHandle(){
+        SysUser sysUser = SysUser.builder().roleIds(CollUtil.newHashSet("1502756885088612354"))
+                .username("username")
+                .phone("18677952830")
+                .nickName("Arslinth")
+                .permissions(CollUtil.newHashSet("Home", "UserCenter","SysMenu","SysUser","SysRole","SysDict","Loginlog","Operlog"))
+                .build();
 
+        sysUserDao.insert(sysUser);
+    }
+
+     void  sortTest(){
+
+
+     }
+
+    public static void main(String[] args) {
+
+        ArrayList<String> intiList = CollUtil.newArrayList("A", "B", "C", "A", "C", "A", "D", "E", "F", "D");
+
+        Map<String, Long> map = intiList.stream().collect(Collectors.groupingBy(c -> c, Collectors.counting()));
+
+        List<Map.Entry<String, Long>> list = new ArrayList<Map.Entry<String, Long>>();
+        list.addAll(map.entrySet());
+
+        List<String> collect = list.stream()
+                .sorted((o1, o2) -> o2.getValue().compareTo(o1.getValue()))
+                .map(m -> m.getKey()).collect(Collectors.toList());
+
+//        list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+
+        System.out.println(collect);
     }
 }

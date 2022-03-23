@@ -26,9 +26,12 @@
 <script>
 import { setToken } from '@/utils/cookie'
 import Background from '@/assets/img/login-background.jpg'
-
+import Captcha from './captcha.vue'
 export default {
   name: 'Login',
+	components:{
+		Captcha
+	},
   data() {
     return {
       Background,
@@ -72,7 +75,11 @@ export default {
           // })
         }
       })
-    }
+    },
+	setSha256(password) {
+		let sha256 = require("js-sha256").sha256 //这里用的是require方法，所以没用import
+		return sha256(password)
+	},
   }
 }
 </script>

@@ -26,13 +26,14 @@ public class SysUser {
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
 
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private Set<String> roleIds;
+
     private String username;
 
     private String password;
 
     private String nickName;
-
-    private String roleId;
 
     private String sex;
 
