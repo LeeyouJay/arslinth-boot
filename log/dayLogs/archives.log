@@ -54,3 +54,61 @@ Using generated security password: 2eba27e5-a461-4d9d-83a5-06b26c1e8399
 2022-03-21 00:34:20.354 [http-nio-8091-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/arslinth-api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-03-21 00:34:20.354 [http-nio-8091-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
 2022-03-21 00:34:20.355 [http-nio-8091-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2022-03-21 02:24:38.132 [main] INFO  com.arslinthboot.ArslinthBootApplication - Starting ArslinthBootApplication using Java 13.0.1 on Arslinth-Leptop with PID 17288 (D:\MyProject\arslinth-boot\arslinth-start\target\classes started by Arslinth in D:\MyProject\arslinth-boot)
+2022-03-21 02:24:38.141 [main] INFO  com.arslinthboot.ArslinthBootApplication - The following 1 profile is active: "dev"
+2022-03-21 02:24:39.287 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-03-21 02:24:39.289 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-03-21 02:24:39.324 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 22 ms. Found 0 Redis repository interfaces.
+2022-03-21 02:24:39.721 [main] INFO  com.ulisesbocchio.jasyptspringboot.configuration.EnableEncryptablePropertiesBeanFactoryPostProcessor - Post-processing PropertySource instances
+2022-03-21 02:24:39.722 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Skipping PropertySource configurationProperties [class org.springframework.boot.context.properties.source.ConfigurationPropertySourcesPropertySource
+2022-03-21 02:24:39.722 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Skipping PropertySource servletConfigInitParams [class org.springframework.core.env.PropertySource$StubPropertySource
+2022-03-21 02:24:39.722 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Skipping PropertySource servletContextInitParams [class org.springframework.core.env.PropertySource$StubPropertySource
+2022-03-21 02:24:39.724 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Converting PropertySource systemProperties [org.springframework.core.env.PropertiesPropertySource] to EncryptableMapPropertySourceWrapper
+2022-03-21 02:24:39.724 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Converting PropertySource systemEnvironment [org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor$OriginAwareSystemEnvironmentPropertySource] to EncryptableSystemEnvironmentPropertySourceWrapper
+2022-03-21 02:24:39.725 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Converting PropertySource random [org.springframework.boot.env.RandomValuePropertySource] to EncryptablePropertySourceWrapper
+2022-03-21 02:24:39.726 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Converting PropertySource Config resource 'class path resource [application-dev.yaml]' via location 'optional:classpath:/' [org.springframework.boot.env.OriginTrackedMapPropertySource] to EncryptableMapPropertySourceWrapper
+2022-03-21 02:24:39.726 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Converting PropertySource Config resource 'class path resource [application.yml]' via location 'optional:classpath:/' [org.springframework.boot.env.OriginTrackedMapPropertySource] to EncryptableMapPropertySourceWrapper
+2022-03-21 02:24:40.144 [main] INFO  com.ulisesbocchio.jasyptspringboot.filter.DefaultLazyPropertyFilter - Property Filter custom Bean not found with name 'encryptablePropertyFilter'. Initializing Default Property Filter
+2022-03-21 02:24:40.163 [main] INFO  com.ulisesbocchio.jasyptspringboot.resolver.DefaultLazyPropertyResolver - Property Resolver custom Bean not found with name 'encryptablePropertyResolver'. Initializing Default Property Resolver
+2022-03-21 02:24:40.166 [main] INFO  com.ulisesbocchio.jasyptspringboot.detector.DefaultLazyPropertyDetector - Property Detector custom Bean not found with name 'encryptablePropertyDetector'. Initializing Default Property Detector
+2022-03-21 02:24:40.479 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8091 (http)
+2022-03-21 02:24:40.489 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8091"]
+2022-03-21 02:24:40.489 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-03-21 02:24:40.490 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.58]
+2022-03-21 02:24:40.604 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/arslinth-api] - Initializing Spring embedded WebApplicationContext
+2022-03-21 02:24:40.605 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2392 ms
+2022-03-21 02:24:41.164 [main] INFO  com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure - Init DruidDataSource
+2022-03-21 02:24:41.238 [main] INFO  com.ulisesbocchio.jasyptspringboot.encryptor.DefaultLazyEncryptor - String Encryptor custom Bean not found with name 'jasyptStringEncryptor'. Initializing Default String Encryptor
+2022-03-21 02:24:41.254 [main] INFO  com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder - Encryptor config not found for property jasypt.encryptor.algorithm, using default value: PBEWITHHMACSHA512ANDAES_256
+2022-03-21 02:24:41.255 [main] INFO  com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder - Encryptor config not found for property jasypt.encryptor.key-obtention-iterations, using default value: 1000
+2022-03-21 02:24:41.255 [main] INFO  com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder - Encryptor config not found for property jasypt.encryptor.pool-size, using default value: 1
+2022-03-21 02:24:41.256 [main] INFO  com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder - Encryptor config not found for property jasypt.encryptor.provider-name, using default value: null
+2022-03-21 02:24:41.257 [main] INFO  com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder - Encryptor config not found for property jasypt.encryptor.provider-class-name, using default value: null
+2022-03-21 02:24:41.257 [main] INFO  com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder - Encryptor config not found for property jasypt.encryptor.salt-generator-classname, using default value: org.jasypt.salt.RandomSaltGenerator
+2022-03-21 02:24:41.260 [main] INFO  com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder - Encryptor config not found for property jasypt.encryptor.iv-generator-classname, using default value: org.jasypt.iv.RandomIvGenerator
+2022-03-21 02:24:41.261 [main] INFO  com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder - Encryptor config not found for property jasypt.encryptor.string-output-type, using default value: base64
+2022-03-21 02:24:43.494 [main] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2022-03-21 02:24:45.289 [main] INFO  org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 4a36b791-dae8-4d2b-82d2-a1f220b3a362
+
+2022-03-21 02:24:45.426 [main] INFO  org.springframework.security.web.DefaultSecurityFilterChain - Will not secure any request
+2022-03-21 02:24:46.231 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8091"]
+2022-03-21 02:24:46.623 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8091 (http) with context path '/arslinth-api'
+2022-03-21 02:24:46.624 [main] INFO  com.ulisesbocchio.jasyptspringboot.caching.RefreshScopeRefreshedEventListener - Refreshing cached encryptable property sources on ServletWebServerInitializedEvent
+2022-03-21 02:24:46.625 [main] INFO  com.ulisesbocchio.jasyptspringboot.caching.CachingDelegateEncryptablePropertySource - Property Source systemProperties refreshed
+2022-03-21 02:24:46.626 [main] INFO  com.ulisesbocchio.jasyptspringboot.caching.CachingDelegateEncryptablePropertySource - Property Source systemEnvironment refreshed
+2022-03-21 02:24:46.626 [main] INFO  com.ulisesbocchio.jasyptspringboot.caching.CachingDelegateEncryptablePropertySource - Property Source random refreshed
+2022-03-21 02:24:46.626 [main] INFO  com.ulisesbocchio.jasyptspringboot.caching.CachingDelegateEncryptablePropertySource - Property Source Config resource 'class path resource [application-dev.yaml]' via location 'optional:classpath:/' refreshed
+2022-03-21 02:24:46.626 [main] INFO  com.ulisesbocchio.jasyptspringboot.caching.CachingDelegateEncryptablePropertySource - Property Source Config resource 'class path resource [application.yml]' via location 'optional:classpath:/' refreshed
+2022-03-21 02:24:46.626 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Converting PropertySource server.ports [org.springframework.core.env.MapPropertySource] to EncryptableMapPropertySourceWrapper
+2022-03-21 02:24:46.626 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Skipping PropertySource configurationProperties [class org.springframework.boot.context.properties.source.ConfigurationPropertySourcesPropertySource
+2022-03-21 02:24:46.626 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Skipping PropertySource servletConfigInitParams [class org.springframework.core.env.PropertySource$StubPropertySource
+2022-03-21 02:24:46.627 [main] INFO  com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter - Converting PropertySource servletContextInitParams [org.springframework.web.context.support.ServletContextPropertySource] to EncryptableEnumerablePropertySourceWrapper
+2022-03-21 02:24:46.639 [main] INFO  com.arslinthboot.ArslinthBootApplication - Started ArslinthBootApplication in 9.223 seconds (JVM running for 10.761)
+2022-03-21 02:24:46.641 [main] INFO  com.arslinthboot.MyApplicationRunner - 启动后执行！
+2022-03-21 02:24:50.369 [http-nio-8091-exec-3] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/arslinth-api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-03-21 02:24:50.369 [http-nio-8091-exec-3] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-03-21 02:24:50.371 [http-nio-8091-exec-3] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2022-03-21 02:26:01.823 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2022-03-21 02:26:01.835 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
