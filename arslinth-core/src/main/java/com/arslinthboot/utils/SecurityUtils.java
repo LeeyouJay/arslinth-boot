@@ -1,6 +1,7 @@
 package com.arslinthboot.utils;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
 import com.arslinthboot.config.tokenConfig.LoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,12 +23,16 @@ public class SecurityUtils {
 
     public static LoginUser<?> getLoginUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return Convert.convert(LoginUser.class, authentication.getCredentials());
+        Object credentials = authentication.getCredentials();
+        if (ObjectUtil.isEmpty(credentials)) return null;
+        return Convert.convert(LoginUser.class, credentials);
     }
 
     public static <T> T getUser(Class<T> c) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        LoginUser<?> loginUser = Convert.convert(LoginUser.class, authentication.getCredentials());
+        Object credentials = authentication.getCredentials();
+        if (ObjectUtil.isEmpty(credentials)) return null;
+        LoginUser<?> loginUser = Convert.convert(LoginUser.class, credentials);
         return Convert.convert(c, loginUser.getUser());
     }
 

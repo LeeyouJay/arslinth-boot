@@ -9,7 +9,7 @@ spring:
     username: ENC(MAgCq7JTlPnFLtdzzY4Luc3Mr77N3I28/PO2mMIPIecGZQu+32fgnQh1Rwd8xlcd)
     password: ENC(VGTlPiXxcPB6hobqjgQVGzr1Swo76/1j2f6f1eRuXrDDiiqUsA4eJHDVNZQb3T/1)
   redis:
-    password: root
+    password:
     database: 1
 
 logging:

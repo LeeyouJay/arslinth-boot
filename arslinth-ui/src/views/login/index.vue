@@ -15,11 +15,11 @@
 						</el-form-item>
 						<el-form-item prop="password">
 							<el-input v-model="loginForm.password" type="password" auto-complete="off"
-								placeholder="请输入密码" prefix-icon="el-icon-lock" @keyup.enter.native="handleLogin" />
+								placeholder="请输入密码" prefix-icon="el-icon-lock" @keyup.enter.native="verifyForm" />
 						</el-form-item>
 						<el-form-item>
 							<el-button :loading="loading" size="small" type="primary" style="width:100%;"
-								@click.native.prevent="handleLogin">
+								@click.native.prevent="verifyForm">
 								<span v-if="!loading">登 录</span>
 								<span v-else>登 录 中...</span>
 							</el-button>
@@ -35,7 +35,7 @@
 			<template slot="title">
 				<span class="dialog-title">请完成图片验证</span>
 			</template>
-			<Captcha ref="dialogopen" />
+			<Captcha ref="dialogopen" :captchaUUid.sync="loginForm.captchaUUid" @verify="verify"  />
 		</el-dialog>
 	</div>
 </template>
@@ -56,8 +56,9 @@
 				Background,
 				activeName: 'first',
 				loginForm: {
-					username: 'admin',
-					password: 'admin123',
+					username: 'arslinth',
+					password: '123456',
+					captchaUUid:''
 				},
 				loginRules: {
 					username: [{
@@ -73,14 +74,6 @@
 				},
 				loading: false,
 				redirect: undefined,
-				catcha: {
-					blocky: 0,
-					imgurl: '',
-					miniimgurl: '',
-					text: '向右滑动完成拼图',
-					sh: 60,
-					sw: 75,
-				},
 				dialogVisible: false,
 				refreshCode: false
 			}
@@ -94,14 +87,41 @@
 			}
 		},
 		methods: {
-			handleLogin(user) {
+			verifyForm() {
 				this.$refs.loginForm.validate(valid => {
-					if (valid) {
-							this.dialogVisible = true
-						setToken("arslinth")
-						this.$router.push({
-							path: this.redirect || '/home'
-						})
+					if (valid){
+						this.dialogVisible = true
+						this.$nextTick(()=>this.$refs.dialogopen.init())
+					} 
+				})
+			},
+			verify(left, stddev) {
+				let user = {
+					username: this.loginForm.username,
+					password: this.loginForm.password,
+					captchaUUid: this.loginForm.captchaUUid,
+					moveX: left
+				}
+				user.password = this.setSha256(user.password);
+				this.handleLogin(user)
+			},
+			handleLogin(user){
+				this.$api.user.login(user).then(res=>{
+					if(res.code == 200){
+						this.$refs.dialogopen.handleSuccess()
+						setTimeout(()=>{
+							this.dialogVisible = false
+							this.$router.push({ path: this.redirect || '/'}).catch(()=>{})
+						},700)
+						
+					}else if(res.code == 502) {
+						this.$refs.dialogopen.handleFail()
+						setTimeout(()=>{
+							this.$refs.dialogopen.refresh()
+						},1000)
+					}else {
+						this.$message.error(res.message)
+						this.dialogVisible = false
 					}
 				})
 			},
@@ -109,7 +129,7 @@
 				
 			},
 			setSha256(password) {
-				let sha256 = require("js-sha256").sha256 //这里用的是require方法，所以没用import
+				let sha256 = require("js-sha256").sha256
 				return sha256(password)
 			},
 		}

@@ -75,7 +75,7 @@ public class SysUserController {
             return ApiResponse.code(FAIL).message("账号不存在！");
         }
 
-        if (!user.isState()) {
+        if (user.getForbidden()) {
             sysLogin.setState(false);
             sysLogin.setMessage("账号已被禁用！");
             sysLoginService.saveLogin(request, sysLogin);
@@ -94,12 +94,11 @@ public class SysUserController {
         int X = Integer.parseInt(moveX);
         if (!((X < (value + MOVE_CHECK_ERROR))
                 && (X > (value - MOVE_CHECK_ERROR)))) {
-            return ApiResponse.code(FAIL).message("验证失败！");
+            return ApiResponse.code(VERIFY_FILE).message("验证失败！");
         }
-        redisTool.deleteObject(captchaUUid);
+        redisTool.deleteObject(SLIDER_PREFIX + captchaUUid);
 
         int loginTimes = (Integer) Optional.ofNullable(redisTool.getCacheObject(LOGIN_TIMES + username)).orElse(0);
-
         //判断密码
         if (!new BCryptPasswordEncoder().matches(password, user.getPassword())) {
             redisTool.setCacheObject(LOGIN_TIMES + username, loginTimes + 1, 10, TimeUnit.MINUTES);
@@ -115,9 +114,9 @@ public class SysUserController {
             sysLoginService.saveLogin(request, sysLogin);
             return ApiResponse.code(FAIL).message("密码错误次数过多，请稍候尝试！");
         }
+        redisTool.deleteObject(LOGIN_TIMES + username);
 
         Set<String> auths = user.getPermissions();
-
         //初始化登入信息
         LoginUser<SysUser> loginUser = SecurityUtils.initLoginUser(user, user.getId(), "sysUser", auths);
 
@@ -127,6 +126,18 @@ public class SysUserController {
         sysLoginService.saveLogin(request, sysLogin);
         return ApiResponse.code(SUCCESS).message("登入成功").data("token", jwtToken)
                 .data("username", username);
+    }
+
+    @GetMapping("/logout")
+    public ApiResponse logout(HttpServletRequest request) {
+        LoginUser<?> loginUser = SecurityUtils.getLoginUser();
+        //记录日志
+        if (loginUser == null) {
+            return ApiResponse.code(FAIL).message("注销失败，用户未登入");
+        }
+        String userKey = LOGIN_TOKEN_KEY + loginUser.getToken();
+        redisTool.deleteObject(userKey);
+        return ApiResponse.code(SUCCESS).message("注销成功");
     }
 
 
@@ -168,7 +179,6 @@ public class SysUserController {
 
     @GetMapping("/changePassword")
     public ApiResponse changePassword() {
-        SysUser user = SecurityUtils.getUser(SysUser.class);
 
         return ApiResponse.code(FAIL).message("更改失败！");
 

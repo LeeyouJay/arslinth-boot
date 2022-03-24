@@ -15,7 +15,7 @@ router.beforeEach((to, from, next) => {
   if (getToken()) {
     // 已登录且要跳转的是登录页
     if (to.path === '/login') {
-      next({path: '/'})
+      next({path: '/home'})
       NProgress.done()
     } else {
       if (!store.getters.hasGetRoute) {

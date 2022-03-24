@@ -1,7 +1,7 @@
 import axios from '@/request';
 import base from '@/api/base.js'
 
-const login = {
+const user = {
 
 //获取滑动解锁图片
   getCaptcha() {
@@ -11,11 +11,10 @@ const login = {
   login(params) {
     return axios.post(`${base.requestUrl}/user/login`, params);
   },
-
   //登出
   logout() {
     return axios.get(`${base.requestUrl}/user/logout`);
   },
 }
 
-export default login;
+export default user;

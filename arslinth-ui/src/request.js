@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
-import {getToken} from './utils/cookie'
+import {getToken, setToken} from './utils/cookie'
 import base from './api/base.js'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
@@ -22,7 +22,7 @@ service.interceptors.request.use(
     // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
     // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。
     const token = getToken();
-    // token && (config.headers.Authorization = token);
+    token && (config.headers.Authorization = token);
     return config;
   },
   error => Promise.error(error)
@@ -47,7 +47,7 @@ service.interceptors.response.use(
         type: 'warning'
       }).then(() => {
         removeToken()
-        location.href = '/login'
+        location.reload()
       }).catch((e) => {
         console.log(e)
       });
@@ -92,7 +92,7 @@ const errorHandle = (status) => {
       router.replace('/404')
       break;
     case 500:
-      Message.error('服务器出错！')
+      Message.error('服务器错误！')
   }
 }
 export default service

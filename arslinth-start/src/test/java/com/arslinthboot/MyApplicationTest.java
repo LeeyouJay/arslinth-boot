@@ -11,9 +11,12 @@ import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.arslinthboot.common.Constants.RESET_CODE;
 
 /**
  * @author Arslinth
@@ -56,6 +59,7 @@ public class MyApplicationTest {
         sysMenuDao.updateById(sysMenu);
     }
 
+
     @Test
     void getTest() {
         List<SysRole> sysRoles = sysRoleDao.selectList(null);
@@ -78,16 +82,19 @@ public class MyApplicationTest {
                 .username("username")
                 .phone("18677952830")
                 .nickName("Arslinth")
-                .permissions(CollUtil.newHashSet("Home", "UserCenter","SysMenu","SysUser","SysRole","SysDict","Loginlog","Operlog"))
+                .permissions(CollUtil.newHashSet("Home", "UserCenter", "SysMenu", "SysUser", "SysRole", "SysDict", "Loginlog", "Operlog"))
                 .build();
 
         sysUserDao.insert(sysUser);
     }
 
-     void  sortTest(){
+    @Test
+    void sortTest() {
+        SysUser sysUser = sysUserDao.selectById("1506522728280870914");
+        sysUser.setPassword(new BCryptPasswordEncoder().encode(RESET_CODE));
+        sysUserDao.updateById(sysUser);
 
-
-     }
+    }
 
     public static void main(String[] args) {
 

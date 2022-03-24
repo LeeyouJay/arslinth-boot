@@ -43,9 +43,9 @@ public class SysUser {
 
     private String avatar;
 
-    private boolean state;
+    private Boolean forbidden;
 
-    private boolean setRight;
+    private Boolean setRight;
 
     @TableField(typeHandler = JacksonTypeHandler.class)
     private Set<String> permissions;

@@ -44,7 +44,7 @@ public class SliderController {
 
             xPosCache = imageResult.getXpos();
             String captchaUUid = IdUtil.simpleUUID();
-            redisTool.setCacheObject(SLIDER_PREFIX + captchaUUid, xPosCache, 5, TimeUnit.MINUTES);
+            redisTool.setCacheObject(SLIDER_PREFIX + captchaUUid, xPosCache, 1, TimeUnit.MINUTES);
             imageResult.setXpos(0);
 
             Map<String, Object> img = JSON.parseObject(JSON.toJSONString(imageResult));

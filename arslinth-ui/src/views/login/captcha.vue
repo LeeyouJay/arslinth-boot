@@ -4,6 +4,7 @@
 
 		<canvas ref="block" class="slide-verify-block" :width="catcha.imgW" :height="catcha.imgH" />
 		<div class="slide-verify-refresh-icon el-icon-refresh" @click="refresh" />
+		<div class="slide-verify-info" :class="{fail: fail, show: showInfo}" >{{ infoText }}</div>
 		<div class="slide-verify-slider" :style="widthlable"
 			:class="{'container-active': containerActive, 'container-success': containerSuccess, 'container-fail': containerFail}">
 			<div class="slide-verify-slider-mask" :style="{width: sliderMaskWidth}">
@@ -31,6 +32,10 @@
 			fresh: {
 				type: Boolean,
 				default: false
+			},
+			captchaUUid: {
+				type: String,
+				default: ''
 			}
 		},
 
@@ -74,8 +79,7 @@
 			}
 		},
 		mounted() {
-			// 随机生成数this.block_x =
-			this.init()
+			
 		},
 		methods: {
 			async init() {
@@ -87,13 +91,13 @@
 			initDom() {
 				this.block = this.$refs.block
 				this.canvasStr = this.$refs.canvas
-				
 				this.blockCtx = this.block.getContext('2d')
 				this.canvasCtx = this.canvasStr.getContext('2d')
-				
+				this.canvasCtx.clearRect(0, 0, this.catcha.imgW, this.catcha.imgH)
+				this.blockCtx.clearRect(0, 0, this.catcha.imgW, this.catcha.imgH)
 				this.initImg()
 			},
-			initImg(h) {
+			initImg() {
 				var that = this
 				const img = document.createElement('img')
 				img.onload = onload
@@ -106,7 +110,7 @@
 				}
 				const img1 = document.createElement('img')
 				var blockCtx = that.blockCtx
-				var blocky = h || that.catcha.blocky
+				var blocky = that.catcha.blocky
 				if (blocky === 0) {
 					return
 				}
@@ -116,14 +120,11 @@
 				img1.src = that.catcha.miniimgurl
 				img1.onload = function() {
 					blockCtx.drawImage(img1, 0, blocky, that.catcha.miniW, that.catcha.miniH)
-					//blockCtx.drawImage(img1, 0, blocky, 75, 60)
 				}
 			}, // 刷新
 			refresh() {
-				this.blockCtx.clearRect(0, 0, this.catcha.imgW, this.catcha.imgH)
-				this.canvasCtx.clearRect(0, 0, this.catcha.imgW, this.catcha.imgH)
+				this.reset()
 				this.init()
-				this.$emit('refresh')
 			},
 			sliderDown(event) {
 				this.originX = event.clientX
@@ -182,24 +183,19 @@
 				const deviations = arr.map(x => x - average) // deviation array
 				const stddev = Math.sqrt(deviations.map(square).reduce(sum) / arr.length) // standard deviation
 				const left = parseInt(this.block.style.left)
-				console.log(left)
-				this.$emit('success', left, stddev)
-				this.handleSuccess()
+				this.$emit('verify', left, stddev)
 			},
-			reset(h) {
+			reset() {
 				this.containerActive = false
 				this.containerSuccess = false
 				this.containerFail = false
 				this.sliderLeft = 0
 				this.block.style.left = 0
 				this.sliderMaskWidth = 0
-				this.canvasCtx.clearRect(0, 0, this.catcha.imgW, this.catcha.imgH)
-				this.blockCtx.clearRect(0, 0, this.catcha.imgW, this.catcha.imgH)
 				this.fail = false
 				this.showInfo = false
 				this.containerFail = false
 				this.containerSuccess = false
-				this.initImg(h)
 			},
 			handleFail() {
 				this.fail = true
@@ -211,26 +207,18 @@
 				this.showInfo = true
 				this.infoText = '验证成功'
 				this.containerSuccess = true
-				setTimeout(() => {
-					this.block.style.left = 0
-					this.sliderMaskWidth = 0
-					this.sliderLeft = 0
-					this.fail = false
-					this.showInfo = false
-					this.containerSuccess = false
-				}, 1500)
 			},
 			async getCaptcha() {
-				let res = await this.$api.login.getCaptcha()
+				let res = await this.$api.user.getCaptcha()
 				if (res.code == 200) {
 					this.catcha.blocky = res.data.ypos
 					this.catcha.imgurl = 'data:image/png;base64,' + res.data.oriImage
 					this.catcha.miniimgurl = 'data:image/png;base64,' + res.data.cutImage
 					this.catcha.miniH = res.data.cutImageHeight
 					this.catcha.miniW = res.data.cutImageWidth
+					this.$emit('update:captchaUUid',res.data.captchaUUid)
 				}else 
 					this.$message.error(res.message)
-				console.log(this.catcha)
 			},
 		}
 	}
@@ -267,7 +255,7 @@
 
 	.slide-verify-refresh-icon:hover {
 		transform: rotate(180deg);
-		transition: all 0.2s ease-in-out;
+		transition: all 0.3s ease-in-out;
 	}
 
 	.slide-verify-slider {
@@ -292,14 +280,16 @@
 	}
 
 	.slide-verify-info {
+		font-size: 16px;
+		font-weight: bold;
 		position: absolute;
-		top: 170px;
+		bottom: 20%;
 		left: 0;
-		height: 50px;
-		width: 350px;
+		height: 15%;
+		width: 100%;
 		color: #fff;
 		text-align: center;
-		line-height: 30px;
+		line-height: 3;
 		background-color: #52ccba;
 		opacity: 0;
 	}
@@ -309,7 +299,8 @@
 	}
 
 	.slide-verify-info.show {
-		animation: hide 2s ease;
+		animation: hide 1s;
+		animation-fill-mode: forwards;
 	}
 
 	@keyframes hide {
@@ -318,7 +309,7 @@
 		}
 
 		100% {
-			opacity: 0.9;
+			opacity: 1;
 		}
 	}
 
