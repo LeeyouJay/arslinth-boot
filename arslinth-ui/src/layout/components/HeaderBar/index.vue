@@ -32,6 +32,10 @@ export default {
 </script>
 
 <style lang="less">
+	.view-page {
+		display: flex;
+		flex-direction: column;
+	}
   .header-bar {
     height: 32px;
     padding: 16px 20px;

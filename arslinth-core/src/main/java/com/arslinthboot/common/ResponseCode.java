@@ -12,7 +12,7 @@ public interface ResponseCode {
     Integer FAIL = 501;
 
     //验证不正确
-    Integer VERIFY_FILE = 502;
+    Integer VERIFY_FAIL = 502;
 
     //访问权限异常
     Integer ACCESS_NOT = 403;

@@ -34,31 +34,62 @@ public class SysMenuController {
         return ApiResponse.code(SUCCESS).message("添加成功！");
     }
 
+    @GetMapping("/del/{id}")
+    public ApiResponse delMenu(@PathVariable("id") String id) {
+        sysMenuService.delMenu(id);
+        return ApiResponse.code(SUCCESS).message("删除成功！");
+    }
+
+    @PostMapping("/edit")
+    public ApiResponse editMenu(@RequestBody SysMenu menu) {
+        sysMenuService.editMenu(menu);
+        return ApiResponse.code(SUCCESS).message("修改成功！");
+    }
+
+
+    @GetMapping({"/list/{menuName}", "/list"})
+    public ApiResponse list(@PathVariable(required = false) String menuName) {
+        List<SysMenu> list = sysMenuService.getMenuList(menuName, false);
+        SysMenu menu = list.stream().min(Comparator.comparing(SysMenu::getLevel)).orElseGet(() ->
+                SysMenu.builder().parentId("0").build());
+        return ApiResponse.code(SUCCESS).data("list", generateTree(list, menu.getParentId()));
+    }
+
+    @GetMapping("/getMenuById/{id}")
+    public ApiResponse getMenuById(@PathVariable("id") String id) {
+        return ApiResponse.code(SUCCESS).data("menu", sysMenuService.getMenuById(id));
+    }
+
+
     @GetMapping("/generateRoutes")
     public ApiResponse generateRoutes() {
-        List<SysMenu> list = sysMenuService.getMenuList();
+        List<SysMenu> list = sysMenuService.getMenuList(null, true);
+        return ApiResponse.code(SUCCESS).data("routes", generateTree(list, "0"));
+    }
+
+    private List<Tree<String>> generateTree(List<SysMenu> list, String rootId) {
         TreeNodeConfig config = new TreeNodeConfig();
         //排序字段
         config.setWeightKey("indexNum");
         //最大递归深度
         config.setDeep(3);
-        List<Tree<String>> treeList = TreeUtil.build(list, "0", config, (treeNode, tree) -> {
+
+        return TreeUtil.build(list, rootId, config, (treeNode, tree) -> {
             tree.setId(treeNode.getId());
             tree.setParentId(treeNode.getParentId());
             tree.setWeight(treeNode.getIndexNum());
-            tree.putExtra("path", treeNode.getParentId().equals("0") ? "/" + treeNode.getPath() : treeNode.getPath());
+            if ("0".equals(treeNode.getParentId()) && "Layout".equals(treeNode.getComponent()))
+                tree.putExtra("path", treeNode.getParentId().equals("0") ? "/" + treeNode.getPath() : treeNode.getPath());
+            else
+                tree.putExtra("path", treeNode.getPath());
             tree.setName(treeNode.getName());
             tree.putExtra("meta", treeNode.getMeta());
+            tree.putExtra("label", treeNode.getLabel());
+            tree.putExtra("level", treeNode.getLevel());
+            tree.putExtra("menuType", treeNode.getMenuType());
             tree.putExtra("component", treeNode.getComponent());
+            tree.putExtra("createTime", treeNode.getCreateTime());
         });
 
-        return ApiResponse.code(SUCCESS).data("routes", treeList);
-    }
-
-    @GetMapping({"/list/{menuName}", "/list"})
-    public ApiResponse list(@PathVariable(required = false) String menuName) {
-
-
-        return ApiResponse.code(SUCCESS).data("menuName", menuName);
     }
 }

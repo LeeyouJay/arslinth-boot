@@ -20,7 +20,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(autoResultMap = true)
 public class SysMenu {
 
     @TableId(type = IdType.ASSIGN_ID)
@@ -34,14 +33,21 @@ public class SysMenu {
 
     private String name;
 
-    private boolean hidden;
-
-    private String menuType;
+    private Boolean hidden;
 
     private String component;
 
-    @TableField(typeHandler = JacksonTypeHandler.class)
-    private Meta meta;
+    private String label;
+
+    private String link;
+
+    private String icon;
+
+    private Boolean keepAlive;
+
+    private Integer level;
+
+    private String menuType;
 
     @TableField(exist = false)
     private List<SysMenu> children;
@@ -52,6 +58,8 @@ public class SysMenu {
     @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
 
+    @TableField(exist = false)
+    private Meta meta;
 
     @Data
     @Builder

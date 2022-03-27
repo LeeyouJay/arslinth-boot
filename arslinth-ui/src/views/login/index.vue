@@ -122,6 +122,9 @@
 					}else {
 						this.$message.error(res.message)
 						this.dialogVisible = false
+						setTimeout(()=>{
+							this.$refs.dialogopen.refresh()
+						},1000)
 					}
 				})
 			},

@@ -2,7 +2,7 @@
   <div class="user-center-wrapper clear-fix">
     <el-card shadow="always" :body-style="{padding: '50px'}">
       <div class="user-avatar">
-        <img src="../assets/img/avatar.png" alt="avatar">
+        <img src="@/assets/img/avatar.png" alt="avatar">
       </div>
       <ul class="user-info">
         <li>
@@ -41,7 +41,7 @@
 <script>
 
 export default {
-  name: 'sysmenu',
+  name: 'UserCenter',
   data() {
     return {
       userInfo: {}

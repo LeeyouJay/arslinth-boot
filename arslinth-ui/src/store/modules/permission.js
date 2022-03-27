@@ -1,4 +1,3 @@
-import {asyncRoutes} from '@/router/routes.js'
 import {constantRoutes} from '@/router'
 import Layout from '@/layout'
 import InnerLink from '@/layout/components/InnerLink'
@@ -29,11 +28,24 @@ const actions = {
   getRouters({commit}, val) {
     return new Promise(resolve => {
       menu.generateRoutes().then(res => {
-        const routes = JSON.parse(JSON.stringify(res.data.routes))
+        let routes = JSON.parse(JSON.stringify(res.data.routes))
+        routes = routes.map(val => {
+          if (val.parentId == '0' && val.menuType != 'M') {
+            let main = {
+              path: '/',
+              component: 'Layout',
+              children: []
+            }
+            main.children.push(val)
+            return main
+          } else {
+            return val
+          }
+        })
+        console.log(routes)
         const result = filterChildren(routes)
         commit("SET_HASGETROUTE", true)
         commit("SET_ROUTES", result)
-        console.log(result)
         resolve(result)
       })
     })

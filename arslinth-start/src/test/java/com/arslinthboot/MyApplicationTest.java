@@ -89,11 +89,10 @@ public class MyApplicationTest {
     }
 
     @Test
-    void sortTest() {
+    void restPasswordTest() {
         SysUser sysUser = sysUserDao.selectById("1506522728280870914");
         sysUser.setPassword(new BCryptPasswordEncoder().encode(RESET_CODE));
         sysUserDao.updateById(sysUser);
-
     }
 
     public static void main(String[] args) {

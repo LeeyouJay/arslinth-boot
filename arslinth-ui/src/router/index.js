@@ -54,80 +54,13 @@ export const constantRoutes = [{
     }]
   },
   {
-    path: '/external-link',
-    component: Layout,
-    children: [{
-      path: 'inner-link',
-      name: 'InnerLink',
-      component: InnerLink,
-      meta: {
-        title: '内链',
-        icon: 'vue-dsn-icon-wendang',
-        link: 'https://github.com/baimingxuan/vue-admin-design.git',
-      }
-    }]
-  },
-  {
-    path: '/outlink',
-    component: Layout,
-    children: [{
-      path: 'https://github.com/baimingxuan/vue-admin-design.git',
-      name: 'Outlink',
-      meta: {
-        title: '外链',
-        icon: 'vue-dsn-icon-wendang'
-      }
-    }]
-  },
-  {
-    path: '/catalog',
-    name: 'Catalog',
-    component: Layout,
-    meta: {
-      title: '目录',
-      icon: 'vue-dsn-icon-zujian'
-    },
-    children: [{
-      path: 'child-catalog',
-      name: 'ChildCatalog',
-      component: ParentView,
-      meta: {
-        title: '子目录',
-      },
-      children: [{
-        path: 'child-catalog1',
-        name: 'ChildCatalog1',
-        component: ParentView,
-        meta: {
-          title: '子目录1',
-        },
-      },
-        {
-          path: 'child-catalog12',
-          name: 'ChildCatalog12',
-          component: ParentView,
-          meta: {
-            title: '子目录2',
-          },
-        }]
-    },
-      {
-        path: 'catalog3',
-        name: 'Catalog3',
-        component: ParentView,
-        meta: {
-          title: '目录3',
-        },
-      }]
-  },
-  {
     path: '/',
     component: Layout,
     hidden: true,
     children: [{
       path: 'user-center',
       name: 'UserCenter',
-      component: () => import('../views/UserCenter'),
+      component: () => import('../views/system/user/UserCenter'),
       meta: {
         title: '个人中心'
       }
@@ -137,6 +70,8 @@ export const constantRoutes = [{
 
 export default new Router({
   mode: 'history', // 去掉url中的#
-  scrollBehavior: () => ({y: 0}),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constantRoutes
 })

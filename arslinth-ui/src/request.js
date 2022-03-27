@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
-import {getToken, setToken} from './utils/cookie'
+import {getToken, setToken, removeToken} from './utils/cookie'
 import base from './api/base.js'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
@@ -68,6 +68,7 @@ service.interceptors.response.use(
       // eg:请求超时或断网时，更新state的network状态
       // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
       // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
+      console.log("断网！")
       if (!window.navigator.onLine) {
         Message.error('网络连接中断！服务器可能不在线。')
         //store.commit('changeNetwork', false);

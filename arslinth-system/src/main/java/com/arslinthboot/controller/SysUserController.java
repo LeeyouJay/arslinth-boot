@@ -94,7 +94,7 @@ public class SysUserController {
         int X = Integer.parseInt(moveX);
         if (!((X < (value + MOVE_CHECK_ERROR))
                 && (X > (value - MOVE_CHECK_ERROR)))) {
-            return ApiResponse.code(VERIFY_FILE).message("验证失败！");
+            return ApiResponse.code(VERIFY_FAIL).message("验证失败！");
         }
         redisTool.deleteObject(SLIDER_PREFIX + captchaUUid);
 
