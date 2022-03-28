@@ -44,4 +44,20 @@ export default {
       width: 200px;
     }
   }
+	.pagination {
+	    margin: 20px 0;
+	    text-align: right;
+	}
+	.red {
+		color: #ff0000 !important;
+	}
+	
+	.blue {
+		color: #409EFF !important;
+	}
+	
+	.yellow {
+		color: #ffaa00 !important;
+	}
+	
 </style>

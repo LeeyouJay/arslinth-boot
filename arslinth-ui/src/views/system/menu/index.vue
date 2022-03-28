@@ -19,7 +19,7 @@
 		<el-container>
 			<el-header>
 				<div class="header-bar">
-					<el-button type="primary" plain @click="handleAdd">添加菜单</el-button>
+					<el-button type="primary"  size="mini" plain @click="handleAdd">添加菜单</el-button>
 				</div>
 			</el-header>
 			<el-main>
@@ -322,7 +322,4 @@
 	@import '~e-icon-picker/lib/index.css';
 	@import '~font-awesome/css/font-awesome.min.css';
 	@import '~element-ui/lib/theme-chalk/icon.css';
-	.red {
-		color: #F56C6C;
-	}
 </style>

@@ -17,6 +17,7 @@
         <el-scrollbar wrap-class="scrollbar">
           <MainView />
         </el-scrollbar>
+				<el-backtop target=".main-content .scrollbar"></el-backtop>
       </div>
     </div>
   </div>

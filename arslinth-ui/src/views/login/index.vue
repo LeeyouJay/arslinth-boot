@@ -111,7 +111,7 @@
 						this.$refs.dialogopen.handleSuccess()
 						setTimeout(()=>{
 							this.dialogVisible = false
-							this.$router.push({ path: this.redirect || '/'}).catch(()=>{})
+							this.$router.push({ path: this.redirect || '/home'}).catch(()=>{})
 						},700)
 						
 					}else if(res.code == 502) {

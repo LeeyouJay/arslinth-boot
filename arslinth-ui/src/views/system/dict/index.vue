@@ -19,26 +19,31 @@
 		<el-container>
 			<el-header>
 				<div class="header-bar">
-					<el-button type="primary" plain @click="handleAdd">添加字典</el-button>
+					<el-button type="primary" size="mini" plain @click="handleAdd">添加字典</el-button>
 				</div>
 			</el-header>
 			<el-main>
-				<el-table :data="tableData" v-loading="loading" row-key="id" class="table" ref="dictTable"
-					header-cell-class-name="table-header">
+				<el-table :data="tableData" v-loading="loading"  class="table" ref="dictTable" 
+				 header-cell-class-name="table-header">
 					<el-table-column prop="dictName" label="参数名称" />
-					<el-table-column prop="dictValue" label="参数值" align="center" />
-					<el-table-column prop="parentValue" label="上级参数" align="center" />
-					<el-table-column prop="dictType" label="类型" align="center" />
-					<el-table-column prop="notes" label="描述" align="center" />
-					<el-table-column prop="createTime" label="创建时间" align="center" />
-					<el-table-column label="操作" width="180" align="center" fixed="right">
+					<el-table-column prop="dictValue" label="参数值"  />
+					<el-table-column prop="parentValue" label="上级参数"  />
+					<el-table-column prop="dictType" label="类型"  />
+					<el-table-column prop="notes" label="描述"  />
+					<el-table-column prop="createTime" label="创建时间"  />
+					<el-table-column label="操作" width="180" fixed="right">
 						<template slot-scope="scope">
 							<el-button type="text" icon="el-icon-user" @click="handleEdit(scope.row)">修改</el-button>
-							<el-button v-if="scope.row.children.length==0" type="text" icon="el-icon-delete" class="red" 
-							@click="handleDel(scope.row)">删除</el-button>
+							<el-button type="text" icon="el-icon-delete" class="red" @click="handleDel(scope.row)">删除</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
+				<div class="pagination">
+					<el-pagination @size-change="handleSizeChange" @current-change="handlePageChange"
+						:current-page="queryParams.pageIndex" :page-sizes="[10, 30, 100, 500]" :page-size="queryParams.pageSize"
+						layout="total, sizes, prev, pager, next" :total="pageTotal">
+					</el-pagination>
+				</div>
 			</el-main>
 		</el-container>
 		
@@ -98,9 +103,12 @@
 			return {
 				loading: false,
 				tableData: [],
-				queryParams: {},
+				queryParams: {
+					dictName:'',
+					pageIndex: 1,
+					pageSize: 10
+				},
 				disabledRadio:false,
-				parents:[],
 				rules: {
 					dictName: [{
 						required: true,
@@ -132,9 +140,31 @@
 				dialogText: '添加',
 			}
 		},
+		created() {
+			this.getData()
+		},
 		methods:{
 			handleQuery(){
 				
+			},
+			getData() {
+				this.loading = true
+				this.$api.dict.getTypeList(this.queryParams).then(res => {
+					if (res.code === 200) {
+						this.tableData = res.data.list
+						this.pageTotal = res.data.total
+					} else
+						this.$message.error(res.message)
+					this.loading = false
+				})
+			},
+			handleSizeChange(val) {
+				this.$set(this.queryParams, 'pageSize', val);
+				this.getData();
+			},
+			handlePageChange(val) {
+				this.$set(this.queryParams, 'pageIndex', val);
+				this.getData();
 			},
 			submit(){
 				

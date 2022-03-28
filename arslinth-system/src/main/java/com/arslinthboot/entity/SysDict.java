@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,10 +22,10 @@ import java.util.List;
  * @Date 2022/3/28
  */
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SysDict {
+public class SysDict extends BaseEntity {
 
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
@@ -43,12 +44,4 @@ public class SysDict {
 
     private String notes;
 
-    @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
-
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    @TableField(exist = false)
-    private List<SysDict> children = new ArrayList<>();
 }
