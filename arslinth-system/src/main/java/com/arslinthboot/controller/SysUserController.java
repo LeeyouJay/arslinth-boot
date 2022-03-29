@@ -118,7 +118,8 @@ public class SysUserController {
 
         Set<String> auths = user.getPermissions();
         //初始化登入信息
-        LoginUser<SysUser> loginUser = SecurityUtils.initLoginUser(user, user.getId(), "sysUser", auths);
+        LoginUser<SysUser> loginUser =
+                SecurityUtils.initLoginUser(user, user.getId(), "sysUser", auths,null);
 
         //生成token返回前台
         String jwtToken = tokenService.createJwtToken(loginUser);
@@ -131,7 +132,7 @@ public class SysUserController {
     @GetMapping("/logout")
     public ApiResponse logout(HttpServletRequest request) {
         LoginUser<?> loginUser = SecurityUtils.getLoginUser();
-        //记录日志
+        // TODO 记录日志
         if (loginUser == null) {
             return ApiResponse.code(FAIL).message("注销失败，用户未登入");
         }

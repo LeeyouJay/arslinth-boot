@@ -23,7 +23,7 @@ public class SysDictService {
 
     private final SysDictDao sysDictDao;
 
-    public Page<SysDict> getDictType(SysDict sysDict) {
+    public Page<SysDict> getTypePage(SysDict sysDict) {
         Page<SysDict> page = new Page<>(sysDict.getPageIndex(), sysDict.getPageSize());
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
         wrapper.eq("parent_Id", "0");
@@ -35,7 +35,7 @@ public class SysDictService {
     }
 
 
-    public Page<SysDict> getDictValue(SysDict sysDict) {
+    public Page<SysDict> getValuePage(SysDict sysDict) {
         Page<SysDict> page = new Page<>(sysDict.getPageIndex(), sysDict.getPageSize());
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
         wrapper.ne("parent_Id", "0");
@@ -44,6 +44,12 @@ public class SysDictService {
                     .and(w -> w.like("dict_value", sysDict.getDictValue()));
         }
         return sysDictDao.selectPage(page, wrapper);
+    }
+
+    public List<SysDict> getValueList(){
+        QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
+        wrapper.ne("parent_Id", "0");
+        return sysDictDao.selectList(wrapper);
     }
 
 

@@ -16,11 +16,19 @@ import java.util.Set;
  **/
 public class SecurityUtils {
 
+    /**
+     * 获取用户id
+     *
+     **/
     public static String getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getPrincipal().toString();
     }
 
+    /**
+     * 获取登入对象
+     *
+     **/
     public static LoginUser<?> getLoginUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object credentials = authentication.getCredentials();
@@ -28,6 +36,11 @@ public class SecurityUtils {
         return Convert.convert(LoginUser.class, credentials);
     }
 
+    /**
+     * 获取系统对象
+     *
+     * @Param [系统对象类]
+     **/
     public static <T> T getUser(Class<T> c) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object credentials = authentication.getCredentials();
@@ -35,12 +48,17 @@ public class SecurityUtils {
         LoginUser<?> loginUser = Convert.convert(LoginUser.class, credentials);
         return Convert.convert(c, loginUser.getUser());
     }
-
-    public static <T> LoginUser<T> initLoginUser(T t, String userId, String userType, Set<String> auths) {
+    /**
+     * 初始化登入对象
+     *
+     * @Param [系统对象, 用户id, 用户类型, 权限, 数据权限]
+     **/
+    public static <T> LoginUser<T> initLoginUser(T t, String userId, String userType, Set<String> auths, Set<String> dataScope) {
         return LoginUser.<T>builder()
                 .user(t)
                 .userId(userId)
                 .userType(userType)
+                .dataScope(dataScope)
                 .permissions(auths).build();
     }
 }

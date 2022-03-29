@@ -21,7 +21,6 @@ file:
   #上传文件的真实路径
   uploadFolder: C:/Users/Arslinth/Documents/北投项目/ftpDownload/file/upload/
 
-
 jasypt:
   encryptor:
     password: springsteam0117

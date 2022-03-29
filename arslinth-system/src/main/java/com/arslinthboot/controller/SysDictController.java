@@ -34,9 +34,9 @@ public class SysDictController {
         return ApiResponse.code(SUCCESS).message("添加成功！");
     }
 
-    @PostMapping("/typeList")
-    public ApiResponse getDictType(@RequestBody SysDict sysDict) {
-        Page<SysDict> dictType = sysDictService.getDictType(sysDict);
+    @PostMapping("/typePage")
+    public ApiResponse getTypePage(@RequestBody SysDict sysDict) {
+        Page<SysDict> dictType = sysDictService.getTypePage(sysDict);
         return ApiResponse.code(SUCCESS)
                 .data("list", dictType.getRecords())
                 .data("page", dictType.getPages())
@@ -44,14 +44,19 @@ public class SysDictController {
                 .message("查询成功！");
     }
 
-    @PostMapping("/valueList")
-    public ApiResponse getDictValue(@RequestBody SysDict sysDict) {
-        Page<SysDict> dictType = sysDictService.getDictValue(sysDict);
+    @PostMapping("/valuePage")
+    public ApiResponse getValuePage(@RequestBody SysDict sysDict) {
+        Page<SysDict> dictType = sysDictService.getValuePage(sysDict);
         return ApiResponse.code(SUCCESS)
                 .data("list", dictType.getRecords())
                 .data("page", dictType.getPages())
                 .data("total", dictType.getTotal())
                 .message("查询成功！");
+    }
+
+    @GetMapping("/valueList")
+    public ApiResponse getValueList(){
+        return ApiResponse.code(SUCCESS).data("list",sysDictService.getValueList());
     }
 
     @PostMapping("/edit")

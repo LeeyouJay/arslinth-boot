@@ -17,8 +17,8 @@
 			</el-form>
 		</div>
 		<el-container>
-			<el-header>
-				<div class="header-bar">
+			<el-header height="auto">
+				<div class="table-bar">
 					<el-button type="primary"  size="mini" plain @click="handleAdd">添加菜单</el-button>
 				</div>
 			</el-header>

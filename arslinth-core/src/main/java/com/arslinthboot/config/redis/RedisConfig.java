@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -70,18 +71,17 @@ public class RedisConfig extends CachingConfigurerSupport {
 
 
     private RedisCacheConfiguration instanceConfig(Long ttl) {
-
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        JsonMapper objectMapper = JsonMapper.builder()
+                // 去掉各种@JsonSerialize注解的解析
+                .configure(MapperFeature.USE_ANNOTATIONS, false)
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                // 将类型序列化到属性json字符串中
+                .activateDefaultTyping(LaissezFaireSubTypeValidator.instance,ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY)
+                .build();
         objectMapper.registerModule(new JavaTimeModule());
-        // 去掉各种@JsonSerialize注解的解析
-        objectMapper.configure(MapperFeature.USE_ANNOTATIONS, false);
         // 只针对非空的值进行序列化
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        // 将类型序列化到属性json字符串中
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
         return RedisCacheConfiguration.defaultCacheConfig()
                 //.entryTtl(Duration.ofSeconds(ttl))

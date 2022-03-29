@@ -3,11 +3,14 @@ import base from '@/api/base.js'
 
 const dict = {
 
-  getTypeList(params) {
-    return axios.post(`${base.requestUrl}/dict/typeList`, params);
+  getTypePage(params) {
+    return axios.post(`${base.requestUrl}/dict/typePage`, params);
   },
-  getValueList(params) {
-    return axios.post(`${base.requestUrl}/dict/valueList`, params);
+  getValuePage(params) {
+    return axios.post(`${base.requestUrl}/dict/valuePage`, params);
+  },
+  getValueList(){
+    return axios.get(`${base.requestUrl}/dict/valueList`);
   },
   addDict(params) {
     return axios.post(`${base.requestUrl}/dict/add`, params);

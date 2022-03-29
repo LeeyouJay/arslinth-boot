@@ -29,7 +29,12 @@
 		position: relative;
 		overflow: hidden;
 	}
-
+	.dialog-body {
+		overflow-y: auto;
+		height: calc(100vh - 170px);
+		width: 100%;
+		padding-right: 14px;
+	}
 	/* fade-transform */
 	.fade-transform-leave-active,
 	.fade-transform-enter-active {
