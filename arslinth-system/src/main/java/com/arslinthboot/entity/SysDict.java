@@ -31,8 +31,6 @@ public class SysDict extends BaseEntity {
 
     private String parentId;
 
-    private String dictType;
-
     private String dictName;
 
     private String dictValue;
@@ -40,8 +38,6 @@ public class SysDict extends BaseEntity {
     private Integer indexNum;
 
     private String parentValue;
-
-    private Integer level;
 
     private String notes;
 

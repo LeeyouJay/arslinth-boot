@@ -55,9 +55,20 @@ public class SysDictController {
     }
 
     @GetMapping("/valueList")
-    public ApiResponse getValueList(){
-        return ApiResponse.code(SUCCESS).data("list",sysDictService.getValueList());
+    public ApiResponse getValueList() {
+        return ApiResponse.code(SUCCESS).data("list", sysDictService.getValueList());
     }
+
+    @GetMapping("/typeList")
+    public ApiResponse getTypeList() {
+        return ApiResponse.code(SUCCESS).data("list", sysDictService.getTypeList());
+    }
+
+    @GetMapping("/getDictById/{id}")
+    public ApiResponse getDictById(@PathVariable("id") String id) {
+        return ApiResponse.code(SUCCESS).data("dict", sysDictService.getDictById(id));
+    }
+
 
     @PostMapping("/edit")
     public ApiResponse editDict(@RequestBody SysDict sysDict) {
@@ -76,6 +87,16 @@ public class SysDictController {
             return ApiResponse.code(SUCCESS).message("删除成功！");
         } else if (i == -1) {
             return ApiResponse.code(FAIL).message("请先删除剩余子项！");
+        } else {
+            return ApiResponse.code(FAIL).message("删除出现异常：" + i);
+        }
+    }
+
+    @PostMapping("/delDictByIds")
+    public ApiResponse delDictByIds(@RequestBody List<String> ids) {
+        int i = sysDictService.delByIds(ids);
+        if (i > 0) {
+            return ApiResponse.code(SUCCESS).message("删除成功！");
         } else {
             return ApiResponse.code(FAIL).message("删除出现异常：" + i);
         }

@@ -26,10 +26,10 @@ public class SysDictService {
     public Page<SysDict> getTypePage(SysDict sysDict) {
         Page<SysDict> page = new Page<>(sysDict.getPageIndex(), sysDict.getPageSize());
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
-        wrapper.eq("parent_Id", "0");
+        wrapper.eq("parent_Id", "0").orderByAsc("index_num");
         if (StrUtil.isNotEmpty(sysDict.getDictName()) || StrUtil.isNotEmpty(sysDict.getDictValue())) {
             wrapper.and(w -> w.like("dict_name", sysDict.getDictName())
-                    .or().like("dict_value", sysDict.getDictValue()));
+                    .or().like("dict_value", sysDict.getDictName()));
         }
         return sysDictDao.selectPage(page, wrapper);
     }
@@ -38,20 +38,30 @@ public class SysDictService {
     public Page<SysDict> getValuePage(SysDict sysDict) {
         Page<SysDict> page = new Page<>(sysDict.getPageIndex(), sysDict.getPageSize());
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
-        wrapper.ne("parent_Id", "0");
-        if (StrUtil.isNotEmpty(sysDict.getParentId()) || StrUtil.isNotEmpty(sysDict.getDictValue())) {
-            wrapper.eq("parent_Id", sysDict.getParentId())
-                    .and(w -> w.like("dict_value", sysDict.getDictValue()));
+        wrapper.ne("parent_Id", "0").eq("parent_Id", sysDict.getParentId()).orderByAsc("index_num");
+        ;
+        if (StrUtil.isNotEmpty(sysDict.getDictName()) || StrUtil.isNotEmpty(sysDict.getDictValue())) {
+            wrapper.and(w -> w.like("dict_name", sysDict.getDictName())
+                    .or().like("dict_value", sysDict.getDictName()));
         }
         return sysDictDao.selectPage(page, wrapper);
     }
 
-    public List<SysDict> getValueList(){
+    public List<SysDict> getValueList() {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
         wrapper.ne("parent_Id", "0");
         return sysDictDao.selectList(wrapper);
     }
 
+    public List<SysDict> getTypeList() {
+        QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
+        wrapper.eq("parent_Id", "0");
+        return sysDictDao.selectList(wrapper);
+    }
+
+    public SysDict getDictById(String id) {
+        return sysDictDao.selectById(id);
+    }
 
     public void addDict(SysDict sysDict) {
         sysDictDao.insert(sysDict);
@@ -71,5 +81,9 @@ public class SysDictService {
         return sysDictDao.deleteById(id);
     }
 
-
+    public int delByIds(List<String> ids) {
+        QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
+        wrapper.in("id", ids);
+        return sysDictDao.delete(wrapper);
+    }
 }

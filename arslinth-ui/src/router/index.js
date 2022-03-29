@@ -26,20 +26,7 @@ export const constantRoutes = [{
 },
   {
     path: '/',
-    component: Layout,
-    hidden: true,
-    children: [{
-      path: '403',
-      name: 'Page403',
-      component: () => import('../views/error-page/Page403'),
-      meta: {
-        title: '权限不足',
-        keepAlive: true
-      }
-    }]
-  },
-  {
-    path: '/',
+    redirect: '/home',
     component: Layout,
     children: [{
       path: 'home',
@@ -49,6 +36,20 @@ export const constantRoutes = [{
         title: '首页',
         icon: 'vue-dsn-icon-index',
         fixed: true,
+        keepAlive: true
+      }
+    }]
+  },
+  {
+    path: '/',
+    component: Layout,
+    hidden: true,
+    children: [{
+      path: '403',
+      name: 'Page403',
+      component: () => import('../views/error-page/Page403'),
+      meta: {
+        title: '权限不足',
         keepAlive: true
       }
     }]

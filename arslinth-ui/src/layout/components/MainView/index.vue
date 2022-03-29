@@ -35,7 +35,16 @@
 		width: 100%;
 		padding-right: 14px;
 	}
-	/* fade-transform */
+	.link-type,
+	.link-type:focus {
+		color: #409eff;
+		cursor: pointer;
+		font-size: 14px;
+		font-weight: 500;
+	  &:hover {
+	    color: rgb(32, 203, 255);
+	  }
+	}
 	.fade-transform-leave-active,
 	.fade-transform-enter-active {
 		transition: all 0.5s;

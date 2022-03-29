@@ -1,16 +1,17 @@
 <template>
 	<div class="view-page">
 		<div class="header-bar">
-			<el-form ref="formTable" :model="queryParams" label-width="80px">
+			<el-form ref="formTable" :model="queryParams" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="6">
-						<el-form-item label="字典名称">
-							<el-input v-model="queryParams.dictName" placeholder="请输入字段名称" clearable></el-input>
+						<el-form-item label="参数名称/值"  label-width="100px">
+							<el-input v-model="queryParams.dictName" placeholder="请输入参数名称或值" clearable
+							@keyup.enter.native="handleQuery"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label-width="0px">
-							<el-button type="primary" @click="handleQuery">搜索</el-button>
+							<el-button icon="el-icon-search" type="primary" @click="handleQuery">搜索</el-button>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -19,17 +20,22 @@
 		<el-container>
 			<el-header height="auto">
 				<div class="table-bar">
-					<el-button type="primary" size="mini" plain @click="handleAdd">添加字典</el-button>
+					<el-button type="primary" icon="el-icon-plus" size="mini" plain @click="handleAdd">新增</el-button>
 				</div>
 			</el-header>
 			<el-main>
-				<el-table :data="tableData" v-loading="loading" class="table" ref="dictTable"
+				<el-table :data="tableData" v-loading="loading" class="table" ref="dictTable" 
 					header-cell-class-name="table-header">
-					<el-table-column prop="indexNum" label="排序" />
-					<el-table-column prop="dictName" label="参数名称" />
-					<el-table-column prop="dictValue" label="参数值" />
-					<el-table-column prop="notes" label="描述" />
-					<el-table-column prop="createTime" label="创建时间" />
+					<el-table-column prop="indexNum" align="center" label="排序" width="80" />
+					<el-table-column prop="dictName"  align="center" label="字典名称" />
+					<el-table-column label="字典代号"  align="center" >
+						 <template slot-scope="scope">
+							 <div class="link-type" @click="toDictValue(scope.row)" >{{scope.row.dictValue}}</div>
+							<!-- <el-link type="primary" :underline="false" >{{scope.row.dictValue}}</el-link> -->
+						 </template>
+					</el-table-column>
+					<el-table-column prop="notes" align="center"  label="描述" />
+					<el-table-column prop="createTime"  align="center" label="创建时间" />
 					<el-table-column label="操作" width="180" fixed="right">
 						<template slot-scope="scope">
 							<el-button type="text" icon="el-icon-user" @click="handleEdit(scope.row)">修改</el-button>
@@ -48,37 +54,25 @@
 		</el-container>
 
 		<!-- 编辑弹出框 -->
-		<el-dialog :visible.sync="editVisible" width="40%" center>
+		<el-dialog :visible.sync="editVisible" width="35%" append-to-body  center>
 			<template slot="title">
 				<span class="dialog-title">{{dialogText}}</span>
 			</template>
-			<el-form ref="formTable" :model="form" label-width="80px" :rules="rules">
+			<el-form ref="formTable" :model="form" label-width="80px">
 				<el-row :gutter="20">
-					<el-col :span="12">
-						<el-form-item label="参数名称" prop="dictName">
+					<el-col :span="24">
+						<el-form-item label="字典名称" prop="dictName" :rules="[{required: true, message: '请输入字典名称', trigger: 'blur' }]">
 							<el-input v-model="form.dictName"></el-input>
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
-						<el-form-item label="参数值" prop="dictValue">
+					<el-col :span="24">
+						<el-form-item label="字典代号" prop="dictValue" :rules="[{required: true, message: '请输入字典代号', trigger: 'blur' }]">
 							<el-input v-model="form.dictValue"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label="字典类型">
-							<el-radio-group :disabled="disabledRadio" v-model="form.dictType" @change="radioChange">
-								<el-radio label="目录">目录</el-radio>
-								<el-radio label="参数">参数</el-radio>
-							</el-radio-group>
-						</el-form-item>
-					</el-col>
-					<el-col :span="24" v-show="showParents">
-						<el-form-item label="所属上级" prop="parentId">
-							<el-select v-model="form.parentId" placeholder="点击选择上级参数" ref="selectUpResId"
-								@change="selectChange">
-								<el-option v-for="item in tableData" :key="item.id" :label="item.dictName"
-									:value="item.id" />
-							</el-select>
+						<el-form-item label="排序" prop="indexNum" :rules="[{required: true, message: '请输入排序', trigger: 'blur' }]">
+							<el-input-number v-model="form.indexNum" :min="0"></el-input-number>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -86,7 +80,6 @@
 							<el-input type="textarea" v-model="form.notes" placeholder="请输入描述" />
 						</el-form-item>
 					</el-col>
-
 				</el-row>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -94,51 +87,51 @@
 				<el-button type="primary" @click="submit">确 定</el-button>
 			</span>
 		</el-dialog>
+		
+		<el-dialog :visible.sync="tableVisible" @open="dialogOpen" fullscreen append-to-body center>
+			<template slot="title">
+				<span class="dialog-title">字典数据</span>
+			</template>
+			<div class="dialog-body scroll-bar">
+				<DictValue ref="dictValueList"></DictValue>
+			</div>
+			<span slot="footer" class="dialog-footer">
+				<el-button type="primary" @click="tableVisible = false">关闭</el-button>
+			</span>
+		</el-dialog>
+		
 	</div>
 </template>
 
 <script>
+	
+	import DictValue from './DictValue.vue'
+	
 	export default {
 		name: 'SysDict',
+		components:{
+			DictValue
+		},
 		data() {
 			return {
+				isAdd: false,
 				loading: false,
+				tableVisible: false,
 				tableData: [],
+				parentId:'',
+				parentValue: '',
+				dictName: '',
 				queryParams: {
 					dictName: '',
 					pageIndex: 1,
 					pageSize: 10
 				},
-				disabledRadio: false,
-				rules: {
-					dictName: [{
-						required: true,
-						message: '请输入参数名称',
-						trigger: 'blur'
-					}],
-					dictValue: [{
-						required: true,
-						message: '请输入参数值',
-						trigger: 'blur'
-					}],
-					parentId: [{
-						required: true,
-						message: '请选择所属上级',
-						trigger: 'blur'
-					}]
-				},
 				form: {
-					id: '',
-					parentId: 'none',
-					dictValue: '',
-					dictName: '',
-					level: 0,
-					dictType: '目录',
+					indexNum: 0,
 				},
 				editVisible: false,
-				showParents: false,
 				pageTotal: 0,
-				dialogText: '添加',
+				dialogText: '添加字典',
 			}
 		},
 		created() {
@@ -146,7 +139,9 @@
 		},
 		methods: {
 			handleQuery() {
-
+				this.queryParams.pageIndex =1
+				this.queryParams.pageSize =10
+				this.getData()
 			},
 			getData() {
 				this.loading = true
@@ -168,22 +163,97 @@
 				this.getData();
 			},
 			submit() {
-
+				this.$refs.formTable.validate((valid) => {
+					if (valid) {
+						this.isAdd ? this.addDict() : this.editDict()
+					} else {
+						console.log('验证不通过');
+						return false;
+					}
+				});
+			},
+			toDictValue(row) {
+				this.parentId = row.id
+				this.parentValue = row.dictValue
+				this.dictName = row.dictName
+				this.tableVisible = true
+			},
+			dialogOpen(){
+				this.$nextTick(()=>{
+					this.$refs.dictValueList.queryParams.parentId = this.parentId
+					this.$refs.dictValueList.queryParams.dictName = ''
+					this.$refs.dictValueList.queryParams.parentValue = this.parentValue
+					this.$refs.dictValueList.label = this.dictName
+					this.$refs.dictValueList.handleQuery()
+				})
 			},
 			handleAdd() {
+				this.isAdd = true
+				this.dialogText = "修改字典"
 				this.editVisible = true
+				this.$nextTick(()=> {
+					this.form = Object.assign({},this.$options.data().form);
+					this.$refs.formTable.clearValidate()
+					this.form.indexNum = this.pageTotal +1
+				})
 			},
-			handleEdit() {
-
+			handleEdit(row) {
+				this.$api.dict.getDictById(row.id).then(res=>{
+					if(res.code === 200){
+						this.form = res.data.dict
+						this.isAdd = false
+						this.dialogText = "修改字典"
+						this.editVisible = true
+					}else
+						this.$message.error(res.message)
+				})
 			},
-			handleDel() {
-
+			handleDel(row) {
+				this.$confirm('删除菜单将不可恢复，确定要删除吗？', '提示', {
+						type: 'warning'
+					})
+					.then(() => {
+						this.delDict(row.id)
+					})
+					.catch((e) => {
+						console.log(e)
+					});
 			},
-			radioChange() {
-
+			addDict(){
+				this.$api.dict.addDict(this.form).then(res=>{
+					if(res.code === 200 ){
+						this.handleQuery()
+						this.$message.success(res.message)
+						this.editVisible = false;
+					}else
+						this.$message.error(res.message)
+				})
 			},
-			selectChange() {
-
+			editDict(){
+				this.$api.dict.editDict(this.form).then(res=>{
+					if(res.code === 200 ){
+						this.handleQuery()
+						this.$message.success(res.message)
+						this.editVisible = false;
+					}else
+						this.$message.error(res.message)
+				})
+			},
+			delDict(id){
+				this.$api.dict.delDict(id).then(res=>{
+					if(res.code === 200 ){
+						this.handleQuery()
+						this.$message.success(res.message)
+						this.editVisible = false;
+					}else
+						this.$message.error(res.message)
+				})
+			},
+			showTips(row, column, cell, event){
+				console.log(row.id)
+				console.log(column)
+				console.log(cell)
+				console.log(event)
 			}
 		}
 	}

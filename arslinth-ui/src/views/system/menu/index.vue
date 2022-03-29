@@ -1,16 +1,17 @@
 <template>
 	<div class="view-page">
 		<div class="header-bar">
-			<el-form ref="formTable" :model="queryParams" label-width="80px">
+			<el-form ref="formTable" :model="queryParams" label-width="80px" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="6">
 						<el-form-item label="菜单名称">
-							<el-input v-model="queryParams.label" placeholder="请输入菜单名称" clearable ></el-input>
+							<el-input v-model="queryParams.label" placeholder="请输入菜单名称" clearable 
+							@keyup.enter.native="handleQuery"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label-width="0px">
-							<el-button type="primary" @click="handleQuery">搜索</el-button>
+							<el-button icon="el-icon-search" type="primary" @click="handleQuery">搜索</el-button>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -19,7 +20,7 @@
 		<el-container>
 			<el-header height="auto">
 				<div class="table-bar">
-					<el-button type="primary"  size="mini" plain @click="handleAdd">添加菜单</el-button>
+					<el-button type="primary" icon="el-icon-plus"  size="mini" plain @click="handleAdd">新增</el-button>
 				</div>
 			</el-header>
 			<el-main>

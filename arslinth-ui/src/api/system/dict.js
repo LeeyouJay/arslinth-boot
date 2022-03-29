@@ -9,8 +9,14 @@ const dict = {
   getValuePage(params) {
     return axios.post(`${base.requestUrl}/dict/valuePage`, params);
   },
-  getValueList(){
+  getValueList() {
     return axios.get(`${base.requestUrl}/dict/valueList`);
+  },
+  getTypeList() {
+    return axios.get(`${base.requestUrl}/dict/typeList`);
+  },
+  getDictById(params) {
+    return axios.get(`${base.requestUrl}/dict/getDictById/` + params);
   },
   addDict(params) {
     return axios.post(`${base.requestUrl}/dict/add`, params);
@@ -21,6 +27,9 @@ const dict = {
   delDict(params) {
     return axios.get(`${base.requestUrl}/dict/del/` + params);
   },
+  delDictByIds(params) {
+    return axios.post(`${base.requestUrl}/dict/delDictByIds`, params);
+  }
 
 }
 export default dict;
