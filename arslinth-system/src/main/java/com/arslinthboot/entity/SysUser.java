@@ -2,10 +2,8 @@ package com.arslinthboot.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 import java.util.Set;
@@ -16,12 +14,14 @@ import java.util.Set;
  * @Description 登入用户
  * @Date 2021/7/25
  */
+
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @TableName(autoResultMap = true)
-public class SysUser {
+public class SysUser extends BaseEntity {
 
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
@@ -50,7 +50,6 @@ public class SysUser {
     @TableField(typeHandler = JacksonTypeHandler.class)
     private Set<String> permissions;
 
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private String notes;
 
 }

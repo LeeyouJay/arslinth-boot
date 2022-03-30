@@ -3,6 +3,8 @@ package com.arslinthboot.service;
 import cn.hutool.core.util.StrUtil;
 import com.arslinthboot.dao.SysDictDao;
 import com.arslinthboot.entity.SysDict;
+import com.arslinthboot.entity.SysUser;
+import com.arslinthboot.utils.PageUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +26,12 @@ public class SysDictService {
     private final SysDictDao sysDictDao;
 
     public Page<SysDict> getTypePage(SysDict sysDict) {
+
         Page<SysDict> page = new Page<>(sysDict.getPageIndex(), sysDict.getPageSize());
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
         wrapper.eq("parent_Id", "0").orderByAsc("index_num");
-        if (StrUtil.isNotEmpty(sysDict.getDictName()) || StrUtil.isNotEmpty(sysDict.getDictValue())) {
+        if (StrUtil.isNotEmpty(sysDict.getDictName()) ||
+                StrUtil.isNotEmpty(sysDict.getDictValue())) {
             wrapper.and(w -> w.like("dict_name", sysDict.getDictName())
                     .or().like("dict_value", sysDict.getDictName()));
         }
@@ -36,10 +40,9 @@ public class SysDictService {
 
 
     public Page<SysDict> getValuePage(SysDict sysDict) {
-        Page<SysDict> page = new Page<>(sysDict.getPageIndex(), sysDict.getPageSize());
+        Page<SysDict> page = PageUtil.buildPage(sysDict);
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
         wrapper.ne("parent_Id", "0").eq("parent_Id", sysDict.getParentId()).orderByAsc("index_num");
-        ;
         if (StrUtil.isNotEmpty(sysDict.getDictName()) || StrUtil.isNotEmpty(sysDict.getDictValue())) {
             wrapper.and(w -> w.like("dict_name", sysDict.getDictName())
                     .or().like("dict_value", sysDict.getDictName()));

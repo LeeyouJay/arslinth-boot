@@ -9,6 +9,7 @@ import com.arslinthboot.entity.SysDict;
 import com.arslinthboot.entity.SysMenu;
 import com.arslinthboot.entity.SysRole;
 import com.arslinthboot.entity.SysUser;
+import com.arslinthboot.service.SysUserService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class MyApplicationTest {
 
     @Autowired
     private SysDictDao sysDictDao;
+
+    @Autowired
+    private SysUserService sysUserService;
 
     @Test
     void insertTest() {
@@ -93,6 +97,13 @@ public class MyApplicationTest {
         SysUser sysUser = sysUserDao.selectById("1506522728280870914");
         sysUser.setPassword(new BCryptPasswordEncoder().encode(RESET_CODE));
         sysUserDao.updateById(sysUser);
+    }
+
+    @Test
+    void selectTest() {
+        Page<SysUser> userPage = sysUserService.getUserPage(new SysUser());
+        System.out.println(userPage.getRecords());
+
     }
 
     public static void main(String[] args) {

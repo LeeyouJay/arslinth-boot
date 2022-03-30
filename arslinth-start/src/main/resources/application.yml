@@ -79,3 +79,4 @@ mica:
     enabled: true
     # clear 清理（默认），escape 转义
     mode: escape
+    path-exclude-patterns: /user/edit,/user/resetPassword

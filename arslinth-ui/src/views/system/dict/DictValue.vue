@@ -1,7 +1,7 @@
 <template>
 	<div class="view-page">
 		<div class="header-bar">
-			<el-form ref="formTable" :model="queryParams" @submit.native.prevent>
+			<el-form ref="searchTable" :model="queryParams" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="4">
 						<el-form-item label="上级标签"  label-width="80px">

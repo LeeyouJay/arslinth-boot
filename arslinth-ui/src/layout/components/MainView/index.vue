@@ -45,6 +45,12 @@
 	    color: rgb(32, 203, 255);
 	  }
 	}
+	//表格更多操作下拉样式
+	.el-table .el-dropdown-link {
+		cursor: pointer;
+		color: #409EFF;
+		margin-left: 5px;
+	}
 	.fade-transform-leave-active,
 	.fade-transform-enter-active {
 		transition: all 0.5s;

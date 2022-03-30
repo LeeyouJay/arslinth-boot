@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import api from './api'
 import utils from './utils/index.js'
+import base from './api/base.js'
 
 import './router/auth'
 import './assets/icon-fonts/iconfont.css'
@@ -14,6 +15,7 @@ import ElementUI from 'element-ui'
 
 Vue.use(ElementUI, {size: 'small'})
 
+Vue.prototype.$requestUrl = base.requestUrl
 Vue.prototype.$api = api
 Vue.prototype.$utils = utils
 Vue.config.productionTip = false

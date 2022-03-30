@@ -7,12 +7,14 @@ import com.arslinthboot.common.LoginBody;
 import com.arslinthboot.config.redis.RedisTool;
 import com.arslinthboot.config.tokenConfig.LoginUser;
 import com.arslinthboot.config.tokenConfig.TokenService;
+import com.arslinthboot.entity.SysDict;
 import com.arslinthboot.entity.SysLogin;
 import com.arslinthboot.entity.SysRole;
 import com.arslinthboot.entity.SysUser;
 import com.arslinthboot.entity.VO.QueryBody;
 import com.arslinthboot.service.*;
 import com.arslinthboot.utils.SecurityUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,21 +145,63 @@ public class SysUserController {
 
 
     @PostMapping("/list")
-    @PreAuthorize("hasAnyAuthority('user_list')")
-    public ApiResponse userList(@RequestBody QueryBody query) {
-        //TODO
-        List<SysUser> userList = sysUserService.getUserList(query);
+    public ApiResponse userPage(@RequestBody SysUser sysUser) {
+        Page<SysUser> userPage = sysUserService.getUserPage(sysUser);
         return ApiResponse.code(SUCCESS)
-                .data("list", userList)
-                .data("pageTotal", userList.size());
+                .data("list", userPage.getRecords())
+                .data("page", userPage.getPages())
+                .data("total", userPage.getTotal())
+                .message("查询成功！");
     }
 
+    @PostMapping("/add")
+    public ApiResponse addUser(@RequestBody SysUser sysUser) {
+        sysUserService.addUser(sysUser);
+        return ApiResponse.code(SUCCESS).message("添加成功！");
+    }
+
+    @GetMapping("/getUserById/{id}")
+    public ApiResponse getDictById(@PathVariable("id") String id) {
+        return ApiResponse.code(SUCCESS).data("user", sysUserService.getUserById(id));
+    }
+
+    @PostMapping("/edit")
+    public ApiResponse editUser(@RequestBody SysUser sysUser) {
+        int i = sysUserService.editUser(sysUser);
+        if (i == 1) {
+            return ApiResponse.code(SUCCESS).message("修改成功！");
+        } else {
+            return ApiResponse.code(FAIL).message("修改出现异常：" + i);
+        }
+    }
+
+    @GetMapping("/del/{id}")
+    public ApiResponse delUser(@PathVariable String id) {
+        int i = sysUserService.delById(id);
+        if (i == 1) {
+            return ApiResponse.code(SUCCESS).message("删除成功！");
+        } else if (i == -1) {
+            return ApiResponse.code(FAIL).message("系统管理员不能删除！");
+        } else {
+            return ApiResponse.code(FAIL).message("删除出现异常：" + i);
+        }
+    }
+
+    @PostMapping("/delUserByIds")
+    public ApiResponse delUserByIds(@RequestBody List<String> ids) {
+        int i = sysUserService.delByIds(ids);
+        if (i > 0) {
+            return ApiResponse.code(SUCCESS).message("删除成功！");
+        } else if (i == -1) {
+            return ApiResponse.code(FAIL).message("系统管理员不能删除！");
+        } else {
+            return ApiResponse.code(FAIL).message("删除出现异常：" + i);
+        }
+    }
 
     //重置密码
     @PostMapping("/resetPassword")
-    @PreAuthorize("hasAnyAuthority('resetPassword')")
     public ApiResponse resetPassword(@RequestBody SysUser sysUser) {
-        //TODO
         int i = sysUserService.resetPassword(sysUser);
         if (i == 1) {
             return ApiResponse.code(SUCCESS).message("重置成功！");
@@ -165,18 +209,6 @@ public class SysUserController {
             return ApiResponse.code(FAIL).message("密码重置失败！");
         }
     }
-
-    @PostMapping("/setState")
-    @PreAuthorize("hasAnyAuthority('changState')")
-    public ApiResponse setState(@RequestBody SysUser sysUser) {
-        int i = sysUserService.setState(sysUser);
-        if (i == 1) {
-            return ApiResponse.code(SUCCESS).message("更改成功！");
-        } else {
-            return ApiResponse.code(FAIL).message("更改失败！");
-        }
-    }
-
 
     @GetMapping("/changePassword")
     public ApiResponse changePassword() {
@@ -188,12 +220,11 @@ public class SysUserController {
     @GetMapping("/getUserInfo")
     @PreAuthorize("hasAnyAuthority('dashboard')")
     public ApiResponse getUserInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        SysUser user = sysUserService.findByName(username);
 
-        return ApiResponse.code(SUCCESS).message("数据请求成功！").data("userInfo", user);
+
+        return ApiResponse.code(SUCCESS).message("数据请求成功！");
     }
+
 
     @PostMapping("/changeUserInfo")
     @PreAuthorize("hasAnyAuthority('dashboard')")
@@ -212,24 +243,9 @@ public class SysUserController {
     @PostMapping("/changeAvatar")
     @PreAuthorize("hasAnyAuthority('dashboard')")
     public ApiResponse changeAvatar(@RequestParam("avatarfile") MultipartFile file) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        SysUser user = sysUserService.findByName(username);
-        try {
-            String imgUrl = uploadService.uploadImg(file, username);
-            user.setAvatar(imgUrl);
-            int i = sysUserService.changeUserInfo(user);
-            if (i == 1) {
-                return ApiResponse.code(SUCCESS).message("更改成功！").data("imgUrl", imgUrl);
-            } else if (i == -1) {
-                return ApiResponse.code(FAIL).message("手机号或邮箱已被绑定！");
-            } else {
-                return ApiResponse.code(FAIL).message("更改失败！");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ApiResponse.code(FAIL).message("更改失败！");
-        }
+
+        return ApiResponse.code(FAIL).message("更改失败！");
+
     }
 
 }

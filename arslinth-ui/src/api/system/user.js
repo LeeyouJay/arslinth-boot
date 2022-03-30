@@ -15,6 +15,28 @@ const user = {
   logout() {
     return axios.get(`${base.requestUrl}/user/logout`);
   },
+
+  getUserPage(params) {
+    return axios.post(`${base.requestUrl}/user/list`, params);
+  },
+  getUserById(params) {
+    return axios.get(`${base.requestUrl}/user/getUserById/` + params);
+  },
+  addUser(params) {
+    return axios.post(`${base.requestUrl}/user/add`, params);
+  },
+  editUser(params) {
+    return axios.post(`${base.requestUrl}/user/edit`, params);
+  },
+  delUser(params) {
+    return axios.get(`${base.requestUrl}/user/del/` + params);
+  },
+  delUserByIds(params) {
+    return axios.post(`${base.requestUrl}/user/delUserByIds`, params);
+  },
+  resetPassword(params) {
+    return axios.post(`${base.requestUrl}/user/resetPassword`, params);
+  }
 }
 
 export default user;

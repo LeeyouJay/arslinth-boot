@@ -1,11 +1,15 @@
 package com.arslinthboot.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.util.StringUtils;
+import com.arslinthboot.entity.SysDict;
+import com.arslinthboot.utils.PageUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.arslinthboot.dao.SysUserDao;
 import com.arslinthboot.entity.SysUser;
 import com.arslinthboot.entity.VO.QueryBody;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,49 +36,65 @@ public class SysUserService {
         return sysUserDao.selectOne(new QueryWrapper<SysUser>().eq("username", username));
     }
 
-    public List<SysUser> getUserList(QueryBody query) {
+    public Page<SysUser> getUserPage(SysUser sysUser) {
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        Page<SysUser> page = PageUtil.buildPage(sysUser);
         wrapper.orderByDesc("create_time");
-        if (!StringUtils.isEmpty(query.getState())) {
-            wrapper.eq("state", query.getState());
+        if (StrUtil.isNotEmpty(sysUser.getNickName())) {
+            wrapper.and(w -> w.like("nick_name", sysUser.getNickName())
+                    .or().like("username", sysUser.getNickName())
+                    .or().like("phone", sysUser.getNickName()));
         }
-        if (!StringUtils.isEmpty(query.getSearchName())) {
-            wrapper.and(w -> w.like("nick_name", query.getSearchName())
-                    .or().like("username", query.getSearchName())
-                    .or().like("phone", query.getSearchName()));
+        if (sysUser.getForbidden() != null) {
+            wrapper.eq("forbidden", sysUser.getForbidden());
         }
 
-        List<SysUser> sysUsers = sysUserDao.selectList(wrapper);
-        sysUsers.forEach(u -> {
-            u.setPassword("");//把密码设为空
-        });
-        return sysUsers;
+        wrapper.select(SysUser.class,
+                u -> !"password".equals(u.getColumn()));
+        return sysUserDao.selectPage(page, wrapper);
     }
 
-    public SysUser findByName(String username) {
-        return sysUserDao.selectOne(new QueryWrapper<SysUser>().eq("username", username));
+    public SysUser getUserById(String id) {
+        SysUser sysUser = sysUserDao.selectById(id);
+        sysUser.setPassword(null);
+        return sysUser;
     }
+
+    public void addUser(SysUser sysUser) {
+        sysUser.setPassword(new BCryptPasswordEncoder().encode(RESET_CODE));
+        sysUserDao.insert(sysUser);
+    }
+
+    public int editUser(SysUser sysUser) {
+        return sysUserDao.updateById(sysUser);
+    }
+
+    public int delById(String id) {
+        if ("1".equals(id)) {
+            return -1;
+        }
+
+        return sysUserDao.deleteById(id);
+    }
+
 
     public int resetPassword(SysUser sysUser) {
         sysUser.setPassword(new BCryptPasswordEncoder().encode(RESET_CODE));
         return sysUserDao.updateById(sysUser);
     }
 
-    public int setState(SysUser sysUser) {
-        return sysUserDao.setState(sysUser);
-    }
-
-    public int changePassword(SysUser sysUser) {
-        return sysUserDao.updateById(sysUser);
-    }
 
     public int changeUserInfo(SysUser sysUser) {
         return sysUserDao.changeUserInfo(sysUser);
     }
 
-    public void setRight(String username) {
-        UpdateWrapper<SysUser> wrapper = new UpdateWrapper<SysUser>().eq("username", username).set("set_right", true);
-        sysUserDao.update(null, wrapper);
-    }
 
+    public int delByIds(List<String> ids) {
+        if (ids.contains("1")) {
+            return -1;
+        }
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        wrapper.in("id", ids);
+        return sysUserDao.delete(wrapper);
+    }
 }

@@ -189,7 +189,7 @@
 			},
 			handleAdd() {
 				this.isAdd = true
-				this.dialogText = "修改字典"
+				this.dialogText = "添加字典"
 				this.editVisible = true
 				this.$nextTick(()=> {
 					this.form = Object.assign({},this.$options.data().form);
@@ -209,7 +209,7 @@
 				})
 			},
 			handleDel(row) {
-				this.$confirm('删除菜单将不可恢复，确定要删除吗？', '提示', {
+				this.$confirm('删除数据将不可恢复，确定要删除吗？', '提示', {
 						type: 'warning'
 					})
 					.then(() => {
@@ -249,12 +249,6 @@
 						this.$message.error(res.message)
 				})
 			},
-			showTips(row, column, cell, event){
-				console.log(row.id)
-				console.log(column)
-				console.log(cell)
-				console.log(event)
-			}
 		}
 	}
 </script>
