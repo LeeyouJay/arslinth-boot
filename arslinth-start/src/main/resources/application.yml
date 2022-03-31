@@ -32,7 +32,9 @@ spring:
       time-between-eviction-runs-millis: 60000
       # 配置一个连接在池中最小生存时间
       min-evictable-idle-time-millis: 300000
-      validationQuery: select 1
+      # 最大生存时间
+      max-evictable-idle-time-millis: 400000
+      validationQuery: SELECT 1
       # 配置监控统计拦截的 Filter，去掉后监控界面 SQL 无法统计，wall 用于防火墙
       filters: stat,wall
   redis:
@@ -79,4 +81,5 @@ mica:
     enabled: true
     # clear 清理（默认），escape 转义
     mode: escape
+    # 以下访问url不需要过滤
     path-exclude-patterns: /user/edit,/user/resetPassword

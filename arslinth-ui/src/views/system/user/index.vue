@@ -223,14 +223,18 @@
 				})
 			},
 			handleDel(row) {
-				this.handleConfirm(this.delUser,row)
+				this.handleConfirm(this.delUser, row, '此操作将永久删除数据, 是否继续?')
 			},
 			handleDelBatch() {
 				if(this.ids.length == 0) return
-				this.handleConfirm(this.delUserBatch)
+				this.handleConfirm(this.delUserBatch,null,"此操作将永久删除数据, 是否继续?")
 			},
-			handleConfirm(func, arg){
-				this.$confirm('此操作将永久删除数据, 是否继续?', "提示", {
+			handleReset(row){
+				this.handleConfirm(this.resetUser,row, '确定将要次用户的密码重置为123456吗？')
+			},
+			
+			handleConfirm(func, arg,text){
+				this.$confirm(text, "提示", {
 					type: 'warning',
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -239,15 +243,7 @@
 					func(arg)
 				}).catch((e) => {console.log(e)})
 			},
-			handleReset(row){
-				 console.log("重置密码")
-				this.$api.user.resetPassword(row).then(res => {
-					if (res.code === 200) {
-						this.$message.success(res.message)
-					} else
-						this.$message.error(res.message)
-				})
-			},
+			
 			addUser() {
 				this.$api.user.addUser(this.form).then(res => {
 					if (res.code === 200) {
@@ -285,6 +281,14 @@
 						this.clearSelection()
 						this.$message.success(res.message)
 						this.editVisible = false;
+					} else
+						this.$message.error(res.message)
+				})
+			},
+			resetUser(row){
+				this.$api.user.resetPassword(row).then(res => {
+					if (res.code === 200) {
+						this.$message.success(res.message)
 					} else
 						this.$message.error(res.message)
 				})
