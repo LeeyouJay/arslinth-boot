@@ -5,14 +5,13 @@ import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
 import java.util.Set;
 
 /**
  * @author Arslinth
  * @ClassName SysUser
- * @Description 登入用户
- * @Date 2021/7/25
+ * @Description 系统用户
+ * @Date 2022/3/25
  */
 
 @Data

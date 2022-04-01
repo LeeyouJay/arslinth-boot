@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
-
 /**
  * @className: SysLog
- * @description: 系统日志
+ * @description: 操作日志
  * @author: Arslinth
  * @date: 2021/12/20
  **/

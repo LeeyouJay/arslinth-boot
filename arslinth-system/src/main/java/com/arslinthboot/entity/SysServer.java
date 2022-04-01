@@ -17,7 +17,12 @@ import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-
+/**
+ * @className: SysLogin
+ * @description: 系统信息
+ * @author: Arslinth
+ * @date: 2022/4/2
+ **/
 public class SysServer {
     private static final int OSHI_WAIT_SECOND = 1000;
 

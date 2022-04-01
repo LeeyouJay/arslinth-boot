@@ -61,9 +61,9 @@ public class SysMenuController {
     @GetMapping({"/list/{menuName}", "/list"})
     public ApiResponse list(@PathVariable(required = false) String menuName) {
         List<SysMenu> list = sysMenuService.getMenuList(menuName, false);
-        SysMenu menu = list.stream().min(Comparator.comparing(SysMenu::getLevel)).orElseGet(() ->
-                SysMenu.builder().parentId("0").build());
-        return ApiResponse.code(SUCCESS).data("list", generateTree(list, menu.getParentId()));
+        String rootId = list.stream().min(Comparator.comparing(SysMenu::getLevel))
+                .map(SysMenu::getParentId).orElse("0");
+        return ApiResponse.code(SUCCESS).data("list", generateTree(list, rootId));
     }
 
     /**

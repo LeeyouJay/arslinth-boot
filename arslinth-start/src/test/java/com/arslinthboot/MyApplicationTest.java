@@ -30,7 +30,7 @@ import static com.arslinthboot.common.Constants.RESET_CODE;
 /**
  * @author Arslinth
  * @ClassName ApplicationTest
- * @Description TODO
+ * @Description
  * @Date 2022/3/13
  */
 @SpringBootTest

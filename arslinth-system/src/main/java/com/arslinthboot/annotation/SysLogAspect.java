@@ -24,7 +24,7 @@ import static com.arslinthboot.common.ResponseCode.FAIL;
 /**
  * @author Arslinth
  * @ClassName SysLogAspect
- * @Description TODO
+ * @Description 系统日志切面
  * @Date 2021/12/20
  */
 @Slf4j

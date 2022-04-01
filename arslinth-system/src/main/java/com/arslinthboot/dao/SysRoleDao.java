@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author Arslinth
- * @Description TODO
+ * @Description 全局实体类
  * @Date 2021/7/25
  */
 @Repository

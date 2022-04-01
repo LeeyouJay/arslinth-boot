@@ -3,7 +3,6 @@ package com.arslinthboot.service;
 import cn.hutool.core.util.StrUtil;
 import com.arslinthboot.dao.SysMenuDao;
 import com.arslinthboot.entity.SysMenu;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * @author Arslinth
  * @ClassName SysMenuService
- * @Description TODO
+ * @Description
  * @Date 2022/3/13
  */
 @Service
@@ -27,12 +26,11 @@ public class SysMenuService {
 
     public List<SysMenu> getMenuList(String menuName, boolean isRoutes) {
         QueryWrapper<SysMenu> wrapper = new QueryWrapper<>();
-        wrapper.eq("hidden", false).orderByAsc("index_num");
+        wrapper.eq(isRoutes, "hidden", false)
+                .ne(isRoutes, "menu_type", "F")
+                .orderByAsc("index_num");
         if (StrUtil.isNotEmpty(menuName)) {
             wrapper.like("label", menuName);
-        }
-        if (isRoutes) {
-            wrapper.ne("menu_type", "F");
         }
         List<SysMenu> list = sysMenuDao.selectList(wrapper);
         return list.stream().map(m -> {
@@ -51,14 +49,14 @@ public class SysMenuService {
         if ("0".equals(menu.getParentId()) || "F".equals(menu.getMenuType())) {
             return sysMenuDao.insert(menu);
         }
-        SysMenu sysMenu = sysMenuDao.selectById(menu.getParentId());
-        if ("0".equals(sysMenu.getParentId())) {
-            sysMenu.setComponent("Layout");
+        SysMenu parentMenu = sysMenuDao.selectById(menu.getParentId());
+        if ("0".equals(parentMenu.getParentId())) {
+            parentMenu.setComponent("Layout");
         } else {
-            sysMenu.setComponent("ParentView");
+            parentMenu.setComponent("ParentView");
         }
-        sysMenu.setMenuType("M");
-        sysMenuDao.updateById(sysMenu);
+        parentMenu.setMenuType("M");
+        sysMenuDao.updateById(parentMenu);
         return sysMenuDao.insert(menu);
     }
 
@@ -67,14 +65,14 @@ public class SysMenuService {
         if ("0".equals(menu.getParentId()) || "F".equals(menu.getMenuType())) {
             return sysMenuDao.updateById(menu);
         }
-        SysMenu sysMenu = sysMenuDao.selectById(menu.getParentId());
-        if ("0".equals(sysMenu.getParentId())) {
-            sysMenu.setComponent("Layout");
+        SysMenu parentMenu = sysMenuDao.selectById(menu.getParentId());
+        if ("0".equals(parentMenu.getParentId())) {
+            parentMenu.setComponent("Layout");
         } else {
-            sysMenu.setComponent("ParentView");
+            parentMenu.setComponent("ParentView");
         }
-        sysMenu.setMenuType("M");
-        sysMenuDao.updateById(sysMenu);
+        parentMenu.setMenuType("M");
+        sysMenuDao.updateById(parentMenu);
         return sysMenuDao.updateById(menu);
     }
 

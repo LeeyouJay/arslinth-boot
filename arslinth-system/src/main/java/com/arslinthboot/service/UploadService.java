@@ -16,7 +16,7 @@ import static com.arslinthboot.common.Constants.MINI_IMG_SUFFIX;
 /**
  * @author Arslinth
  * @ClassName UploadService
- * @Description TODO
+ * @Description
  * @Date 2021/3/2
  */
 @Service

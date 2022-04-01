@@ -5,13 +5,12 @@ import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
 import java.util.Set;
 
 /**
  * @author Arslinth
  * @ClassName SysRole
- * @Description TODO
+ * @Description 系统角色
  * @Date 2021/3/7
  */
 @Data
@@ -31,8 +30,5 @@ public class SysRole extends BaseEntity {
 
     @TableField(typeHandler = JacksonTypeHandler.class)
     private Set<String> permissions;
-
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
 
 }

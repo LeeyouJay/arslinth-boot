@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @className: SysLoginDao
- * @description: TODO 类描述
+ * @description:
  * @author: Arslinth
  * @date: 2022/1/5
  **/
