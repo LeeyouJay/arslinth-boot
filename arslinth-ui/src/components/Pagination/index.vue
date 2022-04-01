@@ -2,9 +2,9 @@
   <div class="pagination-wrapper">
     <el-pagination
       :background="background"
-      :current-page.sync="currentPage"
-      :page-sizes="pageSizes"
-      :page-size.sync="pageSize"
+      :current-page.sync="index"
+      :page-sizes="pageArray"
+      :page-size.sync="size"
       :total="total"
       :layout="layout"
       @size-change="handleSizeChange"
@@ -17,12 +17,12 @@
 export default {
   name: 'Pagination',
   props: {
-    page: {
+    pageIndex: {
       type: Number,
       default: 1,
       required: true
     },
-    limit: {
+    pageSize: {
       type: Number,
       default: 10,
       required: true
@@ -31,7 +31,7 @@ export default {
       type: Boolean,
       default: true
     },
-    pageSizes: {
+    pageArray: {
       type: Array,
       default: () => [10, 15, 20, 50]
     },
@@ -46,29 +46,29 @@ export default {
     }
   },
   computed: {
-    currentPage: {
+    index: {
       get() {
-        return this.page
+        return this.pageIndex
       },
       set(val) {
-        this.$emit('update:page', val)
+        this.$emit('update:pageIndex', val)
       }
     },
-    pageSize: {
+    size: {
       get() {
-        return this.limit
+        return this.pageSize
       },
       set(val) {
-        this.emit('update:limit', val)
+        this.$emit('update:pageSize', val)
       }
     }
   },
   methods: {
     handleSizeChange(val) {
-      this.$emit('pagination', { page: this.currentPage, limit: val })
+      this.$emit('pagination', { pageIndex: this.index, pageSize: val })
     },
     handleCurrentChange(val) {
-      this.$emit('pagination', { page: val, limit: this.pageSize })
+      this.$emit('pagination', { pageIndex: val, pageSize: this.size })
     }
   }
 }

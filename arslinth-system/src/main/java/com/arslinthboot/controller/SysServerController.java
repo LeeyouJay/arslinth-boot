@@ -15,7 +15,7 @@ import static com.arslinthboot.common.ResponseCode.SUCCESS;
 /**
  * @author Lujb
  * @ClassName SysServerController
- * @Description TODO
+ * @Description 系统信息
  * @Date 2021/7/27
  */
 @Slf4j
@@ -24,6 +24,9 @@ import static com.arslinthboot.common.ResponseCode.SUCCESS;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysServerController {
 
+    /**
+     * 获取系统信息
+     */
     @GetMapping("/getServer")
     @PreAuthorize("hasAnyAuthority('sys_server')")
     public ApiResponse getInfo() throws Exception {

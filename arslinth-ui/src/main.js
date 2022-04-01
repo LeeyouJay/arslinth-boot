@@ -13,7 +13,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import ElementUI from 'element-ui'
 
+import Pagination from '@/components/Pagination'
+
 Vue.use(ElementUI, {size: 'small'})
+
+Vue.component('Pagination', Pagination)
 
 Vue.prototype.$requestUrl = base.requestUrl
 Vue.prototype.$api = api

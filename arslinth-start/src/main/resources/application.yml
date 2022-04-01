@@ -4,6 +4,7 @@ spring:
     active: dev
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   servlet:
     multipart:
       #最大单个上传文件大小

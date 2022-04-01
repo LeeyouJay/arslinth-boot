@@ -1,5 +1,6 @@
 package com.arslinthboot.controller;
 
+import com.arslinthboot.annotation.Log;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.entity.OperLog;
@@ -18,7 +19,7 @@ import static com.arslinthboot.common.ResponseCode.SUCCESS;
 
 /**
  * @className: SysLogController
- * @description: TODO 类描述
+ * @description: 系统日志
  * @author: Arslinth
  * @date: 2021/12/20
  **/
@@ -62,6 +63,7 @@ public class SysLogController {
      * 删除操作日志
      *
      **/
+    @Log("删除操作日志")
     @PostMapping("/delOperLog")
     public ApiResponse delOperLog(@RequestBody List<String> ids) {
         int i = sysLogService.delOperLogByIds(ids);
@@ -76,6 +78,7 @@ public class SysLogController {
      * 删除全部操作日志
      *
      **/
+    @Log("删除全部操作日志")
     @GetMapping("/delAllOperLog")
     public ApiResponse delAllOperLog() {
         int i = sysLogService.delAllOperLog();
@@ -90,6 +93,7 @@ public class SysLogController {
      * 删除登入日志
      *
      **/
+    @Log("删除登入日志")
     @PostMapping("/delLoginLog")
     public ApiResponse delLoginLog(@RequestBody List<String> ids) {
         int i = sysLogService.delLoginLogByIds(ids);
@@ -104,6 +108,7 @@ public class SysLogController {
      * 删除全部登入日志
      *
      **/
+    @Log("删除全部登入日志")
     @GetMapping("/delAllLoginLog")
     public ApiResponse delAllLoginLog() {
         int i = sysLogService.delAllLoginLog();

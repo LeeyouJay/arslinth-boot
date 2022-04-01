@@ -1,12 +1,12 @@
 package com.arslinthboot.service;
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.arslinthboot.config.tokenConfig.LoginUser;
 import com.arslinthboot.dao.LoginLogDao;
 import com.arslinthboot.dao.OperLogDao;
 import com.arslinthboot.entity.LoginLog;
-import com.arslinthboot.utils.PageUtil;
+import com.arslinthboot.utils.PageDomain;
+import com.arslinthboot.utils.SecurityUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.arslinthboot.entity.OperLog;
@@ -14,8 +14,6 @@ import com.arslinthboot.utils.IpInfoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,31 +37,22 @@ public class SysLogService {
 
     /**
      * 保存操作日志
-     *
      **/
-    public void saveOperLog(HttpServletRequest request, OperLog operLog) throws Exception {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userStr = authentication.getCredentials().toString();
-        String username = authentication.getPrincipal().toString();
-        do {
-            if (StrUtil.isEmpty(userStr)) {
-                break;
-            }
-            JSONObject jsonObject = JSON.parseObject(userStr);
-            username = Optional.ofNullable(jsonObject.get("empName"))
-                    .map(Object::toString).orElse("");
-            if (StrUtil.isEmpty(username)) {
-                username = jsonObject.get("nickName").toString();
-            }
-        } while (false);
+    public void saveOperLog(HttpServletRequest request, OperLog operLog) {
+        LoginUser<?> loginUser = SecurityUtils.getLoginUser();
+        String username = Optional.ofNullable(loginUser).map(LoginUser::getUsername).orElse("未知用户");
         String methodName = operLog.getMethod();
         String[] result = StrUtil.subBetweenAll(methodName, "controller.", "(");
         operLog.setMethod(result[0]);
         // 获取ip地址
         String ipAddr = IpInfoUtil.getIpAddr(request);
         // 获取ip来源
-        String ipSource = IpInfoUtil.getipSource(ipAddr);
+        String ipSource = null;
+        try {
+            ipSource = IpInfoUtil.getipSource(ipAddr);
+        } catch (Exception e) {
+            ipSource = "未知IP";
+        }
         //获取浏览器信息
         String browser = IpInfoUtil.getBrowser(request);
         // 获取系统名称
@@ -74,7 +63,6 @@ public class SysLogService {
         operLog.setIpAddr(ipAddr);
         operLog.setIpSource(ipSource);
         operLog.setSysName(sysName);
-
         operLogDao.insert(operLog);
     }
     /**
@@ -105,12 +93,15 @@ public class SysLogService {
 
     public Page<OperLog> operLogPage(OperLog operLog) {
         QueryWrapper<OperLog> wrapper = new QueryWrapper<>();
-        Page<OperLog> page = PageUtil.buildPage(operLog);
+        Page<OperLog> page = PageDomain.buildPage();
         String username = operLog.getUsername();
         if (StrUtil.isNotEmpty(username)) {
             wrapper.like("username", username)
                     .or().like("ip_addr", username)
                     .or().like("method", username);
+        }
+        if (operLog.getBeginTime() != null && operLog.getEndTime() != null) {
+            wrapper.between("create_time", operLog.getBeginTime(), operLog.getEndTime());
         }
         wrapper.orderByDesc("create_time");
         return operLogDao.selectPage(page, wrapper);
@@ -118,15 +109,18 @@ public class SysLogService {
 
     public Page<LoginLog> loginLogPage(LoginLog loginLog) {
         QueryWrapper<LoginLog> wrapper = new QueryWrapper<>();
-        Page<LoginLog> page = PageUtil.buildPage(loginLog);
+        Page<LoginLog> page = PageDomain.buildPage();
         Boolean state = loginLog.getState();
         String username = loginLog.getUsername();
-        if(state != null) {
-            wrapper.eq("state",state);
+        if (state != null) {
+            wrapper.eq("state", state);
         }
-        if(StrUtil.isNotEmpty(username)) {
-            wrapper.and(w->w.like("username",username)
-                    .or().like("ip_addr",username));
+        if (loginLog.getBeginTime() != null && loginLog.getEndTime() != null) {
+            wrapper.between("create_time", loginLog.getBeginTime(), loginLog.getEndTime());
+        }
+        if (StrUtil.isNotEmpty(username)) {
+            wrapper.and(w -> w.like("username", username)
+                    .or().like("ip_addr", username));
         }
         wrapper.orderByDesc("create_time");
         return loginLogDao.selectPage(page, wrapper);

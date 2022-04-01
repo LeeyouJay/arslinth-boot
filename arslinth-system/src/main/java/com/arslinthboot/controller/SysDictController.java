@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +16,7 @@ import static com.arslinthboot.common.ResponseCode.*;
 /**
  * @author Arslinth
  * @ClassName SysDictController
- * @Description TODO
+ * @Description 系统字典
  * @Date 2022/3/28
  */
 @Slf4j
@@ -52,6 +51,9 @@ public class SysDictController {
                 .message("查询成功！");
     }
 
+    /**
+     * 分页查询字典值
+     */
     @PostMapping("/valuePage")
     public ApiResponse getValuePage(@RequestBody SysDict sysDict) {
         Page<SysDict> dictType = sysDictService.getValuePage(sysDict);
@@ -62,22 +64,33 @@ public class SysDictController {
                 .message("查询成功！");
     }
 
+    /**
+     * 获取所有字典值
+     */
     @GetMapping("/valueList")
     public ApiResponse getValueList() {
         return ApiResponse.code(SUCCESS).data("list", sysDictService.getValueList());
     }
 
+    /**
+     * 获取所有字典值
+     */
     @GetMapping("/typeList")
     public ApiResponse getTypeList() {
         return ApiResponse.code(SUCCESS).data("list", sysDictService.getTypeList());
     }
 
+    /**
+     * 通过id查找字典
+     */
     @GetMapping("/getDictById/{id}")
     public ApiResponse getDictById(@PathVariable("id") String id) {
         return ApiResponse.code(SUCCESS).data("dict", sysDictService.getDictById(id));
     }
 
-
+    /**
+     * 修改字典值
+     */
     @PostMapping("/edit")
     public ApiResponse editDict(@RequestBody SysDict sysDict) {
         int i = sysDictService.editDict(sysDict);
@@ -88,6 +101,9 @@ public class SysDictController {
         }
     }
 
+    /**
+     * 删除字典
+     */
     @GetMapping("/del/{id}")
     public ApiResponse delDict(@PathVariable String id) {
         int i = sysDictService.delById(id);
@@ -100,6 +116,9 @@ public class SysDictController {
         }
     }
 
+    /**
+     * 批量删除字典值
+     */
     @PostMapping("/delDictByIds")
     public ApiResponse delDictByIds(@RequestBody List<String> ids) {
         int i = sysDictService.delByIds(ids);

@@ -30,7 +30,7 @@ import static com.arslinthboot.common.ResponseCode.*;
 /**
  * @author Arslinth
  * @ClassName SysUserController
- * @Description 用户相关控制类
+ * @Description 系统用户
  * @Date 2021/7/25
  */
 @Slf4j
@@ -139,13 +139,15 @@ public class SysUserController {
                 .message("注销成功")
                 .build();
 
-        sysLogService.saveLoginLog(request,loginLog);
+        sysLogService.saveLoginLog(request, loginLog);
         String userKey = LOGIN_TOKEN_KEY + loginUser.getToken();
         redisTool.deleteObject(userKey);
         return ApiResponse.code(SUCCESS).message("注销成功");
     }
 
-
+    /**
+     * 获取所有用户列表
+     */
     @PostMapping("/userPage")
     public ApiResponse userPage(@RequestBody SysUser sysUser) {
         Page<SysUser> userPage = sysUserService.getUserPage(sysUser);
@@ -156,12 +158,18 @@ public class SysUserController {
                 .message("查询成功！");
     }
 
+    /**
+     * 添加用户
+     */
     @PostMapping("/add")
     public ApiResponse addUser(@RequestBody SysUser sysUser) {
         sysUserService.addUser(sysUser);
         return ApiResponse.code(SUCCESS).message("添加成功！");
     }
 
+    /**
+     * 根据id查询用户
+     */
     @GetMapping("/getUserById/{id}")
     public ApiResponse getDictById(@PathVariable("id") String id) {
         return ApiResponse.code(SUCCESS).data("user", sysUserService.getUserById(id));
@@ -177,6 +185,9 @@ public class SysUserController {
         }
     }
 
+    /**
+     * 删除用户
+     */
     @GetMapping("/del/{id}")
     public ApiResponse delUser(@PathVariable String id) {
         int i = sysUserService.delById(id);
@@ -189,6 +200,10 @@ public class SysUserController {
         }
     }
 
+
+    /**
+     * 批量删除用户
+     */
     @PostMapping("/delUserByIds")
     public ApiResponse delUserByIds(@RequestBody List<String> ids) {
         int i = sysUserService.delByIds(ids);
@@ -201,7 +216,9 @@ public class SysUserController {
         }
     }
 
-    //重置密码
+    /**
+     * 重置密码
+     */
     @PostMapping("/resetPassword")
     public ApiResponse resetPassword(@RequestBody SysUser sysUser) {
         int i = sysUserService.resetPassword(sysUser);
@@ -212,6 +229,9 @@ public class SysUserController {
         }
     }
 
+    /**
+     * 修改密码
+     */
     @GetMapping("/changePassword")
     public ApiResponse changePassword() {
 
@@ -219,6 +239,9 @@ public class SysUserController {
 
     }
 
+    /**
+     * 获取当前用户信息
+     */
     @GetMapping("/getUserInfo")
     @PreAuthorize("hasAnyAuthority('dashboard')")
     public ApiResponse getUserInfo() {
@@ -228,6 +251,9 @@ public class SysUserController {
     }
 
 
+    /**
+     * 当前用户更改信息
+     */
     @PostMapping("/changeUserInfo")
     @PreAuthorize("hasAnyAuthority('dashboard')")
     public ApiResponse changeUserInfo(@RequestBody SysUser sysUser) {
@@ -242,6 +268,9 @@ public class SysUserController {
         }
     }
 
+    /**
+     * 修改头像
+     */
     @PostMapping("/changeAvatar")
     @PreAuthorize("hasAnyAuthority('dashboard')")
     public ApiResponse changeAvatar(@RequestParam("avatarfile") MultipartFile file) {

@@ -1,7 +1,7 @@
 <template>
 	<div class="view-page">
 		<div class="header-bar">
-			<el-form ref="formTable" :model="queryParams" @submit.native.prevent>
+			<el-form ref="formTable"  :model="queryParams" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="4">
 						<el-form-item label-width="0px">
@@ -10,6 +10,14 @@
 								<el-option :value="1" label="成功"></el-option>
 								<el-option :value="0" label="失败"></el-option>
 							</el-select>
+						</el-form-item>
+					</el-col>
+					<el-col :span="5">
+						<el-form-item label-width="0px">
+							<el-date-picker v-model="dateRange" value-format="yyyy-MM-dd" type="daterange"
+							style="width: 240px"
+							  range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" @change="selectChange">
+							  </el-date-picker>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
@@ -53,10 +61,7 @@
 					<el-table-column prop="createTime" label="时间" sortable />
 				</el-table>
 				<div class="pagination">
-					<el-pagination @size-change="handleSizeChange" @current-change="handlePageChange"
-						:current-page="queryParams.pageIndex" :page-sizes="[10, 30, 100, 500]"
-						:page-size="queryParams.pageSize" layout="total, sizes, prev, pager, next" :total="pageTotal">
-					</el-pagination>
+					 <Pagination :total="pageTotal" :pageIndex.sync="page.pageIndex" :pageSize.sync="page.pageSize" @pagination="getData" />
 				</div>
 			</el-main>
 		</el-container>
@@ -71,13 +76,18 @@
 				queryParams: {
 					username: '',
 					state: '',
+					beginTime:'',
+					endTime:''
+				},
+				page: {
 					pageIndex: 1,
 					pageSize: 10
 				},
 				tableData: [],
 				loading: false,
 				pageTotal: 10,
-				ids: []
+				ids: [],
+				dateRange: []
 			}
 		},
 		created() {
@@ -85,14 +95,13 @@
 		},
 		methods: {
 			handleQuery() {
-				this.queryParams.pageIndex = 1
-				this.queryParams.pageSize = 10
+				this.page.pageIndex = 1
 				this.getData()
 				this.clearSelection()
 			},
 			getData() {
 				this.loading = true
-				this.$api.log.loginLogPage(this.queryParams).then(res => {
+				this.$api.log.loginLogPage(this.queryParams, this.page).then(res => {
 					if (res.code === 200) {
 						this.tableData = res.data.list
 						this.pageTotal = res.data.total
@@ -100,14 +109,6 @@
 						this.$message.error(res.message)
 					this.loading = false
 				})
-			},
-			handlePageChange(val) {
-				this.$set(this.queryParams, 'pageIndex', val);
-				this.getData();
-			},
-			handleSizeChange(val) {
-				this.$set(this.queryParams, 'pageSize', val);
-				this.getData();
 			},
 			handleSelectionChange(section) {
 				this.ids = section.map(val => val.id)
@@ -160,6 +161,15 @@
 			clearSelection() {
 				this.$refs.multipleTable.clearSelection()
 				this.ids = []
+			},
+			selectChange(val) {
+				if(val){
+					this.queryParams.beginTime = val[0]
+					this.queryParams.endTime = val[1]
+				}else{
+					this.queryParams.beginTime =''
+					this.queryParams.endTime = ''
+				}
 			},
 		}
 

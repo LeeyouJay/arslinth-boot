@@ -44,10 +44,7 @@
 					</el-table-column>
 				</el-table>
 				<div class="pagination">
-					<el-pagination @size-change="handleSizeChange" @current-change="handlePageChange"
-						:current-page="queryParams.pageIndex" :page-sizes="[10, 30, 100, 500]"
-						:page-size="queryParams.pageSize" layout="total, sizes, prev, pager, next" :total="pageTotal">
-					</el-pagination>
+					 <Pagination :total="pageTotal" :pageIndex.sync="page.pageIndex" :pageSize.sync="page.pageSize" @pagination="getData" />
 				</div>
 			</el-main>
 		</el-container>
@@ -121,6 +118,8 @@
 				dictName: '',
 				queryParams: {
 					dictName: '',
+				},
+				page: {
 					pageIndex: 1,
 					pageSize: 10
 				},
@@ -137,13 +136,12 @@
 		},
 		methods: {
 			handleQuery() {
-				this.queryParams.pageIndex =1
-				this.queryParams.pageSize =10
+				this.page.pageIndex = 1
 				this.getData()
 			},
 			getData() {
 				this.loading = true
-				this.$api.dict.getTypePage(this.queryParams).then(res => {
+				this.$api.dict.getTypePage(this.queryParams, this.page).then(res => {
 					if (res.code === 200) {
 						this.tableData = res.data.list
 						this.pageTotal = res.data.total
@@ -151,14 +149,6 @@
 						this.$message.error(res.message)
 					this.loading = false
 				})
-			},
-			handleSizeChange(val) {
-				this.$set(this.queryParams, 'pageSize', val);
-				this.getData();
-			},
-			handlePageChange(val) {
-				this.$set(this.queryParams, 'pageIndex', val);
-				this.getData();
 			},
 			submit() {
 				this.$refs.formTable.validate((valid) => {
@@ -178,9 +168,15 @@
 			},
 			dialogOpen(){
 				this.$nextTick(()=>{
-					this.$refs.dictValueList.queryParams.parentId = this.parentId
-					this.$refs.dictValueList.queryParams.dictName = ''
-					this.$refs.dictValueList.queryParams.parentValue = this.parentValue
+					this.$refs.dictValueList.queryParams = {
+						parentId: this.parentId,
+						dictName: '',
+						parentValue: this.parentValue
+					}
+					this.$refs.dictValueList.page = {
+						pageIndex: 1,
+						pageSize: 10
+					}
 					this.$refs.dictValueList.label = this.dictName
 					this.$refs.dictValueList.handleQuery()
 				})

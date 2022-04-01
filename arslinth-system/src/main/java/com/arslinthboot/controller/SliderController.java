@@ -22,7 +22,12 @@ import static com.arslinthboot.common.Constants.SLIDER_PREFIX;
 import static com.arslinthboot.common.ResponseCode.FAIL;
 import static com.arslinthboot.common.ResponseCode.SUCCESS;
 
-
+/**
+ * @author Arslinth
+ * @ClassName SliderController
+ * @Description 生成滑动图片
+ * @Date 2021/5/13
+ */
 @Slf4j
 @RestController
 @RequestMapping("/slider")
@@ -33,6 +38,9 @@ public class SliderController {
 
     private final RedisTool redisTool;
 
+    /**
+     * 生成滑动图片
+     */
     @GetMapping("/image")
     public ApiResponse image() {
         log.info("/slider/image");
@@ -57,7 +65,9 @@ public class SliderController {
         }
     }
 
-
+    /**
+     * 验证图片
+     */
     @GetMapping("/verification")
     public ApiResponse verification(@RequestParam("moveX") int moveX) {
 

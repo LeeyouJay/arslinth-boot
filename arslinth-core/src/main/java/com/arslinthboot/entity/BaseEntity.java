@@ -22,10 +22,10 @@ import java.util.Date;
 public class BaseEntity {
 
     @TableField(exist = false)
-    private Long pageIndex;
+    private Date beginTime;
 
     @TableField(exist = false)
-    private Long pageSize;
+    private Date endTime;
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;

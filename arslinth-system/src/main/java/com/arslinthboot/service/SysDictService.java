@@ -2,10 +2,8 @@ package com.arslinthboot.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.arslinthboot.dao.SysDictDao;
-import com.arslinthboot.entity.OperLog;
 import com.arslinthboot.entity.SysDict;
-import com.arslinthboot.entity.SysUser;
-import com.arslinthboot.utils.PageUtil;
+import com.arslinthboot.utils.PageDomain;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +26,7 @@ public class SysDictService {
 
     public Page<SysDict> getTypePage(SysDict sysDict) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
-        Page<SysDict> page = PageUtil.buildPage(sysDict);
+        Page<SysDict> page = PageDomain.buildPage();
         wrapper.eq("parent_Id", "0").orderByAsc("index_num");
         if (StrUtil.isNotEmpty(sysDict.getDictName()) ||
                 StrUtil.isNotEmpty(sysDict.getDictValue())) {
@@ -41,7 +39,7 @@ public class SysDictService {
 
     public Page<SysDict> getValuePage(SysDict sysDict) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
-        Page<SysDict> page = PageUtil.buildPage(sysDict);
+        Page<SysDict> page = PageDomain.buildPage();
         wrapper.ne("parent_Id", "0").eq("parent_Id", sysDict.getParentId()).orderByAsc("index_num");
         if (StrUtil.isNotEmpty(sysDict.getDictName()) || StrUtil.isNotEmpty(sysDict.getDictValue())) {
             wrapper.and(w -> w.like("dict_name", sysDict.getDictName())

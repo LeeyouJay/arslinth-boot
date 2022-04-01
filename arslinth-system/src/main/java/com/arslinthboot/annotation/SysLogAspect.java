@@ -41,6 +41,7 @@ public class SysLogAspect {
     public void logPointCut() {
     }
 
+
     @Around("logPointCut()")
     public Object doAround(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -62,22 +63,23 @@ public class SysLogAspect {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
-
-
+        OperLog operLog = OperLog.builder()
+                .parameters(parameters)
+                .details(details)
+                .method(methodName)
+                .build();
         try {
             ApiResponse response = (ApiResponse) joinPoint.proceed();
             log.info("返回结果：{}", response.getCode());
             log.info("返回信息：{}", response.getMessage());
-            OperLog operLog = OperLog.builder()
-                    .parameters(parameters)
-                    .details(details)
-                    .method(methodName)
-                    .resultCode(response.getCode())
-                    .resultMessage(response.getMessage())
-                    .build();
+            operLog.setResultCode(response.getCode());
+            operLog.setResultMessage(response.getMessage());
             sysLogService.saveOperLog(request, operLog);
             return response;
         } catch (Throwable throwable) {
+            operLog.setResultCode(FAIL);
+            operLog.setResultMessage("请求发生异常！");
+            sysLogService.saveOperLog(request, operLog);
             log.error("代理发生异常, 异常信息{}", throwable.getMessage());
             return ApiResponse.code(FAIL);
         }

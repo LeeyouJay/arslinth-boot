@@ -1,7 +1,7 @@
 package com.arslinthboot.service;
 
 import cn.hutool.core.util.StrUtil;
-import com.arslinthboot.utils.PageUtil;
+import com.arslinthboot.utils.PageDomain;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.arslinthboot.dao.SysUserDao;
 import com.arslinthboot.entity.SysUser;
@@ -34,7 +34,7 @@ public class SysUserService {
 
     public Page<SysUser> getUserPage(SysUser sysUser) {
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
-        Page<SysUser> page = PageUtil.buildPage(sysUser);
+        Page<SysUser> page = PageDomain.buildPage();
         wrapper.orderByDesc("create_time");
         if (StrUtil.isNotEmpty(sysUser.getNickName())) {
             wrapper.and(w -> w.like("nick_name", sysUser.getNickName())

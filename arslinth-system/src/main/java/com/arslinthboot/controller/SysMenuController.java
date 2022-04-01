@@ -28,25 +28,36 @@ public class SysMenuController {
 
     private final SysMenuService sysMenuService;
 
+    /**
+     * 添加菜单
+     */
     @PostMapping("/add")
     public ApiResponse addMenu(@RequestBody SysMenu menu) {
         sysMenuService.addMenu(menu);
         return ApiResponse.code(SUCCESS).message("添加成功！");
     }
 
+    /**
+     * 删除菜单
+     */
     @GetMapping("/del/{id}")
     public ApiResponse delMenu(@PathVariable("id") String id) {
         sysMenuService.delMenu(id);
         return ApiResponse.code(SUCCESS).message("删除成功！");
     }
 
+    /**
+     * 修改菜单
+     */
     @PostMapping("/edit")
     public ApiResponse editMenu(@RequestBody SysMenu menu) {
         sysMenuService.editMenu(menu);
         return ApiResponse.code(SUCCESS).message("修改成功！");
     }
 
-
+    /**
+     * 根据名称查询菜单
+     */
     @GetMapping({"/list/{menuName}", "/list"})
     public ApiResponse list(@PathVariable(required = false) String menuName) {
         List<SysMenu> list = sysMenuService.getMenuList(menuName, false);
@@ -55,12 +66,18 @@ public class SysMenuController {
         return ApiResponse.code(SUCCESS).data("list", generateTree(list, menu.getParentId()));
     }
 
+    /**
+     * 根据id查询菜单
+     */
     @GetMapping("/getMenuById/{id}")
     public ApiResponse getMenuById(@PathVariable("id") String id) {
         return ApiResponse.code(SUCCESS).data("menu", sysMenuService.getMenuById(id));
     }
 
 
+    /**
+     * 生成菜单路由
+     */
     @GetMapping("/generateRoutes")
     public ApiResponse generateRoutes() {
         List<SysMenu> list = sysMenuService.getMenuList(null, true);

@@ -48,15 +48,22 @@ export default {
 	    margin: 20px 0;
 	    text-align: right;
 	}
+	.green {
+		font-weight: bold;
+		color: #67C23A !important;
+	}
 	.red {
+		font-weight: bold;
 		color: #ff0000 !important;
 	}
 	
 	.blue {
+		font-weight: bold;
 		color: #409EFF !important;
 	}
 	
 	.yellow {
+		font-weight: bold;
 		color: #ffaa00 !important;
 	}
 	

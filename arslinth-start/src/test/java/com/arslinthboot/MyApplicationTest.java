@@ -1,6 +1,8 @@
 package com.arslinthboot;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import com.arslinthboot.dao.SysDictDao;
 import com.arslinthboot.dao.SysMenuDao;
 import com.arslinthboot.dao.SysRoleDao;
@@ -17,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -108,15 +112,7 @@ public class MyApplicationTest {
     }
 
     public static void main(String[] args) {
-
-        ArrayList<String> oldIds = CollUtil.newArrayList("A", "B", "C", "A", "C", "A", "D", "E", "F", "D");
-
-        ArrayList<String> ids = CollUtil.newArrayList( "E", "F", "D", "Y", "Z");
-        ids.removeAll(oldIds);
-        System.out.println(ids);
-//        Map<String, String> map = oldIds.stream().collect(Collectors.toMap(Function.identity(), Function.identity(), (v1, v2) -> v2));
-//
-//        List<String> collect = ids.stream().filter(f -> !map.containsKey(f)).collect(Collectors.toList());
-//        System.out.println(collect);
+        DateTime parse = DateUtil.parse("2022-04-05");
+        System.out.println(parse);
     }
 }
