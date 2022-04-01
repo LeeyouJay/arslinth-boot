@@ -4,8 +4,8 @@
 			<el-form ref="formTable" :model="queryParams" label-width="80px" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="6">
-						<el-form-item label="菜单名称">
-							<el-input v-model="queryParams.label" placeholder="请输入菜单名称" clearable 
+						<el-form-item label-width="0px">
+							<el-input v-model="queryParams.label" placeholder="菜单名称" clearable 
 							@keyup.enter.native="handleQuery"></el-input>
 						</el-form-item>
 					</el-col>

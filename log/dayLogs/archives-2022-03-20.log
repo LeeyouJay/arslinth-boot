@@ -134,7 +134,7 @@ Using generated security password: b7d131f4-ec3b-4876-b13c-b6f59c194373
 2022-03-20 16:04:23.784 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.58]
 2022-03-20 16:04:23.853 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/arslinth-api] - Initializing Spring embedded WebApplicationContext
 2022-03-20 16:04:23.853 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1098 ms
-2022-03-20 16:04:24.160 [main] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sysLogAspect': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogService' defined in file [E:\MyProject\arslinth-boot\arslinth-system\target\classes\com\arslinthboot\service\SysLogService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.arslinthboot.dao.SysLogDao' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2022-03-20 16:04:24.160 [main] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sysLogAspect': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogService' defined in file [E:\MyProject\arslinth-boot\arslinth-system\target\classes\com\arslinthboot\service\SysLogService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.arslinthboot.dao.OperLogDao' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
 2022-03-20 16:04:24.175 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
 2022-03-20 16:04:24.187 [main] INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener - 
 
@@ -147,12 +147,12 @@ APPLICATION FAILED TO START
 
 Description:
 
-Parameter 0 of constructor in com.arslinthboot.service.SysLogService required a bean of type 'com.arslinthboot.dao.SysLogDao' that could not be found.
+Parameter 0 of constructor in com.arslinthboot.service.SysLogService required a bean of type 'com.arslinthboot.dao.OperLogDao' that could not be found.
 
 
 Action:
 
-Consider defining a bean of type 'com.arslinthboot.dao.SysLogDao' in your configuration.
+Consider defining a bean of type 'com.arslinthboot.dao.OperLogDao' in your configuration.
 
 2022-03-20 16:06:55.101 [main] INFO  com.arslinthboot.ArslinthBootApplication - Starting ArslinthBootApplication using Java 13 on Arslinth-PC with PID 23276 (E:\MyProject\arslinth-boot\arslinth-start\target\classes started by Arslinth in E:\MyProject\arslinth-boot)
 2022-03-20 16:06:55.108 [main] INFO  com.arslinthboot.ArslinthBootApplication - The following 1 profile is active: "dev"
@@ -178,7 +178,7 @@ Consider defining a bean of type 'com.arslinthboot.dao.SysLogDao' in your config
 2022-03-20 16:06:56.149 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.58]
 2022-03-20 16:06:56.220 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/arslinth-api] - Initializing Spring embedded WebApplicationContext
 2022-03-20 16:06:56.220 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1080 ms
-2022-03-20 16:06:56.534 [main] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sysLogAspect': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogService' defined in file [E:\MyProject\arslinth-boot\arslinth-system\target\classes\com\arslinthboot\service\SysLogService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.arslinthboot.dao.SysLogDao' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2022-03-20 16:06:56.534 [main] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sysLogAspect': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogService' defined in file [E:\MyProject\arslinth-boot\arslinth-system\target\classes\com\arslinthboot\service\SysLogService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.arslinthboot.dao.OperLogDao' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
 2022-03-20 16:06:56.544 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
 2022-03-20 16:06:56.557 [main] INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener - 
 
@@ -191,12 +191,12 @@ APPLICATION FAILED TO START
 
 Description:
 
-Parameter 0 of constructor in com.arslinthboot.service.SysLogService required a bean of type 'com.arslinthboot.dao.SysLogDao' that could not be found.
+Parameter 0 of constructor in com.arslinthboot.service.SysLogService required a bean of type 'com.arslinthboot.dao.OperLogDao' that could not be found.
 
 
 Action:
 
-Consider defining a bean of type 'com.arslinthboot.dao.SysLogDao' in your configuration.
+Consider defining a bean of type 'com.arslinthboot.dao.OperLogDao' in your configuration.
 
 2022-03-20 16:13:05.705 [main] INFO  com.arslinthboot.ArslinthBootApplication - Starting ArslinthBootApplication using Java 13 on Arslinth-PC with PID 21980 (E:\MyProject\arslinth-boot\arslinth-start\target\classes started by Arslinth in E:\MyProject\arslinth-boot)
 2022-03-20 16:13:05.710 [main] INFO  com.arslinthboot.ArslinthBootApplication - The following 1 profile is active: "dev"
@@ -222,7 +222,7 @@ Consider defining a bean of type 'com.arslinthboot.dao.SysLogDao' in your config
 2022-03-20 16:13:06.841 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.58]
 2022-03-20 16:13:06.908 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/arslinth-api] - Initializing Spring embedded WebApplicationContext
 2022-03-20 16:13:06.908 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1158 ms
-2022-03-20 16:13:07.259 [main] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sysLogAspect': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogService' defined in file [E:\MyProject\arslinth-boot\arslinth-system\target\classes\com\arslinthboot\service\SysLogService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.arslinthboot.dao.SysLogDao' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2022-03-20 16:13:07.259 [main] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sysLogAspect': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sysLogService' defined in file [E:\MyProject\arslinth-boot\arslinth-system\target\classes\com\arslinthboot\service\SysLogService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.arslinthboot.dao.OperLogDao' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
 2022-03-20 16:13:07.271 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
 2022-03-20 16:13:07.284 [main] INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener - 
 
@@ -235,12 +235,12 @@ APPLICATION FAILED TO START
 
 Description:
 
-Parameter 0 of constructor in com.arslinthboot.service.SysLogService required a bean of type 'com.arslinthboot.dao.SysLogDao' that could not be found.
+Parameter 0 of constructor in com.arslinthboot.service.SysLogService required a bean of type 'com.arslinthboot.dao.OperLogDao' that could not be found.
 
 
 Action:
 
-Consider defining a bean of type 'com.arslinthboot.dao.SysLogDao' in your configuration.
+Consider defining a bean of type 'com.arslinthboot.dao.OperLogDao' in your configuration.
 
 2022-03-20 16:15:18.338 [main] INFO  com.arslinthboot.ArslinthBootApplication - Starting ArslinthBootApplication using Java 13 on Arslinth-PC with PID 14292 (E:\MyProject\arslinth-boot\arslinth-start\target\classes started by Arslinth in E:\MyProject\arslinth-boot)
 2022-03-20 16:15:18.344 [main] INFO  com.arslinthboot.ArslinthBootApplication - The following 1 profile is active: "dev"

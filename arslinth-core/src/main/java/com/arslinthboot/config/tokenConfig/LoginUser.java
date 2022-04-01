@@ -20,9 +20,9 @@ import java.util.Set;
 public class LoginUser<T> {
 
     /**
-     * 用户ID
+     * 登入用户
      */
-    private String userId;
+    private String username;
 
     /**
      * 用户唯一标识

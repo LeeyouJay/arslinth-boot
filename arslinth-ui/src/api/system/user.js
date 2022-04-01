@@ -17,7 +17,7 @@ const user = {
   },
 
   getUserPage(params) {
-    return axios.post(`${base.requestUrl}/user/list`, params);
+    return axios.post(`${base.requestUrl}/user/userPage`, params);
   },
   getUserById(params) {
     return axios.get(`${base.requestUrl}/user/getUserById/` + params);

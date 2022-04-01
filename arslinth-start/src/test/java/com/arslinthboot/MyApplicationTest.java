@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.arslinthboot.common.Constants.RESET_CODE;
@@ -108,8 +109,14 @@ public class MyApplicationTest {
 
     public static void main(String[] args) {
 
-        ArrayList<String> intiList = CollUtil.newArrayList("A", "B", "C", "A", "C", "A", "D", "E", "F", "D");
-        String collect = intiList.stream().collect(Collectors.joining("。"));
-        System.out.println(collect);
+        ArrayList<String> oldIds = CollUtil.newArrayList("A", "B", "C", "A", "C", "A", "D", "E", "F", "D");
+
+        ArrayList<String> ids = CollUtil.newArrayList( "E", "F", "D", "Y", "Z");
+        ids.removeAll(oldIds);
+        System.out.println(ids);
+//        Map<String, String> map = oldIds.stream().collect(Collectors.toMap(Function.identity(), Function.identity(), (v1, v2) -> v2));
+//
+//        List<String> collect = ids.stream().filter(f -> !map.containsKey(f)).collect(Collectors.toList());
+//        System.out.println(collect);
     }
 }

@@ -29,7 +29,7 @@ public class SecurityUtils {
      * 获取登入对象
      *
      **/
-    public static LoginUser<?> getLoginUser() {
+    public static <T> LoginUser<T> getLoginUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object credentials = authentication.getCredentials();
         if (ObjectUtil.isEmpty(credentials)) return null;
@@ -56,7 +56,7 @@ public class SecurityUtils {
     public static <T> LoginUser<T> initLoginUser(T t, String userId, String userType, Set<String> auths, Set<String> dataScope) {
         return LoginUser.<T>builder()
                 .user(t)
-                .userId(userId)
+                .username(userId)
                 .userType(userType)
                 .dataScope(dataScope)
                 .permissions(auths).build();

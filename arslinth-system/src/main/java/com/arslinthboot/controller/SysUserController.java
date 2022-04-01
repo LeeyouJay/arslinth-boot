@@ -1,17 +1,13 @@
 package com.arslinthboot.controller;
 
-import cn.hutool.core.collection.CollUtil;
 import com.alibaba.druid.util.StringUtils;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.common.LoginBody;
 import com.arslinthboot.config.redis.RedisTool;
 import com.arslinthboot.config.tokenConfig.LoginUser;
 import com.arslinthboot.config.tokenConfig.TokenService;
-import com.arslinthboot.entity.SysDict;
-import com.arslinthboot.entity.SysLogin;
-import com.arslinthboot.entity.SysRole;
+import com.arslinthboot.entity.LoginLog;
 import com.arslinthboot.entity.SysUser;
-import com.arslinthboot.entity.VO.QueryBody;
 import com.arslinthboot.service.*;
 import com.arslinthboot.utils.SecurityUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -19,18 +15,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.arslinthboot.common.Constants.*;
 import static com.arslinthboot.common.ResponseCode.*;
@@ -56,7 +47,7 @@ public class SysUserController {
 
     private final UploadService uploadService;
 
-    private final SysLoginService sysLoginService;
+    private final SysLogService sysLogService;
 
 
     @PostMapping("/login")
@@ -66,21 +57,24 @@ public class SysUserController {
         String password = loginBody.getPassword();
         String moveX = loginBody.getMoveX();
         String captchaUUid = loginBody.getCaptchaUUid();
-        SysLogin sysLogin = SysLogin.builder().username(username).build();
+
+        LoginLog loginLog = LoginLog.builder().username(username).build();
 
         SysUser user = sysUserService.findByUsername(loginBody.getUsername());
 
         if (user == null) {
-            sysLogin.setState(false);
-            sysLogin.setMessage("账号不存在！");
-            sysLoginService.saveLogin(request, sysLogin);
+            loginLog.setState(false);
+            loginLog.setMessage("账号不存在！");
+            sysLogService.saveLoginLog(request, loginLog);
             return ApiResponse.code(FAIL).message("账号不存在！");
         }
 
+        loginLog.setUserType(SYSTEM_USER);
+
         if (user.getForbidden()) {
-            sysLogin.setState(false);
-            sysLogin.setMessage("账号已被禁用！");
-            sysLoginService.saveLogin(request, sysLogin);
+            loginLog.setState(false);
+            loginLog.setMessage("账号已被禁用！");
+            sysLogService.saveLoginLog(request, loginLog);
             return ApiResponse.code(FAIL).message("账号已被禁用！");
         }
 
@@ -104,16 +98,16 @@ public class SysUserController {
         //判断密码
         if (!new BCryptPasswordEncoder().matches(password, user.getPassword())) {
             redisTool.setCacheObject(LOGIN_TIMES + username, loginTimes + 1, 10, TimeUnit.MINUTES);
-            sysLogin.setState(false);
-            sysLogin.setMessage("密码不正确！");
-            sysLoginService.saveLogin(request, sysLogin);
+            loginLog.setState(false);
+            loginLog.setMessage("密码不正确！");
+            sysLogService.saveLoginLog(request, loginLog);
             return ApiResponse.code(FAIL).message("密码不正确,还有" + (4 - loginTimes) + "次输入机会");
         }
 
         if (loginTimes >= 5) {
-            sysLogin.setState(false);
-            sysLogin.setMessage("密码错误次数过多！");
-            sysLoginService.saveLogin(request, sysLogin);
+            loginLog.setState(false);
+            loginLog.setMessage("密码错误次数过多！");
+            sysLogService.saveLoginLog(request, loginLog);
             return ApiResponse.code(FAIL).message("密码错误次数过多，请稍候尝试！");
         }
         redisTool.deleteObject(LOGIN_TIMES + username);
@@ -121,30 +115,38 @@ public class SysUserController {
         Set<String> auths = user.getPermissions();
         //初始化登入信息
         LoginUser<SysUser> loginUser =
-                SecurityUtils.initLoginUser(user, user.getId(), "sysUser", auths,null);
+                SecurityUtils.initLoginUser(user, user.getId(), SYSTEM_USER, auths,null);
 
         //生成token返回前台
         String jwtToken = tokenService.createJwtToken(loginUser);
-
-        sysLoginService.saveLogin(request, sysLogin);
+        loginLog.setState(true);
+        loginLog.setMessage("登入成功");
+        sysLogService.saveLoginLog(request, loginLog);
         return ApiResponse.code(SUCCESS).message("登入成功").data("token", jwtToken)
                 .data("username", username);
     }
 
     @GetMapping("/logout")
     public ApiResponse logout(HttpServletRequest request) {
-        LoginUser<?> loginUser = SecurityUtils.getLoginUser();
-        // TODO 记录日志
+        LoginUser<SysUser> loginUser = SecurityUtils.getLoginUser();
         if (loginUser == null) {
             return ApiResponse.code(FAIL).message("注销失败，用户未登入");
         }
+        LoginLog loginLog = LoginLog.builder()
+                .username(loginUser.getUser().getUsername())
+                .state(true)
+                .userType(loginUser.getUserType())
+                .message("注销成功")
+                .build();
+
+        sysLogService.saveLoginLog(request,loginLog);
         String userKey = LOGIN_TOKEN_KEY + loginUser.getToken();
         redisTool.deleteObject(userKey);
         return ApiResponse.code(SUCCESS).message("注销成功");
     }
 
 
-    @PostMapping("/list")
+    @PostMapping("/userPage")
     public ApiResponse userPage(@RequestBody SysUser sysUser) {
         Page<SysUser> userPage = sysUserService.getUserPage(sysUser);
         return ApiResponse.code(SUCCESS)

@@ -1,15 +1,15 @@
 package com.arslinthboot.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.arslinthboot.entity.SysLogin;
+import com.arslinthboot.entity.OperLog;
 import org.springframework.stereotype.Repository;
 
 /**
- * @className: SysLoginDao
+ * @className: SysLogDao
  * @description: TODO 类描述
  * @author: Arslinth
- * @date: 2022/1/5
+ * @date: 2021/12/20
  **/
 @Repository
-public interface SysLoginDao extends BaseMapper<SysLogin> {
+public interface OperLogDao extends BaseMapper<OperLog> {
 }

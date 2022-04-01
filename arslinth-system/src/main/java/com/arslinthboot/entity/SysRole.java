@@ -2,10 +2,8 @@ package com.arslinthboot.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 import java.util.Set;
@@ -17,11 +15,12 @@ import java.util.Set;
  * @Date 2021/3/7
  */
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @TableName(autoResultMap = true)
-public class SysRole {
+public class SysRole extends BaseEntity {
 
     @TableId(type = IdType.ASSIGN_ID)
     private String id;

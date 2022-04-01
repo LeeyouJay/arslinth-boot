@@ -2,7 +2,7 @@ package com.arslinthboot.annotation;
 
 import com.alibaba.fastjson.JSON;
 import com.arslinthboot.common.ApiResponse;
-import com.arslinthboot.entity.SysLog;
+import com.arslinthboot.entity.OperLog;
 import com.arslinthboot.service.SysLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -68,14 +68,14 @@ public class SysLogAspect {
             ApiResponse response = (ApiResponse) joinPoint.proceed();
             log.info("返回结果：{}", response.getCode());
             log.info("返回信息：{}", response.getMessage());
-            SysLog sysLog = SysLog.builder()
+            OperLog operLog = OperLog.builder()
                     .parameters(parameters)
                     .details(details)
                     .method(methodName)
                     .resultCode(response.getCode())
                     .resultMessage(response.getMessage())
                     .build();
-            sysLogService.saveLog(request, sysLog);
+            sysLogService.saveOperLog(request, operLog);
             return response;
         } catch (Throwable throwable) {
             log.error("代理发生异常, 异常信息{}", throwable.getMessage());

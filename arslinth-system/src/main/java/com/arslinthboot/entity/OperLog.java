@@ -1,13 +1,8 @@
 package com.arslinthboot.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
@@ -17,11 +12,14 @@ import java.util.Date;
  * @author: Arslinth
  * @date: 2021/12/20
  **/
+
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SysLog {
+@EqualsAndHashCode(callSuper = true)
+@TableName(value = "sys_oper_log")
+public class OperLog extends BaseEntity {
 
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
@@ -45,9 +43,5 @@ public class SysLog {
     private String resultMessage;
 
     private String details;
-
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
 
 }

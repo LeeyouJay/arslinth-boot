@@ -4,7 +4,7 @@
 			<el-form ref="searchTable" :model="queryParams" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="4">
-						<el-form-item label="状态" label-width="80px">
+						<el-form-item label-width="0px">
 							<el-select v-model="queryParams.forbidden" placeholder="状态" clearable
 								class="handle-select mr10">
 								<el-option :value="0" label="正常"></el-option>
@@ -172,6 +172,7 @@
 				this.queryParams.pageIndex = 1
 				this.queryParams.pageSize = 10
 				this.getData()
+				this.clearSelection()
 			},
 			getData() {
 				this.loading = true
@@ -278,7 +279,6 @@
 				this.$api.user.delUserByIds(this.ids).then(res => {
 					if (res.code === 200) {
 						this.handleQuery()
-						this.clearSelection()
 						this.$message.success(res.message)
 						this.editVisible = false;
 					} else

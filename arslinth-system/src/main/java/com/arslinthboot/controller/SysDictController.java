@@ -28,12 +28,20 @@ public class SysDictController {
 
     private final SysDictService sysDictService;
 
+    /**
+     * 添加字典
+     *
+     **/
     @PostMapping("/add")
     public ApiResponse addDict(@RequestBody SysDict sysDict) {
         sysDictService.addDict(sysDict);
         return ApiResponse.code(SUCCESS).message("添加成功！");
     }
 
+    /**
+     * 分页查询字典类型
+     *
+     **/
     @PostMapping("/typePage")
     public ApiResponse getTypePage(@RequestBody SysDict sysDict) {
         Page<SysDict> dictType = sysDictService.getTypePage(sysDict);

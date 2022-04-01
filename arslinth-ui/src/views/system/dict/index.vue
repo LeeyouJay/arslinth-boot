@@ -4,8 +4,8 @@
 			<el-form ref="formTable" :model="queryParams" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="6">
-						<el-form-item label="参数名称/值"  label-width="100px">
-							<el-input v-model="queryParams.dictName" placeholder="请输入参数名称或值" clearable
+						<el-form-item label-width="0px">
+							<el-input v-model="queryParams.dictName" placeholder="参数名称/值" clearable
 							@keyup.enter.native="handleQuery"></el-input>
 						</el-form-item>
 					</el-col>
@@ -31,7 +31,6 @@
 					<el-table-column label="字典代号"  align="center" >
 						 <template slot-scope="scope">
 							 <div class="link-type" @click="toDictValue(scope.row)" >{{scope.row.dictValue}}</div>
-							<!-- <el-link type="primary" :underline="false" >{{scope.row.dictValue}}</el-link> -->
 						 </template>
 					</el-table-column>
 					<el-table-column prop="notes" align="center"  label="描述" />
@@ -99,7 +98,6 @@
 				<el-button type="primary" @click="tableVisible = false">关闭</el-button>
 			</span>
 		</el-dialog>
-		
 	</div>
 </template>
 
