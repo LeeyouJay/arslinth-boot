@@ -146,7 +146,7 @@ public class SysUserController {
     }
 
     /**
-     * 获取所有用户列表
+     * 获取用户列表
      */
     @PostMapping("/userPage")
     public ApiResponse userPage(@RequestBody SysUser sysUser) {
@@ -171,7 +171,7 @@ public class SysUserController {
      * 根据id查询用户
      */
     @GetMapping("/getUserById/{id}")
-    public ApiResponse getDictById(@PathVariable("id") String id) {
+    public ApiResponse getUserById(@PathVariable("id") String id) {
         return ApiResponse.code(SUCCESS).data("user", sysUserService.getUserById(id));
     }
 
@@ -245,7 +245,6 @@ public class SysUserController {
     @GetMapping("/getUserInfo")
     @PreAuthorize("hasAnyAuthority('dashboard')")
     public ApiResponse getUserInfo() {
-
 
         return ApiResponse.code(SUCCESS).message("数据请求成功！");
     }

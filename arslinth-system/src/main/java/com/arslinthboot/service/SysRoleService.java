@@ -1,10 +1,19 @@
 package com.arslinthboot.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.arslinthboot.dao.SysRoleDao;
+import com.arslinthboot.entity.OperLog;
+import com.arslinthboot.entity.SysDict;
 import com.arslinthboot.entity.SysRole;
+import com.arslinthboot.entity.SysUser;
+import com.arslinthboot.utils.PageDomain;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Arslinth
@@ -18,8 +27,56 @@ public class SysRoleService {
 
     private final SysRoleDao sysRoleDao;
 
+    public Page<SysRole> getRolePage(SysRole sysRole) {
+        QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
+        Page<SysRole> page = PageDomain.buildPage();
+        String roleName = sysRole.getRoleName();
+        if (StrUtil.isNotEmpty(roleName)) {
+            wrapper.and(w->w.like("role_name", roleName)
+                    .or().like("role",roleName));
+        }
+        wrapper.orderByAsc("index_num");
+        return sysRoleDao.selectPage(page, wrapper);
+    }
+
+
+    public int addRole(SysRole sysRole){
+        return sysRoleDao.insert(sysRole);
+    }
 
     public SysRole getRoleById(String roleId) {
         return sysRoleDao.selectById(roleId);
+    }
+
+    public int editRole(SysRole sysRole) {
+        return sysRoleDao.updateById(sysRole);
+    }
+
+    public int delById(String id) {
+        if ("1".equals(id)) {
+            return -1;
+        }
+        return sysRoleDao.deleteById(id);
+    }
+
+    public int delByIds(List<String> ids) {
+        if (ids.contains("1")) {return -1;}
+        QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
+        wrapper.in("id", ids);
+        return sysRoleDao.delete(wrapper);
+    }
+
+
+    public List<SysRole> getRoleList(SysRole sysRole) {
+        QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
+        String roleName = sysRole.getRoleName();
+        String role = sysRole.getRole();
+        if (StrUtil.isNotEmpty(roleName)) {
+            wrapper.eq("role_name",roleName);
+        }
+        if (StrUtil.isNotEmpty(role)) {
+            wrapper.eq("role",role);
+        }
+        return sysRoleDao.selectList(wrapper);
     }
 }

@@ -131,7 +131,8 @@
 				showDetails: false,
 				sysLog: {},
 				ids: [],
-				dateRange: []
+				dateRange: [],
+				
 			}
 		},
 		created() {

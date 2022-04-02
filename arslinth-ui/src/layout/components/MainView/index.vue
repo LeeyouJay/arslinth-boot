@@ -51,19 +51,5 @@
 		color: #409EFF;
 		margin-left: 5px;
 	}
-	.fade-transform-leave-active,
-	.fade-transform-enter-active {
-		transition: all 0.5s;
-		text-align: left;
-	}
 
-	.fade-transform-enter {
-		opacity: 0;
-		transform: translateX(-30px);
-	}
-
-	.fade-transform-leave-to {
-		opacity: 0;
-		transform: translateX(30px);
-	}
 </style>

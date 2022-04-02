@@ -26,7 +26,11 @@ public class SysRole extends BaseEntity {
 
     private String role;
 
+    private Integer indexNum;
+
     private String roleName;
+
+    private String notes;
 
     @TableField(typeHandler = JacksonTypeHandler.class)
     private Set<String> permissions;

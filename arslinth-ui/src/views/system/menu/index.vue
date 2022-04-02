@@ -1,7 +1,7 @@
 <template>
 	<div class="view-page">
 		<div class="header-bar">
-			<el-form ref="formTable" :model="queryParams" label-width="80px" @submit.native.prevent>
+			<el-form ref="searchTable" :model="queryParams" label-width="80px" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="6">
 						<el-form-item label-width="0px">
@@ -216,6 +216,7 @@
 						this.label = this.getParentName(this.form.parentId)
 						this.formTitle = '修改菜单'
 						this.formVisible = true
+						this.$nextTick(()=>this.$refs.formTable.clearValidate())
 					}else
 						this.$message.error(res.message)
 				})

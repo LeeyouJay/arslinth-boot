@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 import static com.arslinthboot.common.Constants.RESET_CODE;
@@ -58,6 +59,7 @@ public class SysUserService {
 
     public void addUser(SysUser sysUser) {
         sysUser.setPassword(new BCryptPasswordEncoder().encode(RESET_CODE));
+        sysUser.setPermissions(new HashSet<>());
         sysUserDao.insert(sysUser);
     }
 

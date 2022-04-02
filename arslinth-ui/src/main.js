@@ -6,6 +6,7 @@ import api from './api'
 import utils from './utils/index.js'
 import base from './api/base.js'
 
+import 'default-passive-events'
 import './router/auth'
 import './assets/icon-fonts/iconfont.css'
 import './assets/icon-fonts/iconfont'

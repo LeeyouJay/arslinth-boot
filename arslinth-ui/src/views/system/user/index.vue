@@ -208,6 +208,7 @@
 						this.isAdd = false
 						this.dialogText = "修改用户信息"
 						this.editVisible = true
+						this.$nextTick(()=>this.$refs.formTable.clearValidate())
 					} else
 						this.$message.error(res.message)
 				})

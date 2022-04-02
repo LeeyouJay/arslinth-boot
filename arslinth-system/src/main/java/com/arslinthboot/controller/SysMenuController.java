@@ -1,17 +1,20 @@
 package com.arslinthboot.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
 import com.arslinthboot.common.ApiResponse;
+import com.arslinthboot.config.tokenConfig.LoginUser;
 import com.arslinthboot.entity.SysMenu;
 import com.arslinthboot.service.SysMenuService;
+import com.arslinthboot.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static com.arslinthboot.common.ResponseCode.SUCCESS;
 
@@ -56,11 +59,11 @@ public class SysMenuController {
     }
 
     /**
-     * 根据名称查询菜单
+     * 根据名称查询菜单列表
      */
     @GetMapping({"/list/{menuName}", "/list"})
     public ApiResponse list(@PathVariable(required = false) String menuName) {
-        List<SysMenu> list = sysMenuService.getMenuList(menuName, false);
+        List<SysMenu> list = sysMenuService.getMenuList(null,menuName, false);
         String rootId = list.stream().min(Comparator.comparing(SysMenu::getLevel))
                 .map(SysMenu::getParentId).orElse("0");
         return ApiResponse.code(SUCCESS).data("list", generateTree(list, rootId));
@@ -80,7 +83,13 @@ public class SysMenuController {
      */
     @GetMapping("/generateRoutes")
     public ApiResponse generateRoutes() {
-        List<SysMenu> list = sysMenuService.getMenuList(null, true);
+        //根据权限生成路由
+        LoginUser<?> loginUser = SecurityUtils.getLoginUser();
+        Set<String> auths = Optional.ofNullable(loginUser).map(LoginUser::getPermissions).orElse(new HashSet<>());
+        if (CollUtil.isEmpty(auths)){
+            return ApiResponse.code(SUCCESS).data("routes", auths);
+        }
+        List<SysMenu> list = sysMenuService.getMenuList(auths,null, true);
         return ApiResponse.code(SUCCESS).data("routes", generateTree(list, "0"));
     }
 
@@ -95,10 +104,11 @@ public class SysMenuController {
             tree.setId(treeNode.getId());
             tree.setParentId(treeNode.getParentId());
             tree.setWeight(treeNode.getIndexNum());
-            if ("0".equals(treeNode.getParentId()) && "Layout".equals(treeNode.getComponent()))
+            if ("0".equals(treeNode.getParentId()) && "Layout".equals(treeNode.getComponent())) {
                 tree.putExtra("path", treeNode.getParentId().equals("0") ? "/" + treeNode.getPath() : treeNode.getPath());
-            else
+            } else {
                 tree.putExtra("path", treeNode.getPath());
+            }
             tree.setName(treeNode.getName());
             tree.putExtra("meta", treeNode.getMeta());
             tree.putExtra("label", treeNode.getLabel());

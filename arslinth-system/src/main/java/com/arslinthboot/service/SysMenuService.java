@@ -1,5 +1,6 @@
 package com.arslinthboot.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.arslinthboot.dao.SysMenuDao;
 import com.arslinthboot.entity.SysMenu;
@@ -10,12 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * @author Arslinth
  * @ClassName SysMenuService
- * @Description
+ * @Description 裁断数据管理
  * @Date 2022/3/13
  */
 @Service
@@ -24,7 +26,7 @@ public class SysMenuService {
 
     private final SysMenuDao sysMenuDao;
 
-    public List<SysMenu> getMenuList(String menuName, boolean isRoutes) {
+    public List<SysMenu> getMenuList(Set<String> permissions, String menuName, boolean isRoutes) {
         QueryWrapper<SysMenu> wrapper = new QueryWrapper<>();
         wrapper.eq(isRoutes, "hidden", false)
                 .ne(isRoutes, "menu_type", "F")
@@ -32,6 +34,10 @@ public class SysMenuService {
         if (StrUtil.isNotEmpty(menuName)) {
             wrapper.like("label", menuName);
         }
+        if (CollUtil.isNotEmpty(permissions) && !permissions.contains("*")){
+            wrapper.in("name",permissions);
+        }
+
         List<SysMenu> list = sysMenuDao.selectList(wrapper);
         return list.stream().map(m -> {
             SysMenu.Meta meta = SysMenu.Meta.builder()

@@ -175,6 +175,7 @@
 						this.isAdd = false
 						this.dialogText = "修改字典"
 						this.editVisible = true
+						this.$nextTick(()=>this.$refs.formTable.clearValidate())
 					}else
 						this.$message.error(res.message)
 				})
