@@ -35,6 +35,10 @@
 		width: 100%;
 		padding-right: 14px;
 	}
+	.table-bar {
+		display: flex;
+		justify-content: space-between;
+	}
 	.link-type,
 	.link-type:focus {
 		color: #409eff;
@@ -51,5 +55,30 @@
 		color: #409EFF;
 		margin-left: 5px;
 	}
-
+	.view-page {
+		display: flex;
+		flex-direction: column;
+	}
+	.pagination {
+	    margin: 20px 0;
+	    text-align: right;
+	}
+	.green {
+		font-weight: bold;
+		color: #67C23A !important;
+	}
+	.red {
+		font-weight: bold;
+		color: #ff0000 !important;
+	}
+	
+	.blue {
+		font-weight: bold;
+		color: #409EFF !important;
+	}
+	
+	.yellow {
+		font-weight: bold;
+		color: #ffaa00 !important;
+	}
 </style>

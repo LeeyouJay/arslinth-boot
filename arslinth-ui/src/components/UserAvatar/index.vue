@@ -1,7 +1,7 @@
 <template>
 	<el-dropdown class="user-avatar-wrapper" @command="handleCommand">
 		<div class="avatar-box">
-			<el-avatar size="small" :src="avatarSrc" />
+			<el-avatar size="small" :src="avatar" />
 			<i class="el-icon-caret-bottom" />
 		</div>
 		<el-dropdown-menu slot="dropdown">
@@ -17,6 +17,11 @@
 
 	export default {
 		name: 'UserAvatar',
+		computed:{
+			avatar() {
+				return this.$store.state.user.userinfo.avatar
+			}
+		},
 		data() {
 			return {
 				avatarSrc: Avatar
@@ -46,13 +51,11 @@
 						background: 'rgba(0, 0, 0, 0.7)'
 					});
 					this.$api.user.logout().then(res=>{
-						if(res.code == 200){
-							setTimeout(()=>{
-								contLoading.close()
-								removeToken()
-								location.reload()
-							},1000)
-						}
+						setTimeout(()=>{
+							contLoading.close()
+							removeToken()
+							location.reload()
+						},1000)
 					})
 				})
 			}

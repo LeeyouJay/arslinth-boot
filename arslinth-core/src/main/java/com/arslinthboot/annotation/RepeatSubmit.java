@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RepeatSubmit {
 
-    int interval() default 4500;
+    int interval() default 1500;
 
-    String message() default "不允许重复提交，请稍候再试";
+    String message() default "数据正在处理中，请稍候再试";
 }

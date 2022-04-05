@@ -6,6 +6,7 @@ import com.arslinthboot.service.SysRoleService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class SysRoleController {
      * 添加角色
      */
     @PostMapping("/add")
+    @PreAuthorize("@auth.hasAnyAuthority('AddRole')")
     public ApiResponse addRole(@RequestBody SysRole sysRole) {
         sysRoleService.addRole(sysRole);
         return ApiResponse.code(SUCCESS).message("添加成功！");
@@ -39,6 +41,7 @@ public class SysRoleController {
      * 获取角色列表
      */
     @PostMapping("/rolePage")
+    @PreAuthorize("@auth.hasAnyAuthority('SysRole')")
     public ApiResponse rolePage(@RequestBody SysRole sysRole) {
         Page<SysRole> rolePage = sysRoleService.getRolePage(sysRole);
         return ApiResponse.code(SUCCESS)
@@ -47,18 +50,21 @@ public class SysRoleController {
                 .data("total", rolePage.getTotal())
                 .message("查询成功！");
     }
+
     /**
      * 获取所有角色
      */
-    @PostMapping("/roleList")
-    public ApiResponse getRoleList(@RequestBody SysRole sysRole) {
-        return ApiResponse.code(SUCCESS).data("list", sysRoleService.getRoleList(sysRole));
+    @GetMapping("/roleList")
+    @PreAuthorize("@auth.hasAnyAuthority('SysRole','SysUser')")
+    public ApiResponse getRoleList() {
+        return ApiResponse.code(SUCCESS).data("list", sysRoleService.getRoleList());
     }
 
     /**
      * 根据id查询角色
      */
     @GetMapping("/getRoleById/{id}")
+    @PreAuthorize("@auth.hasAnyAuthority('SysRole')")
     public ApiResponse getRoleById(@PathVariable("id") String id) {
         return ApiResponse.code(SUCCESS).data("role", sysRoleService.getRoleById(id));
     }
@@ -68,6 +74,7 @@ public class SysRoleController {
      *
      **/
     @PostMapping("/edit")
+    @PreAuthorize("@auth.hasAnyAuthority('EditRole')")
     public ApiResponse editRole(@RequestBody SysRole sysRole) {
         int i = sysRoleService.editRole(sysRole);
         if (i == 1) {
@@ -81,6 +88,7 @@ public class SysRoleController {
      * 删除角色
      */
     @GetMapping("/del/{id}")
+    @PreAuthorize("@auth.hasAnyAuthority('DelRole')")
     public ApiResponse delRole(@PathVariable String id) {
         int i = sysRoleService.delById(id);
         if (i == 1) {
@@ -96,6 +104,7 @@ public class SysRoleController {
      * 批量删除角色
      */
     @PostMapping("/delRoleByIds")
+    @PreAuthorize("@auth.hasAnyAuthority('DelRole')")
     public ApiResponse delRoleByIds(@RequestBody List<String> ids) {
         int i = sysRoleService.delByIds(ids);
         if (i > 0) {

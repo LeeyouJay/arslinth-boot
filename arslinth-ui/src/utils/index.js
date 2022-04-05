@@ -1,5 +1,4 @@
 const utils = {
-
   //对象深拷贝
   deepClone(source) {
     return JSON.parse(JSON.stringify(source))
@@ -15,68 +14,6 @@ const utils = {
     return new Blob([new Uint8Array(array)], {type: 'image/png'})
   },
 
-  //contenteditable 光标定位到最后
-  keepCursorEnd(target) {
-    // 非IE浏览器
-    if (window.getSelection) {
-      // 解决Firefox不获取焦点无法定位问题
-      target.focus()
-      // 创建range对象
-      const range = window.getSelection()
-      // 选择target下所有子内容
-      range.selectAllChildren(target)
-      // 光标移至最后
-      range.collapseToEnd()
-    } else if (document.selection) { // IE浏览器
-      // 创建range对象
-      const range = document.selection.createRange()
-      // 定位到target
-      range.moveToElementText(target)
-      // 光标移至最后
-      range.collapse(false)
-      range.select()
-    }
-  },
-
-  //计算图片宽高及比率
-  calcImageSize(imageTrueW, imageTrueH, showAreaW, showAreaH) {
-    let [width, height, ratio] = [0, 0, 0]
-    // 图片真实宽大于真实高
-    if (imageTrueW > imageTrueH) {
-      if (imageTrueW >= showAreaW) { // 真实宽大于或等于展示区最大宽
-        const imageRatioH = imageTrueH * (showAreaW / imageTrueW)
-        // 按展示区最大宽与实际宽比率换算后，高度大于显示高度时
-        if (imageRatioH >= showAreaW) {
-          width = imageTrueW * (showAreaH / imageTrueH)
-          height = showAreaH
-          ratio = imageTrueH / showAreaH
-        } else {
-          width = showAreaW
-          height = imageRatioH
-          ratio = imageTrueW / showAreaW
-        }
-      } else {
-        width = imageTrueW
-        height = imageTrueH
-        ratio = 1
-      }
-    } else { // 图片真实宽小于或等于真实高
-      if (imageTrueH >= showAreaH) { // 真实高大于或等于展示区最大高
-        width = imageTrueW * (showAreaH / imageTrueH)
-        height = showAreaH
-        ratio = imageTrueH / showAreaH
-      } else {
-        width = imageTrueW
-        height = imageTrueH
-        ratio = 1
-      }
-    }
-    return {
-      width,
-      height,
-      ratio
-    }
-  },
   //树结构扁平化
   treeToArray(tree) {
     return tree.reduce((res, item) => {

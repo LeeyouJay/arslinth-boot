@@ -17,9 +17,9 @@ logging:
 
 file:
   #图片上传真实路径
-  imgFolder: C:/Users/Arslinth/Pictures/btxc-archives/
+  imgFolder: ./upload/images/
   #上传文件的真实路径
-  uploadFolder: C:/Users/Arslinth/Documents/北投项目/ftpDownload/file/upload/
+  uploadFolder: ./upload/file/
 
 jasypt:
   encryptor:

@@ -67,7 +67,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String userId = loginUser.getUsername();
+        String userId = loginUser.getUserId();
         Set<String> permissions = loginUser.getPermissions();
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         permissions.forEach(val -> {

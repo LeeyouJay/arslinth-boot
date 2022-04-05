@@ -15,7 +15,7 @@ const user = {
   logout() {
     return axios.get(`${base.requestUrl}/user/logout`);
   },
-
+//---------------------------------------------------------------------------
   getUserPage(params, page) {
     return axios.post(`${base.requestUrl}/user/userPage`, params, {params: page});
   },
@@ -28,6 +28,9 @@ const user = {
   editUser(params) {
     return axios.post(`${base.requestUrl}/user/edit`, params);
   },
+  setPermissions(params) {
+    return axios.post(`${base.requestUrl}/user/setPermissions`, params);
+  },
   delUser(params) {
     return axios.get(`${base.requestUrl}/user/del/` + params);
   },
@@ -36,7 +39,21 @@ const user = {
   },
   resetPassword(params) {
     return axios.post(`${base.requestUrl}/user/resetPassword`, params);
+  },
+  //---------------------------------------------------------------------------
+  getInfo() {
+    return axios.get(`${base.requestUrl}/userinfo/getUserInfo`);
+  },
+  changeAvatar(params) {
+    return axios.post(`${base.requestUrl}/userinfo/changeAvatar`, params);
+  },
+  changeUserInfo(params) {
+    return axios.post(`${base.requestUrl}/userinfo/changeUserInfo`, params);
+  },
+  changePassword(params) {
+    return axios.post(`${base.requestUrl}/userinfo/changePassword`, params);
   }
+
 }
 
 export default user;

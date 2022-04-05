@@ -3,6 +3,7 @@ package com.arslinthboot.config.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,34 +35,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
-        http.authorizeRequests().
-                anyRequest().
-                //所有请求都需要被认证
-//                authenticated().
-                //所有请求通过
-                 permitAll().
-                //未登入和未授权时的处理
-                        and().exceptionHandling().authenticationEntryPoint(jwtAuthorizedEntryPoint).
-                //关闭session  用token验证，所以关闭session
-                and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
-                and().addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+        //放开所有请求
+        http.authorizeRequests().anyRequest().permitAll();
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        // 不允许cookies跨域
-        configuration.setAllowCredentials(false);
-        // 预检请求的缓存时间（秒），即在这个时间段里，对于相同的跨域请求不会再预检了
-        configuration.setMaxAge(18000L);
-        // 允许访问的头信息,*表示全部
-        configuration.addAllowedHeader("*");
-        // 允许向该服务器提交请求的URI，*表示全部允许。。这里尽量限制来源域，比如http://xxxx:8080,以降低安全风险。。
-        configuration.setAllowedOrigins(Collections.singletonList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        //所有请求都需要被认证
+//        http.authorizeRequests(). antMatchers(HttpMethod.GET,
+//                        "/slider/image",
+//                        "/user/logout",
+//                        "/loadImg/**",
+//                        "/file/**").permitAll()
+//                .antMatchers(HttpMethod.POST,
+//                        "/user/login").permitAll().
+//                anyRequest().
+//                authenticated();
+
+        http.exceptionHandling().authenticationEntryPoint(jwtAuthorizedEntryPoint).
+                //关闭session  用token验证，所以关闭session
+                        and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
+                and().addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 }

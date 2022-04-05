@@ -3,6 +3,7 @@ package com.arslinthboot;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import com.arslinthboot.config.redis.RedisTool;
 import com.arslinthboot.dao.SysDictDao;
 import com.arslinthboot.dao.SysMenuDao;
 import com.arslinthboot.dao.SysRoleDao;
@@ -12,8 +13,8 @@ import com.arslinthboot.entity.SysMenu;
 import com.arslinthboot.entity.SysRole;
 import com.arslinthboot.entity.SysUser;
 import com.arslinthboot.service.SysUserService;
+import com.baomidou.mybatisplus.core.toolkit.AES;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.arslinthboot.common.Constants.LOGIN_TOKEN_KEY;
 import static com.arslinthboot.common.Constants.RESET_CODE;
 
 /**
@@ -43,9 +45,6 @@ public class MyApplicationTest {
     private SysRoleDao sysRoleDao;
 
     @Autowired
-    private StringEncryptor encryptor;
-
-    @Autowired
     private SysUserDao sysUserDao;
 
     @Autowired
@@ -53,6 +52,9 @@ public class MyApplicationTest {
 
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private RedisTool redisTool;
 
     @Test
     void insertTest() {
@@ -111,8 +113,16 @@ public class MyApplicationTest {
 
     }
 
+    @Test
+    void redisTest() {
+        Set<String> strings = redisTool.scanKeys(LOGIN_TOKEN_KEY);
+        System.out.println(strings);
+    }
+
+
     public static void main(String[] args) {
-        DateTime parse = DateUtil.parse("2022-04-05");
-        System.out.println(parse);
+        // 生成 16 位随机 AES 密钥
+//        String randomKey = AES.generateRandomKey();
+
     }
 }

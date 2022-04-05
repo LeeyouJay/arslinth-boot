@@ -5,11 +5,11 @@ const role = {
   getRolePage(params, page) {
     return axios.post(`${base.requestUrl}/role/rolePage`, params, {params: page});
   },
-  getRoleList(params) {
-    return axios.post(`${base.requestUrl}/role/roleList`, params);
+  getRoleList() {
+    return axios.get(`${base.requestUrl}/role/roleList`);
   },
   getRoleById(params) {
-    return axios.get(`${base.requestUrl}/role/getRoleById/`+params);
+    return axios.get(`${base.requestUrl}/role/getRoleById/` + params);
   },
   addRole(params) {
     return axios.post(`${base.requestUrl}/role/add`, params);
@@ -27,7 +27,7 @@ const role = {
   getAuthTree(){
     return axios.get(`${base.requestUrl}/auth/authTree`);
   },
-  
-  
+
+
 }
 export default role;

@@ -32,15 +32,20 @@ public class SysRoleService {
         Page<SysRole> page = PageDomain.buildPage();
         String roleName = sysRole.getRoleName();
         if (StrUtil.isNotEmpty(roleName)) {
-            wrapper.and(w->w.like("role_name", roleName)
-                    .or().like("role",roleName));
+            wrapper.and(w -> w.like("role_name", roleName)
+                    .or().like("role", roleName));
         }
         wrapper.orderByAsc("index_num");
         return sysRoleDao.selectPage(page, wrapper);
     }
 
+    public List<SysRole> getRoleList() {
+        QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("index_num");
+        return sysRoleDao.selectList(wrapper);
+    }
 
-    public int addRole(SysRole sysRole){
+    public int addRole(SysRole sysRole) {
         return sysRoleDao.insert(sysRole);
     }
 
@@ -64,19 +69,5 @@ public class SysRoleService {
         QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
         wrapper.in("id", ids);
         return sysRoleDao.delete(wrapper);
-    }
-
-
-    public List<SysRole> getRoleList(SysRole sysRole) {
-        QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
-        String roleName = sysRole.getRoleName();
-        String role = sysRole.getRole();
-        if (StrUtil.isNotEmpty(roleName)) {
-            wrapper.eq("role_name",roleName);
-        }
-        if (StrUtil.isNotEmpty(role)) {
-            wrapper.eq("role",role);
-        }
-        return sysRoleDao.selectList(wrapper);
     }
 }

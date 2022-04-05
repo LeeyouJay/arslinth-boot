@@ -20,6 +20,11 @@ import java.util.Set;
 public class LoginUser<T> {
 
     /**
+     * 登入用户id
+     */
+
+    private String userId;
+    /**
      * 登入用户
      */
     private String username;

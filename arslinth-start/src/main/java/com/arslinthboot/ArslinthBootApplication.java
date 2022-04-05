@@ -18,6 +18,7 @@ import java.net.UnknownHostException;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @MapperScan("com.arslinthboot.dao")
 public class ArslinthBootApplication {
+
     //关闭druid使用ping方法超过60秒丢弃连接设置
 //    static {
 //        System.setProperty("druid.mysql.usePingMethod", "false");

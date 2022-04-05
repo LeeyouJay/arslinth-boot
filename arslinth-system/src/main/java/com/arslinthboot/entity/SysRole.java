@@ -28,6 +28,8 @@ public class SysRole extends BaseEntity {
 
     private Integer indexNum;
 
+    private Boolean strictly;
+
     private String roleName;
 
     private String notes;

@@ -15,10 +15,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
 
 import Pagination from '@/components/Pagination'
+import RightToolbar from "@/components/RightToolbar"
 
 Vue.use(ElementUI, {size: 'small'})
 
 Vue.component('Pagination', Pagination)
+Vue.component('RightToolbar', RightToolbar)
 
 Vue.prototype.$requestUrl = base.requestUrl
 Vue.prototype.$api = api

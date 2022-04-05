@@ -20,9 +20,12 @@
 		<el-container>
 			<el-header height="auto">
 				<div class="table-bar">
-					<el-button type="primary" icon="el-icon-plus" size="mini" plain @click="handleAdd">新增</el-button>
-					<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0"
-						@click="handleDelBatch">删除</el-button>
+					<div class="table-btn">
+						<el-button type="primary" icon="el-icon-plus" size="mini" plain @click="handleAdd">新增</el-button>
+						<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0"
+							@click="handleDelBatch">删除</el-button>
+					</div>
+					<right-toolbar @queryTable="getData" ></right-toolbar>
 				</div>
 			</el-header>
 			<el-main>
@@ -89,13 +92,8 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label="权限">
-							<el-checkbox v-model="authBox.expand" @change="handleCheckedTreeExpand">展开/折叠</el-checkbox>
-							<el-checkbox v-model="authBox.nodeAll" @change="handleCheckedTreeNodeAll">全选/全不选</el-checkbox>
-							<el-checkbox v-model="authBox.checkStrictly">父子联动</el-checkbox>
-							<el-tree :data="tableTree" node-key="id" ref="tree" empty-text="加载中，请稍候" show-checkbox 
-							:check-strictly="!authBox.checkStrictly" default-expand-all
-								check-on-click-node :render-content="renderContent"></el-tree>
+						<el-form-item label="权限" prop="permissions" :rules="[{required: true, message: '请选择角色权限', trigger: 'blur' }]">
+							<auth-select ref="authTree" :strictly.sync="form.strictly" :permissions.sync="form.permissions"></auth-select>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -109,8 +107,13 @@
 </template>
 
 <script>
+	
+	import AuthSelect from '../components/auth-select'
 	export default {
 		name: 'SysRole',
+		components: {
+			AuthSelect
+		},
 		data() {
 			return {
 				isAdd: false,
@@ -125,12 +128,13 @@
 					pageSize: 10
 				},
 				form: {
-					indexNum: 0
+					indexNum: 0,
+					strictly: false,
+					permissions: []
 				},
 				authBox: {
 					expand: true,
 					nodeAll: false,
-					checkStrictly: true
 				},
 				tableTree: [],
 				pageTotal: 0,
@@ -158,15 +162,8 @@
 					this.loading = false
 				})
 			},
-			getDataTree(){
-				this.$api.role.getAuthTree().then(res => {
-					if (res.code === 200) {
-						this.tableTree = res.data.tableTree
-					} else
-						this.$message.error(res.message)
-				})
-			},
 			submit() {
+				this.form.permissions = this.$refs.authTree.getAuths()
 				this.$refs.formTable.validate((valid) => {
 					if (valid) {
 						this.isAdd ? this.addRole() : this.editRole()
@@ -179,10 +176,11 @@
 			handleAdd() {
 				this.isAdd = true
 				this.dialogText = "添加用户"
-				this.getDataTree()
 				this.editVisible = true
+				this.authBox = Object.assign({}, this.$options.data().authBox);
 				this.$nextTick(() => {
 					this.form = Object.assign({}, this.$options.data().form);
+					this.$refs.authTree.init()
 					this.$refs.formTable.clearValidate()
 					this.form.indexNum = this.pageTotal + 1
 				})
@@ -193,9 +191,11 @@
 						this.form = res.data.role
 						this.isAdd = false
 						this.dialogText = "修改用户信息"
-						this.getDataTree()
 						this.editVisible = true
-						this.$nextTick(() => this.$refs.formTable.clearValidate())
+						this.$nextTick(() => {
+							this.$refs.authTree.init()
+							this.$refs.formTable.clearValidate()
+						})
 					} else
 						this.$message.error(res.message)
 				})
@@ -219,7 +219,6 @@
 					console.log(e)
 				})
 			},
-
 			addRole() {
 				this.$api.role.addRole(this.form).then(res => {
 					if (res.code === 200) {
@@ -280,26 +279,6 @@
 						break;
 				}
 			},
-			renderContent(h, { node, data, store }) {
-			        return (
-			          <span style="width: 100%;display: flex;justify-content: space-between;padding-right: 20px;">
-			            <span style="line-height: 2;">{node.label}</span>
-			            <span>
-			              <el-button size="mini" type="text" >{data.name}</el-button>
-			            </span>
-			          </span> );
-			 },
-			 // 树权限（展开/折叠）
-			 handleCheckedTreeExpand(value) {
-			     let treeList = this.tableTree;
-			     for (let i = 0; i < treeList.length; i++) {
-			       this.$refs.tree.store.nodesMap[treeList[i].id].expanded = value;
-			     }
-			 },
-			 // 树权限（全选/全不选）
-			 handleCheckedTreeNodeAll(value) {
-				this.$refs.tree.setCheckedNodes(value ? this.tableTree: []);
-			 },
 		}
 	}
 </script>

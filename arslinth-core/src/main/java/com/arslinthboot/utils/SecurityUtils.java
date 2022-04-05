@@ -48,15 +48,17 @@ public class SecurityUtils {
         LoginUser<?> loginUser = Convert.convert(LoginUser.class, credentials);
         return Convert.convert(c, loginUser.getUser());
     }
+
     /**
      * 初始化登入对象
      *
      * @Param [系统对象, 用户id, 用户类型, 权限, 数据权限]
      **/
-    public static <T> LoginUser<T> initLoginUser(T t, String userId, String userType, Set<String> auths, Set<String> dataScope) {
+    public static <T> LoginUser<T> initLoginUser(T t, String userId, String username, String userType, Set<String> auths, Set<String> dataScope) {
         return LoginUser.<T>builder()
                 .user(t)
-                .username(userId)
+                .userId(userId)
+                .username(username)
                 .userType(userType)
                 .dataScope(dataScope)
                 .permissions(auths).build();

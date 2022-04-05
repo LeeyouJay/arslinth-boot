@@ -1,6 +1,7 @@
 package com.arslinthboot.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.arslinthboot.annotation.RepeatSubmit;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.common.LoginBody;
 import com.arslinthboot.config.redis.RedisTool;
@@ -44,8 +45,6 @@ public class SysUserController {
     private final TokenService tokenService;
 
     private final SysUserService sysUserService;
-
-    private final UploadService uploadService;
 
     private final SysLogService sysLogService;
 
@@ -115,7 +114,7 @@ public class SysUserController {
         Set<String> auths = user.getPermissions();
         //初始化登入信息
         LoginUser<SysUser> loginUser =
-                SecurityUtils.initLoginUser(user, user.getId(), SYSTEM_USER, auths,null);
+                SecurityUtils.initLoginUser(user, user.getId(), user.getUsername(), SYSTEM_USER, auths, null);
 
         //生成token返回前台
         String jwtToken = tokenService.createJwtToken(loginUser);
@@ -130,7 +129,7 @@ public class SysUserController {
     public ApiResponse logout(HttpServletRequest request) {
         LoginUser<SysUser> loginUser = SecurityUtils.getLoginUser();
         if (loginUser == null) {
-            return ApiResponse.code(FAIL).message("注销失败，用户未登入");
+            return ApiResponse.code(FAIL).message("用户登入状态已过期！");
         }
         LoginLog loginLog = LoginLog.builder()
                 .username(loginUser.getUser().getUsername())
@@ -149,6 +148,7 @@ public class SysUserController {
      * 获取用户列表
      */
     @PostMapping("/userPage")
+    @PreAuthorize("@auth.hasAnyAuthority('SysUser')")
     public ApiResponse userPage(@RequestBody SysUser sysUser) {
         Page<SysUser> userPage = sysUserService.getUserPage(sysUser);
         return ApiResponse.code(SUCCESS)
@@ -161,7 +161,9 @@ public class SysUserController {
     /**
      * 添加用户
      */
+    @RepeatSubmit
     @PostMapping("/add")
+    @PreAuthorize("@auth.hasAnyAuthority('AddUser')")
     public ApiResponse addUser(@RequestBody SysUser sysUser) {
         sysUserService.addUser(sysUser);
         return ApiResponse.code(SUCCESS).message("添加成功！");
@@ -171,13 +173,19 @@ public class SysUserController {
      * 根据id查询用户
      */
     @GetMapping("/getUserById/{id}")
+    @PreAuthorize("@auth.hasAnyAuthority('SysUser')")
     public ApiResponse getUserById(@PathVariable("id") String id) {
         return ApiResponse.code(SUCCESS).data("user", sysUserService.getUserById(id));
     }
 
+    /**
+     * 修改用户信息
+     */
+    @RepeatSubmit
     @PostMapping("/edit")
+    @PreAuthorize("@auth.hasAnyAuthority('EditUser')")
     public ApiResponse editUser(@RequestBody SysUser sysUser) {
-        int i = sysUserService.editUser(sysUser);
+        int i = sysUserService.setPermissions(sysUser);
         if (i == 1) {
             return ApiResponse.code(SUCCESS).message("修改成功！");
         } else {
@@ -186,9 +194,27 @@ public class SysUserController {
     }
 
     /**
+     * 设置用户操作权限
+     */
+    @RepeatSubmit
+    @PostMapping("/setPermissions")
+    @PreAuthorize("@auth.hasAnyAuthority('SetPermissions')")
+    public ApiResponse setPermissions(@RequestBody SysUser sysUser) {
+        int i = sysUserService.editUser(sysUser);
+        if (i == 1) {
+            return ApiResponse.code(SUCCESS).message("修改成功！");
+        } else {
+            return ApiResponse.code(FAIL).message("修改出现异常：" + i);
+        }
+    }
+
+
+    /**
      * 删除用户
      */
+    @RepeatSubmit
     @GetMapping("/del/{id}")
+    @PreAuthorize("@auth.hasAnyAuthority('DelUser')")
     public ApiResponse delUser(@PathVariable String id) {
         int i = sysUserService.delById(id);
         if (i == 1) {
@@ -204,7 +230,9 @@ public class SysUserController {
     /**
      * 批量删除用户
      */
+    @RepeatSubmit
     @PostMapping("/delUserByIds")
+    @PreAuthorize("@auth.hasAnyAuthority('DelUser')")
     public ApiResponse delUserByIds(@RequestBody List<String> ids) {
         int i = sysUserService.delByIds(ids);
         if (i > 0) {
@@ -219,7 +247,9 @@ public class SysUserController {
     /**
      * 重置密码
      */
+    @RepeatSubmit
     @PostMapping("/resetPassword")
+    @PreAuthorize("@auth.hasAnyAuthority('ResetPassword')")
     public ApiResponse resetPassword(@RequestBody SysUser sysUser) {
         int i = sysUserService.resetPassword(sysUser);
         if (i == 1) {
@@ -227,55 +257,6 @@ public class SysUserController {
         } else {
             return ApiResponse.code(FAIL).message("密码重置失败！");
         }
-    }
-
-    /**
-     * 修改密码
-     */
-    @GetMapping("/changePassword")
-    public ApiResponse changePassword() {
-
-        return ApiResponse.code(FAIL).message("更改失败！");
-
-    }
-
-    /**
-     * 获取当前用户信息
-     */
-    @GetMapping("/getUserInfo")
-    @PreAuthorize("hasAnyAuthority('dashboard')")
-    public ApiResponse getUserInfo() {
-
-        return ApiResponse.code(SUCCESS).message("数据请求成功！");
-    }
-
-
-    /**
-     * 当前用户更改信息
-     */
-    @PostMapping("/changeUserInfo")
-    @PreAuthorize("hasAnyAuthority('dashboard')")
-    public ApiResponse changeUserInfo(@RequestBody SysUser sysUser) {
-
-        int i = sysUserService.changeUserInfo(sysUser);
-        if (i == 1) {
-            return ApiResponse.code(SUCCESS).message("更改成功！");
-        } else if (i == -1) {
-            return ApiResponse.code(FAIL).message("手机号或邮箱已被绑定！");
-        } else {
-            return ApiResponse.code(FAIL).message("更改失败！");
-        }
-    }
-
-    /**
-     * 修改头像
-     */
-    @PostMapping("/changeAvatar")
-    @PreAuthorize("hasAnyAuthority('dashboard')")
-    public ApiResponse changeAvatar(@RequestParam("avatarfile") MultipartFile file) {
-
-        return ApiResponse.code(FAIL).message("更改失败！");
-
     }
 
 }

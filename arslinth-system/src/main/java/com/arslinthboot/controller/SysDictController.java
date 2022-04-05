@@ -1,5 +1,6 @@
 package com.arslinthboot.controller;
 
+import com.arslinthboot.annotation.RepeatSubmit;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.entity.SysDict;
 import com.arslinthboot.service.SysDictService;
@@ -7,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +33,9 @@ public class SysDictController {
      * 添加字典
      *
      **/
+    @RepeatSubmit
     @PostMapping("/add")
+    @PreAuthorize("@auth.hasAnyAuthority('AddDict')")
     public ApiResponse addDict(@RequestBody SysDict sysDict) {
         sysDictService.addDict(sysDict);
         return ApiResponse.code(SUCCESS).message("添加成功！");
@@ -42,6 +46,7 @@ public class SysDictController {
      *
      **/
     @PostMapping("/typePage")
+    @PreAuthorize("@auth.hasAnyAuthority('SysDict')")
     public ApiResponse getTypePage(@RequestBody SysDict sysDict) {
         Page<SysDict> dictType = sysDictService.getTypePage(sysDict);
         return ApiResponse.code(SUCCESS)
@@ -55,6 +60,7 @@ public class SysDictController {
      * 分页查询字典值
      */
     @PostMapping("/valuePage")
+    @PreAuthorize("@auth.hasAnyAuthority('SysDict')")
     public ApiResponse getValuePage(@RequestBody SysDict sysDict) {
         Page<SysDict> dictType = sysDictService.getValuePage(sysDict);
         return ApiResponse.code(SUCCESS)
@@ -92,6 +98,7 @@ public class SysDictController {
      * 修改字典值
      */
     @PostMapping("/edit")
+    @PreAuthorize("@auth.hasAnyAuthority('EditDict')")
     public ApiResponse editDict(@RequestBody SysDict sysDict) {
         int i = sysDictService.editDict(sysDict);
         if (i == 1) {
@@ -105,6 +112,7 @@ public class SysDictController {
      * 删除字典
      */
     @GetMapping("/del/{id}")
+    @PreAuthorize("@auth.hasAnyAuthority('DelDict')")
     public ApiResponse delDict(@PathVariable String id) {
         int i = sysDictService.delById(id);
         if (i == 1) {
@@ -120,6 +128,7 @@ public class SysDictController {
      * 批量删除字典值
      */
     @PostMapping("/delDictByIds")
+    @PreAuthorize("@auth.hasAnyAuthority('DelDict')")
     public ApiResponse delDictByIds(@RequestBody List<String> ids) {
         int i = sysDictService.delByIds(ids);
         if (i > 0) {

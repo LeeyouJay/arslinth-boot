@@ -23,30 +23,25 @@ import java.util.Random;
 @Slf4j
 public class SliderImgUtil {
 
-
-    //图片的路径
-    private String basePath;
-
     //图片的最大大小
-    private static int IMAGE_MAX_WIDTH = 300;
-    private static int IMAGE_MAX_HEIGHT = 260;
+    private static final int IMAGE_MAX_WIDTH = 300;
+    private static final int IMAGE_MAX_HEIGHT = 260;
     //抠图上面的半径
-    private static int RADIUS = IMAGE_MAX_WIDTH / 20;
+    private static final int RADIUS = IMAGE_MAX_WIDTH / 20;
     //抠图区域的高度
-    private static int CUT_HEIGHT = IMAGE_MAX_WIDTH / 5;
+    private static final int CUT_HEIGHT = IMAGE_MAX_WIDTH / 5;
     //抠图区域的宽度
-    private static int CUT_WIDTH = IMAGE_MAX_WIDTH / 5;
+    private static final int CUT_WIDTH = IMAGE_MAX_WIDTH / 5;
     //被扣地方填充的颜色
-    private static int FLAG = 0x778899;
+    private static final int FLAG = 0x778899;
 
     //抠图部分凸起的方向
     private Location location;
 
     ImageResult imageResult = new ImageResult();
 
-    //
-    private String ORI_IMAGE_KEY = "ORI_IMAGE_KEY";
-    private String CUT_IMAGE_KEY = "CUT_IMAGE_KEY";
+    private final String ORI_IMAGE_KEY = "ORI_IMAGE_KEY";
+    private final String CUT_IMAGE_KEY = "CUT_IMAGE_KEY";
 
     //抠图区的原点坐标(x0,y0)
 
@@ -72,10 +67,6 @@ public class SliderImgUtil {
     }
 
     ImageMessage imageMessage = new ImageMessage();
-
-    public SliderImgUtil(String basePath) {
-        this.basePath = basePath;
-    }
 
     public SliderImgUtil() {
 

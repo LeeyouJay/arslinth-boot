@@ -2,10 +2,7 @@ package com.arslinthboot.config.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundSetOperations;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -232,4 +229,27 @@ public class RedisTool {
     public Collection<String> keys(final String pattern) {
         return redisTemplate.keys(pattern);
     }
+
+
+    /**
+     * scan方式获取所有的key
+     */
+    public Set<String> scanKeys(String prefix) {
+        Set<String> res = new HashSet<>();
+        ScanOptions scanOptions = ScanOptions.scanOptions().match(prefix + "*").count(Integer.MAX_VALUE).build();
+        try {
+            redisTemplate.execute((RedisCallback<Set<String>>) connection -> {
+                Cursor<byte[]> cursor = connection.scan(scanOptions);
+                while (cursor.hasNext()) {
+                    String k = new String(cursor.next());
+                    res.add(k);
+                }
+                return res;
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
 }

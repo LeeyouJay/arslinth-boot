@@ -9,6 +9,7 @@ import com.arslinthboot.service.SysLogService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class SysLogController {
      *
      **/
     @PostMapping("/operLogPage")
+    @PreAuthorize("@auth.hasAnyAuthority('OperLog')")
     public ApiResponse operLogPage(@RequestBody OperLog operLog) {
         Page<OperLog> listPage = sysLogService.operLogPage(operLog);
         return ApiResponse.code(SUCCESS)
@@ -50,6 +52,7 @@ public class SysLogController {
      *
      **/
     @PostMapping("/loginLogPage")
+    @PreAuthorize("@auth.hasAnyAuthority('LoginLog')")
     public ApiResponse loginLogPage(@RequestBody LoginLog loginLog) {
         Page<LoginLog> listPage = sysLogService.loginLogPage(loginLog);
         return ApiResponse.code(SUCCESS)
@@ -65,6 +68,7 @@ public class SysLogController {
      **/
     @Log("删除操作日志")
     @PostMapping("/delOperLog")
+    @PreAuthorize("@auth.hasAnyAuthority('DelOperLog')")
     public ApiResponse delOperLog(@RequestBody List<String> ids) {
         int i = sysLogService.delOperLogByIds(ids);
         if (i>0) {
@@ -80,6 +84,7 @@ public class SysLogController {
      **/
     @Log("删除全部操作日志")
     @GetMapping("/delAllOperLog")
+    @PreAuthorize("@auth.hasAnyAuthority('DelOperLog')")
     public ApiResponse delAllOperLog() {
         int i = sysLogService.delAllOperLog();
         if (i>0) {
@@ -95,6 +100,7 @@ public class SysLogController {
      **/
     @Log("删除登入日志")
     @PostMapping("/delLoginLog")
+    @PreAuthorize("@auth.hasAnyAuthority('DelLoginLog')")
     public ApiResponse delLoginLog(@RequestBody List<String> ids) {
         int i = sysLogService.delLoginLogByIds(ids);
         if (i>0) {
@@ -109,6 +115,7 @@ public class SysLogController {
      *
      **/
     @Log("删除全部登入日志")
+    @PreAuthorize("@auth.hasAnyAuthority('DelLoginLog')")
     @GetMapping("/delAllLoginLog")
     public ApiResponse delAllLoginLog() {
         int i = sysLogService.delAllLoginLog();

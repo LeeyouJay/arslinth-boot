@@ -27,8 +27,11 @@
 			<el-container>
 				<el-header height="auto">
 					<div class="table-bar">
-						<el-button type="primary" icon="el-icon-plus" size="mini" plain @click="handleAdd">新增</el-button>
-						<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0" @click="handleDelBatch">删除</el-button>
+						<div class="table-btn">
+							<el-button type="primary" icon="el-icon-plus" size="mini" plain @click="handleAdd">新增</el-button>
+							<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0" @click="handleDelBatch">删除</el-button>
+						</div>
+						<right-toolbar @queryTable="getData" ></right-toolbar>
 					</div>
 				</el-header>
 				<el-main>
@@ -222,7 +225,6 @@
 					if(res.code === 200 ){
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
 					}else
 						this.$message.error(res.message)
 				})

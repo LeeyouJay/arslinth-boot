@@ -19,24 +19,27 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       if (!store.getters.hasGetRoute) {
-        store.dispatch("getRouters").then(res => {
-          res.push({
-            path: '*',
-            redirect: '/404',
-            component: Layout,
-            hidden: true,
-            children: [{
-              path: '404',
-              name: 'Page404',
-              component: () => import('../views/error-page/Page404'),
-              meta: {title: '资源不存在', keepAlive: true}
-            }]
+        store.dispatch('getUserInfo').then(() => {
+          store.dispatch("getRouters").then(res => {
+            res.push({
+              path: '*',
+              redirect: '/404',
+              component: Layout,
+              hidden: true,
+              children: [{
+                path: '404',
+                name: 'Page404',
+                component: () => import('../views/error-page/Page404'),
+                meta: {title: '资源不存在', keepAlive: true}
+              }]
+            })
+            router.addRoutes(res)
+            next({...to, replace: true})
+            NProgress.done()
           })
-          router.addRoutes(res)
-          next({...to, replace: true})
-          NProgress.done()
+        }).catch(err => {
+          console.log(err)
         })
-
       } else {
         next()
         NProgress.done()

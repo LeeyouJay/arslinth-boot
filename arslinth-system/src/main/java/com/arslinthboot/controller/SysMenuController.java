@@ -4,9 +4,11 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
+import com.arslinthboot.annotation.RepeatSubmit;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.config.tokenConfig.LoginUser;
 import com.arslinthboot.entity.SysMenu;
+import com.arslinthboot.entity.SysUser;
 import com.arslinthboot.service.SysMenuService;
 import com.arslinthboot.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +36,9 @@ public class SysMenuController {
     /**
      * 添加菜单
      */
+    @RepeatSubmit
     @PostMapping("/add")
+    @PreAuthorize("@auth.hasAnyAuthority('AddMenu')")
     public ApiResponse addMenu(@RequestBody SysMenu menu) {
         sysMenuService.addMenu(menu);
         return ApiResponse.code(SUCCESS).message("添加成功！");
@@ -43,7 +47,9 @@ public class SysMenuController {
     /**
      * 删除菜单
      */
+    @RepeatSubmit
     @GetMapping("/del/{id}")
+    @PreAuthorize("@auth.hasAnyAuthority('DelMenu')")
     public ApiResponse delMenu(@PathVariable("id") String id) {
         sysMenuService.delMenu(id);
         return ApiResponse.code(SUCCESS).message("删除成功！");
@@ -52,7 +58,9 @@ public class SysMenuController {
     /**
      * 修改菜单
      */
+    @RepeatSubmit
     @PostMapping("/edit")
+    @PreAuthorize("@auth.hasAnyAuthority('EditMenu')")
     public ApiResponse editMenu(@RequestBody SysMenu menu) {
         sysMenuService.editMenu(menu);
         return ApiResponse.code(SUCCESS).message("修改成功！");
@@ -62,6 +70,7 @@ public class SysMenuController {
      * 根据名称查询菜单列表
      */
     @GetMapping({"/list/{menuName}", "/list"})
+    @PreAuthorize("@auth.hasAnyAuthority('SysMenu')")
     public ApiResponse list(@PathVariable(required = false) String menuName) {
         List<SysMenu> list = sysMenuService.getMenuList(null,menuName, false);
         String rootId = list.stream().min(Comparator.comparing(SysMenu::getLevel))
@@ -73,6 +82,7 @@ public class SysMenuController {
      * 根据id查询菜单
      */
     @GetMapping("/getMenuById/{id}")
+    @PreAuthorize("@auth.hasAnyAuthority('SysMenu')")
     public ApiResponse getMenuById(@PathVariable("id") String id) {
         return ApiResponse.code(SUCCESS).data("menu", sysMenuService.getMenuById(id));
     }
@@ -84,7 +94,7 @@ public class SysMenuController {
     @GetMapping("/generateRoutes")
     public ApiResponse generateRoutes() {
         //根据权限生成路由
-        LoginUser<?> loginUser = SecurityUtils.getLoginUser();
+        LoginUser<SysUser> loginUser = SecurityUtils.getLoginUser();
         Set<String> auths = Optional.ofNullable(loginUser).map(LoginUser::getPermissions).orElse(new HashSet<>());
         if (CollUtil.isEmpty(auths)){
             return ApiResponse.code(SUCCESS).data("routes", auths);
@@ -98,7 +108,7 @@ public class SysMenuController {
         //排序字段
         config.setWeightKey("indexNum");
         //最大递归深度
-        config.setDeep(3);
+        config.setDeep(4);
 
         return TreeUtil.build(list, rootId, config, (treeNode, tree) -> {
             tree.setId(treeNode.getId());

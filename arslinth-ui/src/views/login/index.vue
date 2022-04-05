@@ -3,7 +3,6 @@
 		<div class="form-box">
 			<div class="form-title">
 				<img src="@/assets/img/logo.png" alt="icon">
-				<p>账 号 登 录</p>
 			</div>
 			<el-tabs v-model="activeName" @tab-click="handleClick">
 				<el-tab-pane label="账号密码登入" name="first">
@@ -18,11 +17,13 @@
 								placeholder="请输入密码" prefix-icon="el-icon-lock" @keyup.enter.native="verifyForm" />
 						</el-form-item>
 						<el-form-item>
-							<el-button :loading="loading" size="small" type="primary" style="width:100%;"
-								@click.native.prevent="verifyForm">
-								<span v-if="!loading">登 录</span>
-								<span v-else>登 录 中...</span>
-							</el-button>
+							<div class="login-btn">
+								<el-button :loading="loading"  type="primary"
+									@click.native.prevent="verifyForm">
+									<span v-if="!loading">登 录</span>
+									<span v-else>登 录 中...</span>
+								</el-button>
+							</div>
 						</el-form-item>
 					</el-form>
 				</el-tab-pane>
@@ -41,11 +42,10 @@
 </template>
 
 <script>
-	import {
-		setToken
-	} from '@/utils/cookie'
 	import Background from '@/assets/img/login-background.jpg'
 	import Captcha from './captcha.vue'
+	import { doSha256 } from '@/utils/validate'
+	
 	export default {
 		name: 'Login',
 		components: {
@@ -102,10 +102,10 @@
 					captchaUUid: this.loginForm.captchaUUid,
 					moveX: left
 				}
-				user.password = this.setSha256(user.password);
+				user.password = doSha256(user.password);
 				this.handleLogin(user)
 			},
-			handleLogin(user){
+			handleLogin(user) {
 				this.$api.user.login(user).then(res=>{
 					if(res.code == 200){
 						this.$refs.dialogopen.handleSuccess()
@@ -131,10 +131,6 @@
 			handleClick(tab, event) {
 				
 			},
-			setSha256(password) {
-				let sha256 = require("js-sha256").sha256
-				return sha256(password)
-			},
 		}
 	}
 </script>
@@ -147,21 +143,28 @@
 		width: 100%;
 		height: 100vh;
 		background-size: cover;
-
 		.form-box {
 			width: 320px;
 			padding: 15px 30px 20px;
-			background: #fff;
 			border-radius: 4px;
 			box-shadow: 0 15px 30px 0 rgba(0, 0, 1, .1);
-
+			background: rgba(255, 255, 255, 30%);
+			overflow: hidden;
 			.form-title {
-				margin: 0 auto 35px;
+				margin: 0 auto 0px;
 				text-align: center;
 				color: #707070;
 				font-size: 18px;
 				letter-spacing: 2px;
 			}
 		}
+	}
+	.login-btn {
+		text-align: center;
+	}
+	.login-btn button {
+		width: 35%;
+		height: 36px;
+		margin-bottom: 10px;
 	}
 </style>

@@ -32,7 +32,7 @@ public class DateFormatConfig {
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilder() {
-        JsonDeserializer<Date> jsonDeserializer = new JsonDeserializer<>() {
+        JsonDeserializer<Date> jsonDeserializer = new JsonDeserializer<Date>() {
             @Override
             public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
                 String originDate = jsonParser.getText();

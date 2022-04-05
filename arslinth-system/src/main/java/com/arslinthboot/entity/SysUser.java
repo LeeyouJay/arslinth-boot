@@ -28,6 +28,8 @@ public class SysUser extends BaseEntity {
     @TableField(typeHandler = JacksonTypeHandler.class)
     private Set<String> roleIds;
 
+    private Integer indexNum;
+
     private String username;
 
     private String password;
@@ -48,6 +50,8 @@ public class SysUser extends BaseEntity {
 
     @TableField(typeHandler = JacksonTypeHandler.class)
     private Set<String> permissions;
+
+    private Boolean strictly;
 
     private String notes;
 

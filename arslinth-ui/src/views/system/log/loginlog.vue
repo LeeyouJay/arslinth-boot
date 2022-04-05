@@ -37,8 +37,11 @@
 		<el-container>
 			<el-header height="auto">
 				<div class="table-bar">
-					<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0" @click="handleDel">删除</el-button>
-					<el-button type="warning" icon="el-icon-magic-stick" size="mini" plain @click="handleDelAll">清空日志</el-button>
+					<div class="table-btn">
+						<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0" @click="handleDel">删除</el-button>
+						<el-button type="warning" icon="el-icon-magic-stick" size="mini" plain @click="handleDelAll">清空日志</el-button>
+					</div>
+					<right-toolbar @queryTable="getData" ></right-toolbar>
 				</div>
 			</el-header>
 			<el-main>

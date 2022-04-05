@@ -61,7 +61,7 @@ export const constantRoutes = [{
     children: [{
       path: 'user-center',
       name: 'UserCenter',
-      component: () => import('../views/system/user/UserCenter'),
+      component: () => import('../views/system/userinfo'),
       meta: {
         title: '个人中心'
       }

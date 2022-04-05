@@ -20,7 +20,10 @@
 		<el-container>
 			<el-header height="auto">
 				<div class="table-bar">
-					<el-button type="primary" icon="el-icon-plus"  size="mini" plain @click="handleAdd">新增</el-button>
+					<div class="table-btn">
+						<el-button type="primary" icon="el-icon-plus"  size="mini" plain @click="handleAdd">新增</el-button>
+					</div>
+					<right-toolbar @queryTable="handleQuery" ></right-toolbar>
 				</div>
 			</el-header>
 			<el-main>
@@ -79,7 +82,7 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="菜单名称" key="3" prop="label" :rules="[{required: true,message: '请输入菜单名称'}]">
+						<el-form-item label="菜单名称" key="3" prop="label" :rules="[{required: true, message: '请输入菜单名称', trigger: 'blur' }]">
 							<el-input v-model="form.label"></el-input>
 						</el-form-item>
 					</el-col>
@@ -89,22 +92,22 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12" v-if="form.menuType != 'F'">
-						<el-form-item label="路径地址" key="5" prop="path" :rules="[{required: true,message: '请输入路径地址'}]">
+						<el-form-item label="路径地址" key="5" prop="path" :rules="[{required: true,message: '请输入路径地址', trigger: 'blur' }]">
 							<el-input v-model="form.path"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
-						<el-form-item label="权限字符" key="6" prop="name" :rules="[{required: true,message: '请输入权限字符'}]">
+						<el-form-item label="权限字符" key="6" prop="name" :rules="[{required: true,message: '请输入权限字符', trigger: 'blur' }]">
 							<el-input v-model="form.name"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12" v-if="form.menuType == 'N'">
-						<el-form-item label="地址链接" key="7" prop="link" :rules="[{required: true,message: '请输入地址链接'}]">
+						<el-form-item label="地址链接" key="7" prop="link" :rules="[{required: true,message: '请输入地址链接', trigger: 'blur' }]">
 							<el-input v-model="form.link"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12" v-if="form.menuType == 'C'">
-						<el-form-item label="组件地址" key="8" prop="component" :rules="[{required: true,message: '请输入路径地址'}]">
+						<el-form-item label="组件地址" key="8" prop="component" :rules="[{required: true,message: '请输入路径地址', trigger: 'blur' }]">
 							<el-input v-model="form.component"></el-input>
 						</el-form-item>
 					</el-col>
@@ -205,6 +208,7 @@
 				this.formVisible = true
 				this.$nextTick(()=>{
 					this.form = Object.assign({},this.$options.data().form);
+					this.label = this.$options.data().label
 					this.$refs.formTable.clearValidate()
 				})
 			},
