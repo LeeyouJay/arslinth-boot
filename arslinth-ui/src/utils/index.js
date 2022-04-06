@@ -1,3 +1,6 @@
+
+import store from '@/store'
+
 const utils = {
   //对象深拷贝
   deepClone(source) {
@@ -64,6 +67,16 @@ const utils = {
       }
     }
     return uniform(innerText)
+  },
+  checkPermi(auths) {
+    if (auths && auths instanceof Array && auths.length > 0) {
+    	const permissions = store.state.user.permissions || []
+    	return permissions.some(permission => {
+        return permission === "*" || auths.includes(permission)
+      })
+    } else {
+      return false
+    }
   },
 }
 

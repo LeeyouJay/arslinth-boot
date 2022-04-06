@@ -40,7 +40,7 @@
 					<el-table-column label="操作" width="180" fixed="right">
 						<template slot-scope="scope">
 							<el-button type="text" icon="el-icon-solid" @click="handleEdit(scope.row)">修改</el-button>
-							<el-button type="text" icon="el-icon-delete" class="red" @click="handleDel(scope.row)">
+							<el-button type="text" icon="el-icon-delete" class="red" v-hasPermi="['DelRole']" @click="handleDel(scope.row)">
 								删除
 							</el-button>
 							<el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)">
@@ -62,11 +62,11 @@
 			</el-main>
 		</el-container>
 		<!-- 编辑弹出框 -->
-		<el-dialog :visible.sync="editVisible" width="35%" append-to-body center>
+		<el-dialog :visible.sync="formVisible" width="35%" append-to-body center>
 			<template slot="title">
 				<span class="dialog-title">{{dialogText}}</span>
 			</template>
-			<el-form ref="formTable" :model="form" label-width="80px">
+			<el-form ref="formTable" :model="form" label-width="80px" :disabled="!$utils.checkPermi(['AddRole','EditRole'])">
 				<el-row :gutter="20">
 					<el-col :span="12">
 						<el-form-item label="角色名称" prop="roleName"
@@ -92,23 +92,38 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label="权限" prop="permissions" :rules="[{required: true, message: '请选择角色权限', trigger: 'blur' }]">
-							<auth-select ref="authTree" :strictly.sync="form.strictly" :permissions.sync="form.permissions"></auth-select>
+						<el-form-item label="权限">
+							<auth-select ref="authTree" :disabled="!$utils.checkPermi(['AddRole','EditRole'])"
+							:strictly.sync="form.strictly" :permissions.sync="form.permissions"></auth-select>
 						</el-form-item>
 					</el-col>
 				</el-row>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
-				<el-button @click="editVisible = false">取 消</el-button>
+				<el-button @click="formVisible = false">取 消</el-button>
 				<el-button type="primary" @click="submit">确 定</el-button>
+			</span>
+		</el-dialog>
+
+		<!-- 更改权限 -->
+		<el-dialog v-dialogDrag :visible.sync="authVisible" width="35%" append-to-body center>
+			<template slot="title">
+				<span class="dialog-title">{{authDialogText}}</span>
+			</template>
+			<auth-select ref="authTree" positiion='center':disabled="!$utils.checkPermi(['AddRole','EditRole'])"
+			:strictly.sync="form.strictly" :permissions.sync="form.permissions"></auth-select>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="authVisible = false">取 消</el-button>
+				<el-button type="primary" @click="authSubmit">确 定</el-button>
 			</span>
 		</el-dialog>
 	</div>
 </template>
 
 <script>
-	
+
 	import AuthSelect from '../components/auth-select'
+
 	export default {
 		name: 'SysRole',
 		components: {
@@ -118,7 +133,8 @@
 			return {
 				isAdd: false,
 				loading: false,
-				editVisible: false,
+				formVisible: false,
+				authVisible: false,
 				tableData: [],
 				queryParams: {
 					roleName: '',
@@ -128,17 +144,16 @@
 					pageSize: 10
 				},
 				form: {
-					indexNum: 0,
-					strictly: false,
-					permissions: []
+					indexNum: 0
 				},
 				authBox: {
 					expand: true,
 					nodeAll: false,
+					checkStrictly: true
 				},
-				tableTree: [],
 				pageTotal: 0,
 				dialogText: '添加角色',
+				authDialogText: '更改角色权限',
 				ids: []
 			}
 		},
@@ -163,7 +178,24 @@
 				})
 			},
 			submit() {
-				this.form.permissions = this.$refs.authTree.getAuths()
+				if (this.$refs.formTable.disabled) {
+					this.formVisible = false
+					return
+				}
+				this.$refs.formTable.validate((valid) => {
+					if (valid) {
+						this.isAdd ? this.addRole() : this.editRole()
+					} else {
+						console.log('验证不通过');
+						return false;
+					}
+				});
+			},
+			authSubmit() {
+				if (this.$refs.authTree.disabled) {
+					this.authVisible = false
+					return
+				}
 				this.$refs.formTable.validate((valid) => {
 					if (valid) {
 						this.isAdd ? this.addRole() : this.editRole()
@@ -176,12 +208,11 @@
 			handleAdd() {
 				this.isAdd = true
 				this.dialogText = "添加用户"
-				this.editVisible = true
-				this.authBox = Object.assign({}, this.$options.data().authBox);
+				this.formVisible = true
 				this.$nextTick(() => {
 					this.form = Object.assign({}, this.$options.data().form);
-					this.$refs.authTree.init()
 					this.$refs.formTable.clearValidate()
+					this.$refs.authTree.init()
 					this.form.indexNum = this.pageTotal + 1
 				})
 			},
@@ -191,8 +222,8 @@
 						this.form = res.data.role
 						this.isAdd = false
 						this.dialogText = "修改用户信息"
-						this.editVisible = true
-						this.$nextTick(() => {
+						this.formVisible = true
+						this.$nextTick(() =>{
 							this.$refs.authTree.init()
 							this.$refs.formTable.clearValidate()
 						})
@@ -219,12 +250,14 @@
 					console.log(e)
 				})
 			},
+
 			addRole() {
 				this.$api.role.addRole(this.form).then(res => {
 					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
+						this.authVisible = false
 					} else
 						this.$message.error(res.message)
 				})
@@ -234,7 +267,8 @@
 					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
+						this.authVisible = false
 					} else
 						this.$message.error(res.message)
 				})
@@ -244,7 +278,7 @@
 					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
 					} else
 						this.$message.error(res.message)
 				})
@@ -254,7 +288,7 @@
 					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
 					} else
 						this.$message.error(res.message)
 				})
@@ -270,7 +304,7 @@
 			handleCommand(command, row) {
 				switch (command) {
 					case "handleAuthRole":
-						console.log("分配权限")
+						this.handleAuthRole(row)
 						break;
 					case "handleAuthUser":
 						console.log("分配用户")
@@ -279,9 +313,23 @@
 						break;
 				}
 			},
+			async handleAuthRole(row) {
+				let res = await this.$api.role.getRoleById(row.id)
+				if(res.code == 200) {
+					this.form = res.data.role
+					this.authVisible = true
+					this.isAdd = false
+					this.authDialogText = "更改角色权限"
+					this.$nextTick(()=>{
+						this.$refs.authTree.init()
+					})
+				} else
+					this.$message.error(res.message)
+
+			},
 		}
 	}
 </script>
 <style scoped>
-	
+
 </style>

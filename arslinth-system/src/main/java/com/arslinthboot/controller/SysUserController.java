@@ -1,6 +1,7 @@
 package com.arslinthboot.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.arslinthboot.annotation.Log;
 import com.arslinthboot.annotation.RepeatSubmit;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.common.LoginBody;
@@ -161,6 +162,7 @@ public class SysUserController {
     /**
      * 添加用户
      */
+    @Log("'添加用户:'+#sysUser.username")
     @RepeatSubmit
     @PostMapping("/add")
     @PreAuthorize("@auth.hasAnyAuthority('AddUser')")
@@ -181,6 +183,7 @@ public class SysUserController {
     /**
      * 修改用户信息
      */
+    @Log("#{'修改用户'+#sysUser.username+'信息' + }")
     @RepeatSubmit
     @PostMapping("/edit")
     @PreAuthorize("@auth.hasAnyAuthority('EditUser')")
@@ -196,6 +199,7 @@ public class SysUserController {
     /**
      * 设置用户操作权限
      */
+    @Log("#{'设置'+#sysUser.username+'用户操作权限'}")
     @RepeatSubmit
     @PostMapping("/setPermissions")
     @PreAuthorize("@auth.hasAnyAuthority('SetPermissions')")
@@ -212,6 +216,7 @@ public class SysUserController {
     /**
      * 删除用户
      */
+    @Log("#{'删除用户id:'+#id}")
     @RepeatSubmit
     @GetMapping("/del/{id}")
     @PreAuthorize("@auth.hasAnyAuthority('DelUser')")
@@ -230,6 +235,7 @@ public class SysUserController {
     /**
      * 批量删除用户
      */
+    @Log("批量删除用户")
     @RepeatSubmit
     @PostMapping("/delUserByIds")
     @PreAuthorize("@auth.hasAnyAuthority('DelUser')")
@@ -247,6 +253,7 @@ public class SysUserController {
     /**
      * 重置密码
      */
+    @Log("#{'重置用户'+#sysUser.username+'密码'}")
     @RepeatSubmit
     @PostMapping("/resetPassword")
     @PreAuthorize("@auth.hasAnyAuthority('ResetPassword')")

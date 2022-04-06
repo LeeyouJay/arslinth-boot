@@ -11,7 +11,7 @@ import './router/auth'
 import './assets/icon-fonts/iconfont.css'
 import './assets/icon-fonts/iconfont'
 import 'element-ui/lib/theme-chalk/index.css'
-
+import directive from './directive'
 import ElementUI from 'element-ui'
 
 import Pagination from '@/components/Pagination'
@@ -26,6 +26,8 @@ Vue.prototype.$requestUrl = base.requestUrl
 Vue.prototype.$api = api
 Vue.prototype.$utils = utils
 Vue.config.productionTip = false
+
+Vue.use(directive)
 
 new Vue({
   router,

@@ -36,18 +36,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
         //放开所有请求
-        http.authorizeRequests().anyRequest().permitAll();
+//        http.authorizeRequests().anyRequest().permitAll();
 
         //所有请求都需要被认证
-//        http.authorizeRequests(). antMatchers(HttpMethod.GET,
-//                        "/slider/image",
-//                        "/user/logout",
-//                        "/loadImg/**",
-//                        "/file/**").permitAll()
-//                .antMatchers(HttpMethod.POST,
-//                        "/user/login").permitAll().
-//                anyRequest().
-//                authenticated();
+        http.authorizeRequests(). antMatchers(HttpMethod.GET,
+                        "/slider/image",
+                        "/user/logout",
+                        "/loadImg/**",
+                        "/file/**").permitAll()
+                .antMatchers(HttpMethod.POST,
+                        "/user/login").permitAll().
+                anyRequest().
+                authenticated();
 
         http.exceptionHandling().authenticationEntryPoint(jwtAuthorizedEntryPoint).
                 //关闭session  用token验证，所以关闭session

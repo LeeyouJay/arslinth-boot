@@ -45,6 +45,7 @@ const actions = {
         const result = filterChildren(routes)
         commit("SET_HASGETROUTE", true)
         commit("SET_ROUTES", result)
+        console.log(result)
         resolve(result)
       })
     })

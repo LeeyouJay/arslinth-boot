@@ -14,6 +14,7 @@ import com.arslinthboot.utils.IpInfoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,14 +39,13 @@ public class SysLogService {
     /**
      * 保存操作日志
      **/
-    public void saveOperLog(HttpServletRequest request, OperLog operLog) {
-        LoginUser<?> loginUser = SecurityUtils.getLoginUser();
-        String username = Optional.ofNullable(loginUser).map(LoginUser::getUsername).orElse("未知用户");
+    @Async
+    public void saveOperLog(OperLog operLog) {
         String methodName = operLog.getMethod();
         String[] result = StrUtil.subBetweenAll(methodName, "controller.", "(");
         operLog.setMethod(result[0]);
         // 获取ip地址
-        String ipAddr = IpInfoUtil.getIpAddr(request);
+        String ipAddr = operLog.getIpAddr();
         // 获取ip来源
         String ipSource = null;
         try {
@@ -53,16 +53,7 @@ public class SysLogService {
         } catch (Exception e) {
             ipSource = "未知IP";
         }
-        //获取浏览器信息
-        String browser = IpInfoUtil.getBrowser(request);
-        // 获取系统名称
-        String sysName = IpInfoUtil.getSystemName(request);
-
-        operLog.setUsername(username);
-        operLog.setBrowser(browser);
-        operLog.setIpAddr(ipAddr);
         operLog.setIpSource(ipSource);
-        operLog.setSysName(sysName);
         operLogDao.insert(operLog);
     }
     /**

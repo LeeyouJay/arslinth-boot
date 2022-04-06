@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {Message, MessageBox} from 'element-ui'
+import {Message, MessageBox, Notification} from 'element-ui'
 import {getToken, setToken, removeToken} from './utils/cookie'
 import base from './api/base.js'
 
@@ -28,6 +28,8 @@ service.interceptors.request.use(
   error => Promise.error(error)
 )
 
+// 是否显示重新登录
+let isReloginShow;
 // 响应拦截器
 service.interceptors.response.use(
   // 请求成功
@@ -41,37 +43,46 @@ service.interceptors.response.use(
       return Promise.resolve(res.data)
     }
     if (result.code == 401) {
-      MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
-        confirmButtonText: '重新登录',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        removeToken()
-        location.reload()
-      }).catch((e) => {
-        console.log(e)
-      });
-
+      if (!isReloginShow) {
+        isReloginShow = true;
+        MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          isReloginShow = false;
+          removeToken()
+          location.reload()
+        }).catch((e) => {
+          isReloginShow = false;
+          console.log(e)
+        });
+      }
     }
     return Promise.resolve(res.data)
   },
   // 请求失败
   error => {
     const {
-      response
+      response, message
     } = error;
     if (response) {
       errorHandle(response.status);
       return Promise.reject(response);
     } else {
-      // 处理断网的情况
-      // eg:请求超时或断网时，更新state的network状态
-      // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
       // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
-      console.log("断网！")
+      if (message == "Network Error") {
+        Notification.error({ title: '错误',message: "后端接口连接异常"})
+      }
+      else if (message.includes("timeout")) {
+        Notification.error({ title: '错误',message: "系统接口请求超时"})
+      }
+      else if (message.includes("Request failed with status code")) {
+        Notification.error({ title: '错误',message: "系统接口" + message.substr(message.length - 3) + "异常"})
+
+      }
       if (!window.navigator.onLine) {
-        Message.error('网络连接中断！服务器可能不在线。')
-        //store.commit('changeNetwork', false);
+        Notification.error({ title: '错误',message: "网络连接中断！服务器可能不在线。"})
       } else {
         return Promise.reject(error);
       }
@@ -81,16 +92,15 @@ service.interceptors.response.use(
 const errorHandle = (status) => {
   // 状态码判断
   switch (status) {
+
     case 400:
       Message.error('参数解析异常！')
       break;
     case 403:
       Message.error('访问拒绝！')
-      router.replace('/403')
       break;
     case 404:
       Message.error('请求资源不存在！')
-      router.replace('/404')
       break;
     case 500:
       Message.error('服务器错误！')

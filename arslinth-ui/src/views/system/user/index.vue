@@ -63,13 +63,13 @@
 						<el-table-column label="操作" width="180" fixed="right">
 							<template slot-scope="scope" v-if="scope.row.id != 1">
 								<el-button type="text" icon="el-icon-user" @click="handleEdit(scope.row)">修改</el-button>
-								<el-button type="text" icon="el-icon-delete" class="red" @click="handleDel(scope.row)">
+								<el-button type="text" icon="el-icon-delete" class="red" v-hasPermi="['DelUser']" @click="handleDel(scope.row)">
 									删除
 								</el-button>
 								<el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)">
 									<el-button type="text" icon="el-icon-d-arrow-right el-icon--right">更多</el-button>
 									<el-dropdown-menu slot="dropdown">
-										<el-dropdown-item command="handleResetPwd" icon="el-icon-key">重置密码</el-dropdown-item>
+										<el-dropdown-item command="handleResetPwd" icon="el-icon-key" v-hasPermi="['ResetPassword']">重置密码</el-dropdown-item>
 										<el-dropdown-item command="handleAuths" icon="el-icon-circle-check">操作权限</el-dropdown-item>
 										<el-dropdown-item command="handleDataScope" icon="el-icon-data-analysis">数据权限</el-dropdown-item>
 									</el-dropdown-menu>
@@ -85,11 +85,11 @@
 			</el-container>
 		</div>
 		<!-- 编辑弹出框 -->
-		<el-dialog :visible.sync="editVisible" width="35%" append-to-body center>
+		<el-dialog :visible.sync="formVisible" width="35%" append-to-body center>
 			<template slot="title">
 				<span class="dialog-title">{{dialogText}}</span>
 			</template>
-			<el-form ref="formTable" :model="form" label-width="80px">
+			<el-form ref="formTable" :model="form" label-width="80px" :disabled="!$utils.checkPermi(['EditUser'])">
 				<el-row :gutter="20">
 					<el-col :span="12">
 						<el-form-item label="登入账号" prop="username" :rules="[{required: true, message: '请输入登入账号', trigger: 'blur' }]">
@@ -150,17 +150,18 @@
 				</el-row>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
-				<el-button @click="editVisible = false">取 消</el-button>
+				<el-button @click="formVisible = false">取 消</el-button>
 				<el-button type="primary" @click="submit">确 定</el-button>
 			</span>
 		</el-dialog>
-		
+
 		<!-- 更改权限 -->
 		<el-dialog :visible.sync="authVisible" width="35%" append-to-body center>
 			<template slot="title">
 				<span class="dialog-title">{{authDialogText}}</span>
 			</template>
-			<auth-select ref="authTree" positiion='center'  :strictly.sync="form.strictly" :permissions.sync="form.permissions"></auth-select>
+			<auth-select ref="authTree" positiion='center':disabled="!$utils.checkPermi(['SetPermissions'])"
+			:strictly.sync="form.strictly" :permissions.sync="form.permissions"></auth-select>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="authVisible = false">取 消</el-button>
 				<el-button type="primary" @click="authSubmit">确 定</el-button>
@@ -170,8 +171,9 @@
 </template>
 
 <script>
-	
+
 	import AuthSelect from '../components/auth-select'
+
 	export default {
 		name: 'SysUser',
 		components: {
@@ -181,7 +183,7 @@
 			return {
 				isAdd: false,
 				loading: false,
-				editVisible: false,
+				formVisible: false,
 				tableData: [],
 				roleList:[],
 				queryParams: {
@@ -237,6 +239,10 @@
 				})
 			},
 			submit() {
+				if (this.$refs.formTable.disabled) {
+					this.formVisible = false
+					return
+				}
 				this.$refs.formTable.validate((valid) => {
 					if (valid) {
 						this.isAdd ? this.addUser() : this.editUser()
@@ -247,6 +253,11 @@
 				});
 			},
 			authSubmit() {
+				if (this.$refs.authTree.disabled) {
+					this.authVisible = false
+					return
+				}
+
 				this.$api.user.setPermissions(this.form).then(res => {
 					if (res.code === 200) {
 						this.$message.success(res.message)
@@ -258,7 +269,7 @@
 			handleAdd() {
 				this.isAdd = true
 				this.dialogText = "添加用户"
-				this.editVisible = true
+				this.formVisible = true
 				this.getRole()
 				this.$nextTick(() => {
 					this.form = Object.assign({}, this.$options.data().form)
@@ -273,7 +284,7 @@
 						this.form = res.data.user
 						this.isAdd = false
 						this.dialogText = "修改用户信息"
-						this.editVisible = true
+						this.formVisible = true
 						this.$nextTick(() => {
 							this.$refs.formTable.clearValidate()
 						})
@@ -309,7 +320,7 @@
 					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
 					} else
 						this.$message.error(res.message)
 				})
@@ -319,7 +330,7 @@
 					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
 					} else
 						this.$message.error(res.message)
 				})
@@ -329,7 +340,7 @@
 					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
 					} else
 						this.$message.error(res.message)
 				})
@@ -339,7 +350,7 @@
 					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
 					} else
 						this.$message.error(res.message)
 				})
@@ -385,7 +396,7 @@
 			},
 			async handleAuths(row) {
 				let res = await this.$api.user.getUserById(row.id)
-				if(res.code == 200) { 
+				if(res.code == 200) {
 					this.form = res.data.user
 					this.authVisible = true
 					this.isAdd = false
@@ -393,12 +404,12 @@
 					this.$nextTick(()=>{
 						this.$refs.authTree.init()
 					})
-				} else 
+				} else
 					this.$message.error(res.message)
-				
+
 			},
 			handleDataScope(row){
-				
+
 			},
 			preview(avatar) {
 				return avatar ? [this.$requestUrl + avatar.substr(0, avatar.lastIndexOf('-')) + '.jpg'] : []

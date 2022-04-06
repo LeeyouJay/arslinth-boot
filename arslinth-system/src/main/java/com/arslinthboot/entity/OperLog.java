@@ -36,6 +36,10 @@ public class OperLog extends BaseEntity {
 
     private String method;
 
+    private String requestMethod;
+
+    private String userType;
+
     private Integer resultCode;
 
     private String resultMessage;

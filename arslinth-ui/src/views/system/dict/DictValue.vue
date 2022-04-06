@@ -47,7 +47,7 @@
 						<el-table-column label="操作" width="180" fixed="right">
 							<template slot-scope="scope">
 								<el-button type="text" icon="el-icon-user" @click="handleEdit(scope.row)">修改</el-button>
-								<el-button type="text" icon="el-icon-delete" class="red" @click="handleDel(scope.row)">删除
+								<el-button type="text" icon="el-icon-delete" class="red" v-hasPermi="['DelDict']" @click="handleDel(scope.row)">删除
 								</el-button>
 							</template>
 						</el-table-column>
@@ -59,11 +59,11 @@
 			</el-container>
 		</div>
 		<!-- 编辑弹出框 -->
-		<el-dialog :visible.sync="editVisible" width="35%" append-to-body center>
+		<el-dialog :visible.sync="formVisible" width="35%" append-to-body center>
 			<template slot="title">
 				<span class="dialog-title">{{dialogText}}</span>
 			</template>
-			<el-form ref="formTable" :model="form" label-width="80px">
+			<el-form ref="formTable" :model="form" label-width="80px" :disabled="!$utils.checkPermi(['AddDict','EditDict'])">
 				<el-row :gutter="20">
 					<el-col :span="24">
 						<el-form-item label="字典标签" prop="dictName" :rules="[{required: true, message: '请输入字典名称', trigger: 'blur' }]">
@@ -88,7 +88,7 @@
 				</el-row>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
-				<el-button @click="editVisible = false">取 消</el-button>
+				<el-button @click="formVisible = false">取 消</el-button>
 				<el-button type="primary" @click="submit">确 定</el-button>
 			</span>
 		</el-dialog>
@@ -118,7 +118,7 @@
 				form: {
 					indexNum: 0,
 				},
-				editVisible: false,
+				formVisible: false,
 				pageTotal: 0,
 				dialogText: '添加字典',
 			}
@@ -150,6 +150,10 @@
 				})
 			},
 			submit() {
+				if (this.$refs.formTable.disabled) {
+					this.formVisible = false
+					return
+				}
 				this.$refs.formTable.validate((valid) => {
 					if (valid) {
 						this.isAdd ? this.addDict() : this.editDict()
@@ -162,7 +166,7 @@
 			handleAdd() {
 				this.isAdd = true
 				this.dialogText = "修改字典"
-				this.editVisible = true
+				this.formVisible = true
 				this.$nextTick(()=> {
 					this.form = Object.assign({},this.$options.data().form);
 					this.$refs.formTable.clearValidate()
@@ -177,7 +181,7 @@
 						this.form = res.data.dict
 						this.isAdd = false
 						this.dialogText = "修改字典"
-						this.editVisible = true
+						this.formVisible = true
 						this.$nextTick(()=>this.$refs.formTable.clearValidate())
 					}else
 						this.$message.error(res.message)
@@ -205,7 +209,7 @@
 					if(res.code === 200 ){
 						this.handleQuery()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
 					}else
 						this.$message.error(res.message)
 				})
@@ -215,7 +219,7 @@
 					if(res.code === 200 ){
 						this.getData()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
 					}else
 						this.$message.error(res.message)
 				})
@@ -235,7 +239,7 @@
 						this.handleQuery()
 						this.clearSelection()
 						this.$message.success(res.message)
-						this.editVisible = false;
+						this.formVisible = false;
 					}else
 						this.$message.error(res.message)
 				})
@@ -252,7 +256,7 @@
 				this.handleQuery()
 			}
 		}
-		
+
 	}
 </script>
 

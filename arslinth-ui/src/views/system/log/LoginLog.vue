@@ -5,7 +5,7 @@
 				<el-row :gutter="20">
 					<el-col :span="4">
 						<el-form-item label-width="0px">
-							<el-select v-model="queryParams.state" placeholder="状态" clearable 
+							<el-select v-model="queryParams.state" placeholder="状态" clearable
 							@clear="handleQuery" @change="handleQuery">
 								<el-option :value="1" label="成功"></el-option>
 								<el-option :value="0" label="失败"></el-option>
@@ -38,8 +38,8 @@
 			<el-header height="auto">
 				<div class="table-bar">
 					<div class="table-btn">
-						<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0" @click="handleDel">删除</el-button>
-						<el-button type="warning" icon="el-icon-magic-stick" size="mini" plain @click="handleDelAll">清空日志</el-button>
+						<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0" v-hasPermi="['DelLoginLog']" @click="handleDel">删除</el-button>
+						<el-button type="warning" icon="el-icon-magic-stick" size="mini" plain v-hasPermi="['DelLoginLog']" @click="handleDelAll">清空日志</el-button>
 					</div>
 					<right-toolbar @queryTable="getData" ></right-toolbar>
 				</div>

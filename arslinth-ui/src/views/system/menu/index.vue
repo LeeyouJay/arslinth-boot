@@ -5,7 +5,7 @@
 				<el-row :gutter="20">
 					<el-col :span="6">
 						<el-form-item label-width="0px">
-							<el-input v-model="queryParams.label" placeholder="菜单名称" clearable 
+							<el-input v-model="queryParams.label" placeholder="菜单名称" clearable
 							@keyup.enter.native="handleQuery"></el-input>
 						</el-form-item>
 					</el-col>
@@ -42,18 +42,20 @@
 					<el-table-column label="操作" width="180" align="center">
 						<template slot-scope="scope">
 							<el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-							<el-button v-if="!scope.row.children || scope.row.children.length == 0" type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+							<el-button type="text" icon="el-icon-delete" class="red"
+							v-hasPermi="['DelMenu']" v-if="!scope.row.children || scope.row.children.length == 0"
+							@click="handleDelete(scope.$index, scope.row)">删除</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
 			</el-main>
 		</el-container>
 		<!-- 编辑弹出框 -->
-		<el-dialog :visible.sync="formVisible" width="43%" center>
+		<el-dialog v-dialogDrag :visible.sync="formVisible" width="43%" center>
 			<template slot="title">
 				<span class="dialog-title">{{formTitle}}</span>
 			</template>
-			<el-form ref="formTable" :model="form" label-width="80px">
+			<el-form ref="formTable" :model="form" label-width="80px" :disabled="!$utils.checkPermi(['AddMenu','EditMenu'])">
 				<el-row :gutter="20">
 					<el-col :span="24">
 						<el-form-item label="上级菜单" key="0">
@@ -237,6 +239,11 @@
 					});
 			},
 			submit() {
+				if (this.$refs.formTable.disabled) {
+					this.formVisible = false
+					return
+				}
+
 				this.$refs.formTable.validate((valid) => {
 					if (valid) {
 						this.initFormData (this.form, this.form.menuType)
@@ -298,24 +305,24 @@
 				switch(menuType) {
 					case 'M':
 					form.component = form.parentId == "0"?"Layout": "ParentView"
-					this.$delete(form, 'link') 
-					this.$delete(form, 'keepAlive') 
+					this.$delete(form, 'link')
+					this.$delete(form, 'keepAlive')
 					break;
 					case 'C':
-					
-					
+
+
 					break;
 					case 'O':
 					form.component = "ParentView"
 					this.$delete(form, 'link')
-					this.$delete(form, 'keepAlive') 
+					this.$delete(form, 'keepAlive')
 					break;
 					case 'N':
 					form.component = "InnerLink"
-					this.$delete(form, 'keepAlive') 
+					this.$delete(form, 'keepAlive')
 					break;
 					case 'F':
-					
+
 					break;
 				}
 			}
