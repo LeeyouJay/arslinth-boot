@@ -1,7 +1,7 @@
 package com.arslinthboot.controller;
 
 import com.alibaba.druid.util.StringUtils;
-import com.arslinthboot.annotation.Log;
+import com.arslinthboot.annotation.SysLog;
 import com.arslinthboot.annotation.RepeatSubmit;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.common.LoginBody;
@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -162,7 +161,7 @@ public class SysUserController {
     /**
      * 添加用户
      */
-    @Log("'添加用户:'+#sysUser.username")
+    @SysLog("'添加用户:'+#sysUser.username")
     @RepeatSubmit
     @PostMapping("/add")
     @PreAuthorize("@auth.hasAnyAuthority('AddUser')")
@@ -183,7 +182,7 @@ public class SysUserController {
     /**
      * 修改用户信息
      */
-    @Log("#{'修改用户'+#sysUser.username+'信息' + }")
+    @SysLog("#{'修改用户'+#sysUser.username+'信息' + }")
     @RepeatSubmit
     @PostMapping("/edit")
     @PreAuthorize("@auth.hasAnyAuthority('EditUser')")
@@ -199,7 +198,7 @@ public class SysUserController {
     /**
      * 设置用户操作权限
      */
-    @Log("#{'设置'+#sysUser.username+'用户操作权限'}")
+    @SysLog("#{'设置'+#sysUser.username+'用户操作权限'}")
     @RepeatSubmit
     @PostMapping("/setPermissions")
     @PreAuthorize("@auth.hasAnyAuthority('SetPermissions')")
@@ -216,7 +215,7 @@ public class SysUserController {
     /**
      * 删除用户
      */
-    @Log("#{'删除用户id:'+#id}")
+    @SysLog("#{'删除用户id:'+#id}")
     @RepeatSubmit
     @GetMapping("/del/{id}")
     @PreAuthorize("@auth.hasAnyAuthority('DelUser')")
@@ -235,7 +234,7 @@ public class SysUserController {
     /**
      * 批量删除用户
      */
-    @Log("批量删除用户")
+    @SysLog("批量删除用户")
     @RepeatSubmit
     @PostMapping("/delUserByIds")
     @PreAuthorize("@auth.hasAnyAuthority('DelUser')")
@@ -253,7 +252,7 @@ public class SysUserController {
     /**
      * 重置密码
      */
-    @Log("#{'重置用户'+#sysUser.username+'密码'}")
+    @SysLog("#{'重置用户'+#sysUser.username+'密码'}")
     @RepeatSubmit
     @PostMapping("/resetPassword")
     @PreAuthorize("@auth.hasAnyAuthority('ResetPassword')")

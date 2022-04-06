@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
+import com.arslinthboot.annotation.SysLog;
 import com.arslinthboot.annotation.RepeatSubmit;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.config.tokenConfig.LoginUser;
@@ -36,6 +37,7 @@ public class SysMenuController {
     /**
      * 添加菜单
      */
+    @SysLog("#{'添加菜单:'+ #menu.label}")
     @RepeatSubmit
     @PostMapping("/add")
     @PreAuthorize("@auth.hasAnyAuthority('AddMenu')")
@@ -47,6 +49,7 @@ public class SysMenuController {
     /**
      * 删除菜单
      */
+    @SysLog("删除菜单")
     @RepeatSubmit
     @GetMapping("/del/{id}")
     @PreAuthorize("@auth.hasAnyAuthority('DelMenu')")
@@ -58,6 +61,7 @@ public class SysMenuController {
     /**
      * 修改菜单
      */
+    @SysLog("#{'修改菜单:'+ #menu.label}")
     @RepeatSubmit
     @PostMapping("/edit")
     @PreAuthorize("@auth.hasAnyAuthority('EditMenu')")

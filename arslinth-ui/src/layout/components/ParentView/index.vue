@@ -1,5 +1,5 @@
 <template>
-  <div class="drag-wrapper">
-    <router-view />
-  </div>
+	<div class="drag-wrapper">
+		<router-view />
+	</div>
 </template>

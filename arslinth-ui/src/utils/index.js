@@ -68,10 +68,18 @@ const utils = {
     }
     return uniform(innerText)
   },
+  //树转数组
+  treeToArray(tree) {
+    return tree.reduce((res, item) => {
+      const {children, ...i} = item
+      return res.concat(i, children && children.length ? this.treeToArray(children) : [])
+    }, [])
+  },
+
   checkPermi(auths) {
     if (auths && auths instanceof Array && auths.length > 0) {
-    	const permissions = store.state.user.permissions || []
-    	return permissions.some(permission => {
+      const permissions = store.state.user.permissions || []
+      return permissions.some(permission => {
         return permission === "*" || auths.includes(permission)
       })
     } else {

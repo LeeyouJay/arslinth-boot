@@ -1,5 +1,6 @@
 package com.arslinthboot.controller;
 
+import com.arslinthboot.annotation.SysLog;
 import com.arslinthboot.annotation.RepeatSubmit;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.entity.SysDict;
@@ -33,6 +34,7 @@ public class SysDictController {
      * 添加字典
      *
      **/
+    @SysLog("#{'添加字典:'+ #sysDict.dictName}")
     @RepeatSubmit
     @PostMapping("/add")
     @PreAuthorize("@auth.hasAnyAuthority('AddDict')")
@@ -97,6 +99,7 @@ public class SysDictController {
     /**
      * 修改字典值
      */
+    @SysLog("#{'修改字典值:'+ #sysDict.dictName}")
     @PostMapping("/edit")
     @PreAuthorize("@auth.hasAnyAuthority('EditDict')")
     public ApiResponse editDict(@RequestBody SysDict sysDict) {
@@ -111,6 +114,7 @@ public class SysDictController {
     /**
      * 删除字典
      */
+    @SysLog("删除字典")
     @GetMapping("/del/{id}")
     @PreAuthorize("@auth.hasAnyAuthority('DelDict')")
     public ApiResponse delDict(@PathVariable String id) {
@@ -127,6 +131,7 @@ public class SysDictController {
     /**
      * 批量删除字典值
      */
+    @SysLog("批量删除字典值")
     @PostMapping("/delDictByIds")
     @PreAuthorize("@auth.hasAnyAuthority('DelDict')")
     public ApiResponse delDictByIds(@RequestBody List<String> ids) {

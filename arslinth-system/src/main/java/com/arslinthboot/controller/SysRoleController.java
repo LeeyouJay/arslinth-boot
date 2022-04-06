@@ -1,5 +1,6 @@
 package com.arslinthboot.controller;
 
+import com.arslinthboot.annotation.SysLog;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.entity.SysRole;
 import com.arslinthboot.service.SysRoleService;
@@ -30,6 +31,7 @@ public class SysRoleController {
     /**
      * 添加角色
      */
+    @SysLog("#{'添加角色:'+ #sysRole.roleName}")
     @PostMapping("/add")
     @PreAuthorize("@auth.hasAnyAuthority('AddRole')")
     public ApiResponse addRole(@RequestBody SysRole sysRole) {
@@ -73,6 +75,7 @@ public class SysRoleController {
      * 修改角色
      *
      **/
+    @SysLog("#{'修改角色:'+ #sysRole.roleName}")
     @PostMapping("/edit")
     @PreAuthorize("@auth.hasAnyAuthority('EditRole')")
     public ApiResponse editRole(@RequestBody SysRole sysRole) {
@@ -87,6 +90,7 @@ public class SysRoleController {
     /**
      * 删除角色
      */
+    @SysLog("删除角色")
     @GetMapping("/del/{id}")
     @PreAuthorize("@auth.hasAnyAuthority('DelRole')")
     public ApiResponse delRole(@PathVariable String id) {
@@ -103,6 +107,7 @@ public class SysRoleController {
     /**
      * 批量删除角色
      */
+    @SysLog("批量删除角色")
     @PostMapping("/delRoleByIds")
     @PreAuthorize("@auth.hasAnyAuthority('DelRole')")
     public ApiResponse delRoleByIds(@RequestBody List<String> ids) {

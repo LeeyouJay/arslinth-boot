@@ -8,7 +8,7 @@
 						首页
 					</el-button>
 				</el-breadcrumb-item>
-				<el-breadcrumb-item v-for="item in levelList" :key="item.path">{{ item.meta.title }}
+				<el-breadcrumb-item v-for="(item, index) in dataList" :key="item.path">{{ item.label }}
 				</el-breadcrumb-item>
 			</transition-group>
 		</el-breadcrumb>
@@ -21,7 +21,13 @@
 		data() {
 			return {
 				levelList: [],
-				hasClick: false
+				hasClick: false,
+				dataList: []
+			}
+		},
+		computed:{
+			rdata() {
+				return this.$store.getters.rdata
 			}
 		},
 		watch: {
@@ -46,9 +52,9 @@
 				this.$router.push('/home')
 			},
 			getBreadCrumb() {
-				const matched = this.$route.matched.filter(item => item.meta && item.meta.title)
-				this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.title !== '首页')
-			}
+				const path = this.$route.path.split("/").slice(1)
+				this.dataList = this.rdata.filter(item=> item.label!== '首页' && (path.includes(item.path) || path.includes(item.path.substr(1))) ).map(m=>{return {label:m.label,path: m.path } })
+			},
 		}
 	}
 </script>

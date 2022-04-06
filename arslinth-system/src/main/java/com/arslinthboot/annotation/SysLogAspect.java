@@ -14,17 +14,11 @@ import com.arslinthboot.utils.SpELUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
 import java.util.Optional;
 
 import static com.arslinthboot.common.ResponseCode.FAIL;
@@ -46,19 +40,19 @@ public class SysLogAspect {
 
 
     @AfterReturning(pointcut = "@annotation(annotation)", returning = "jsonResult")
-    public void doAfterReturning(JoinPoint joinPoint, Log annotation, Object jsonResult){
-        handleLog(joinPoint,annotation,null,jsonResult);
+    public void doAfterReturning(JoinPoint joinPoint, SysLog annotation, Object jsonResult) {
+        handleLog(joinPoint, annotation, null, jsonResult);
     }
 
 
     @AfterThrowing(value = "@annotation(annotation)", throwing = "e")
-    public void doAfterThrowing(JoinPoint joinPoint, Log annotation, Exception e){
+    public void doAfterThrowing(JoinPoint joinPoint, SysLog annotation, Exception e) {
 
-        handleLog(joinPoint,annotation,e,null);
+        handleLog(joinPoint, annotation, e, null);
 
     }
 
-    protected void handleLog(final JoinPoint joinPoint, Log annotation, final Exception e, Object jsonResult){
+    protected void handleLog(final JoinPoint joinPoint, SysLog annotation, final Exception e, Object jsonResult) {
         HttpServletRequest request = HttpServletUtil.getRequest();
         LoginUser<?> loginUser = SecurityUtils.getLoginUser();
         String username = Optional.ofNullable(loginUser).map(LoginUser::getUsername).orElse("未知用户");

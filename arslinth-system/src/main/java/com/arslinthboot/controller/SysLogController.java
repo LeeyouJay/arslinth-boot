@@ -1,6 +1,6 @@
 package com.arslinthboot.controller;
 
-import com.arslinthboot.annotation.Log;
+import com.arslinthboot.annotation.SysLog;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.arslinthboot.common.ApiResponse;
 import com.arslinthboot.entity.OperLog;
@@ -66,7 +66,7 @@ public class SysLogController {
      * 删除操作日志
      *
      **/
-    @Log("删除操作日志")
+    @SysLog("删除操作日志")
     @PostMapping("/delOperLog")
     @PreAuthorize("@auth.hasAnyAuthority('DelOperLog')")
     public ApiResponse delOperLog(@RequestBody List<String> ids) {
@@ -82,7 +82,7 @@ public class SysLogController {
      * 删除全部操作日志
      *
      **/
-    @Log("删除全部操作日志")
+    @SysLog("删除全部操作日志")
     @GetMapping("/delAllOperLog")
     @PreAuthorize("@auth.hasAnyAuthority('DelOperLog')")
     public ApiResponse delAllOperLog() {
@@ -98,7 +98,7 @@ public class SysLogController {
      * 删除登入日志
      *
      **/
-    @Log("删除登入日志")
+    @SysLog("删除登入日志")
     @PostMapping("/delLoginLog")
     @PreAuthorize("@auth.hasAnyAuthority('DelLoginLog')")
     public ApiResponse delLoginLog(@RequestBody List<String> ids) {
@@ -114,7 +114,7 @@ public class SysLogController {
      * 删除全部登入日志
      *
      **/
-    @Log("删除全部登入日志")
+    @SysLog("删除全部登入日志")
     @PreAuthorize("@auth.hasAnyAuthority('DelLoginLog')")
     @GetMapping("/delAllLoginLog")
     public ApiResponse delAllLoginLog() {
