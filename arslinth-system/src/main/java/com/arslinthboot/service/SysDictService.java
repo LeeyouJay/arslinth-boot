@@ -72,17 +72,17 @@ public class SysDictService {
         return sysDictDao.selectById(id);
     }
 
-    @CachePut(cacheNames = "sys_dict",key = "#sysDict.parentValue")
+    @CacheEvict(cacheNames = "sys_dict", key = "#sysDict.parentValue", condition = "#sysDict.parentValue != null")
     public void addDict(SysDict sysDict) {
         sysDictDao.insert(sysDict);
     }
 
-    @CachePut(cacheNames = "sys_dict",key = "#sysDict.parentValue")
+    @CacheEvict(cacheNames = "sys_dict", key = "#sysDict.parentValue")
     public int editDict(SysDict sysDict) {
         return sysDictDao.updateById(sysDict);
     }
 
-
+    @CacheEvict(cacheNames = "sys_dict", allEntries = true, condition = "#result>0")
     public int delById(String id) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
         wrapper.eq("parent_id", id);
@@ -93,16 +93,11 @@ public class SysDictService {
         return sysDictDao.deleteById(id);
     }
 
+    @CacheEvict(cacheNames = "sys_dict", allEntries = true, condition = "#result>0")
     public int delByIds(List<String> ids) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
         wrapper.in("id", ids);
         return sysDictDao.delete(wrapper);
     }
-
-    public void initDict(){
-
-    }
-
-
 
 }

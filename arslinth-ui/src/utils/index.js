@@ -39,7 +39,6 @@ const utils = {
       }
       return _str
     }
-
     let innerText = ''
     const TAB = ' '.repeat(2)
     e.preventDefault()
@@ -76,6 +75,14 @@ const utils = {
     }, [])
   },
 
+  //字典对应值
+  dictFormatter(value, dictList) {
+    const list = dictList || []
+    const dict = list.find(val => val.dictValue == value)
+    return dict && dict.dictName
+  },
+
+  //检查元素
   checkPermi(auths) {
     if (auths && auths instanceof Array && auths.length > 0) {
       const permissions = store.state.user.permissions || []

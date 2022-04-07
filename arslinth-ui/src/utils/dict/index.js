@@ -1,4 +1,4 @@
-
+import dict from "@/api/system/dict"
 import Vue from "vue";
 class Dict {
 	constructor(dict) {
@@ -6,29 +6,17 @@ class Dict {
 	}
 
 	async init(names) {
-		const ps = [];
-		names.forEach((name) => {
-			Vue.set(this.dict, name, []);
-			ps.push(
-        this.dict[name] = Object.freeze(solveData(name))
-				// get(name).then((data) => {
-				// 	this.dict[name] = Object.freeze(data.content);
-				// })
-			);
-		});
-		await Promise.all(ps);
-	}
-}
-
-function solveData(name){
-  let data = [
-    {parentValue: "menu_type", dictName: "目录", dictValue: "M"},
-    {parentValue: "menu_type", dictName: "菜单", dictValue: "C"},
-    {parentValue: "gender", dictName: "男", dictValue: "1"},
-    {parentValue: "gender", dictName: "女", dictValue: "2"},
-    {parentValue: "gender", dictName: "未知", dictValue: "0"}
-  ]
-  return data.filter(f=>f.parentValue === name)
+    const ps = [];
+    let res = await dict.getValueList(names)
+    const map = res.data.map
+    names.forEach((name) => {
+      Vue.set(this.dict, name, []);
+      ps.push(
+        this.dict[name] = Object.freeze(map[name] || [])
+      );
+    });
+    await Promise.all(ps);
+  }
 }
 
 const install = function(Vue) {
@@ -38,7 +26,6 @@ const install = function(Vue) {
         return {}
       }
 			const dict = new Dict()
-			dict.owner = this
 			return {
 			  dict
 			}

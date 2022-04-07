@@ -50,7 +50,7 @@
 						</el-table-column>
 						<el-table-column prop="username" label="账号" align="center"></el-table-column>
 						<el-table-column prop="nickName" label="昵称" align="center"></el-table-column>
-						<el-table-column prop="sex" label="性别" align="center"></el-table-column>
+						<el-table-column prop="sex" label="性别" align="center" :formatter="(row)=>$utils.dictFormatter(row.sex, dict.gender)"></el-table-column>
 						<el-table-column prop="phone" label="手机号码" min-width="100" align="center"></el-table-column>
 						<el-table-column prop="email" label="邮箱" min-width="120" align="center"></el-table-column>
 						<el-table-column label="禁用状态" align="center">
@@ -114,9 +114,7 @@
 					<el-col :span="12">
 						<el-form-item label="性别">
 							<el-select v-model="form.sex" placeholder="请选择性别" clearable>
-								<el-option value="m" label="男"></el-option>
-								<el-option value="w" label="女"></el-option>
-								<el-option value="s" label="保密"></el-option>
+								<el-option  v-for="(item, index) in dict.gender" :key="index" :label="item.dictName"  :value="item.dictValue"></el-option>
 							</el-select>
 						</el-form-item>
 					</el-col>
@@ -175,6 +173,7 @@
 	import AuthSelect from '../components/auth-select'
 
 	export default {
+		dicts:['gender'],
 		name: 'SysUser',
 		components: {
 			AuthSelect

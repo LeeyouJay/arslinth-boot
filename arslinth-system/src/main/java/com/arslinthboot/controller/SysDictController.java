@@ -1,5 +1,7 @@
 package com.arslinthboot.controller;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.arslinthboot.annotation.SysLog;
 import com.arslinthboot.annotation.RepeatSubmit;
 import com.arslinthboot.common.ApiResponse;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.arslinthboot.common.ResponseCode.*;
 
@@ -75,9 +79,15 @@ public class SysDictController {
     /**
      * 获取所有字典值
      */
-    @GetMapping("/valueList/{parentValue}")
-    public ApiResponse getValueList(@PathVariable String parentValue) {
-        return ApiResponse.code(SUCCESS).data("list", sysDictService.getValueList(parentValue));
+    @PostMapping("/valueList")
+    public ApiResponse getValueList(@RequestBody List<String> parentValues) {
+        if (CollUtil.isEmpty(parentValues)) {
+            return ApiResponse.code(FAIL).message("请输入字典代号值！");
+        }
+        Map<String, List<SysDict>> map = new HashMap<>();
+        parentValues.forEach(p -> map.put(p, sysDictService.getValueList(p)));
+        System.out.println("加载字典");
+        return ApiResponse.code(SUCCESS).data("map", map);
     }
 
     /**

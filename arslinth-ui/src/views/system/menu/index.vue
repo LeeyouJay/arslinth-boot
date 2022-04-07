@@ -37,7 +37,7 @@
 					<el-table-column prop="indexNum" label="排序"></el-table-column>
 					<el-table-column prop="name" label="权限标识"></el-table-column>
 					<el-table-column prop="indexNum" label="排序"></el-table-column>
-					<el-table-column prop="menuType" align="center" label="类型"></el-table-column>
+					<el-table-column prop="menuType" align="center" label="类型" :formatter="(row)=>$utils.dictFormatter(row.menuType, dict.menu_type)"></el-table-column>
 					<el-table-column prop="createTime" align="center" label="创建时间"></el-table-column>
 					<el-table-column label="操作" width="180" align="center">
 						<template slot-scope="scope">
@@ -144,6 +144,7 @@
 		EIconPicker
 	} from 'e-icon-picker';
 	export default {
+		dicts: ['menu_type'],
 		name: 'SysMenu',
 		components: {
 			EIconPicker

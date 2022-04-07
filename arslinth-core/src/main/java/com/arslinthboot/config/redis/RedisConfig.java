@@ -64,6 +64,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 
         RedisCacheConfiguration config = instanceConfig(30L); //设置过期时间为30s
         return RedisCacheManager.builder(connectionFactory)
+
                 .cacheDefaults(config)
                 .transactionAware()
                 .build();
@@ -85,9 +86,8 @@ public class RedisConfig extends CachingConfigurerSupport {
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
         return RedisCacheConfiguration.defaultCacheConfig()
                 //变双冒号为单冒号
-
-                .computePrefixWith(name ->":")
-                //.entryTtl(Duration.ofSeconds(ttl))
+                .computePrefixWith(name -> name + ":")
+//                .entryTtl(Duration.ofSeconds(ttl))
                 .disableCachingNullValues()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer));
 

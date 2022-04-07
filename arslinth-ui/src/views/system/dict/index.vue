@@ -60,13 +60,13 @@
 			<el-form ref="formTable" :model="form" label-width="80px" :disabled="!$utils.checkPermi(['AddDict','EditDict'])">
 				<el-row :gutter="20">
 					<el-col :span="24">
-						<el-form-item label="字典名称" prop="dictName" :rules="[{required: true, message: '请输入字典名称', trigger: 'blur' }]">
-							<el-input v-model="form.dictName"></el-input>
+						<el-form-item label="字典名称"  prop="dictName" :rules="[{required: true, message: '请输入字典名称', trigger: 'blur' }]">
+							<el-input v-model="form.dictName" placeholder="请输入字典名称"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
 						<el-form-item label="字典代号" prop="dictValue" :rules="[{required: true, message: '请输入字典代号', trigger: 'blur' }]">
-							<el-input v-model="form.dictValue"></el-input>
+							<el-input v-model="form.dictValue" placeholder="请输入字典代号" ></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -110,7 +110,6 @@
 		components:{
 			DictValue
 		},
-		dicts:['gender'],
 		data() {
 			return {
 				isAdd: false,
@@ -137,10 +136,6 @@
 		},
 		created() {
 			this.getData()
-			console.log(this.dict.gender)
-			// this.$api.dict.getValueList().then(res=>{
-			// 	console.log(res)
-			// })
 		},
 		methods: {
 			handleQuery() {

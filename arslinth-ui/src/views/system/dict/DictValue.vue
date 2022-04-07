@@ -67,12 +67,12 @@
 				<el-row :gutter="20">
 					<el-col :span="24">
 						<el-form-item label="字典标签" prop="dictName" :rules="[{required: true, message: '请输入字典名称', trigger: 'blur' }]">
-							<el-input v-model="form.dictName"></el-input>
+							<el-input v-model="form.dictName" placeholder="请输入字典标签"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
 						<el-form-item label="字典值" prop="dictValue" :rules="[{required: true, message: '请输入字典代号', trigger: 'blur' }]">
-							<el-input v-model="form.dictValue"></el-input>
+							<el-input v-model="form.dictValue" placeholder="请输入字典值"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
