@@ -161,7 +161,7 @@ public class SysUserController {
     /**
      * 添加用户
      */
-    @SysLog("'添加用户:'+#sysUser.username")
+    @SysLog("#{'添加用户:'+#sysUser.username}")
     @RepeatSubmit
     @PostMapping("/add")
     @PreAuthorize("@auth.hasAnyAuthority('AddUser')")
@@ -182,7 +182,7 @@ public class SysUserController {
     /**
      * 修改用户信息
      */
-    @SysLog("#{'修改用户'+#sysUser.username+'信息' + }")
+    @SysLog("#{'修改用户'+#sysUser.username+'信息'}")
     @RepeatSubmit
     @PostMapping("/edit")
     @PreAuthorize("@auth.hasAnyAuthority('EditUser')")

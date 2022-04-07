@@ -23,11 +23,11 @@ public class SpELUtil {
     /**
      * 用于SpEL表达式解析.
      */
-    private static SpelExpressionParser parser = new SpelExpressionParser();
+    private static final SpelExpressionParser parser = new SpelExpressionParser();
     /**
      * 用于获取方法参数定义名字.
      */
-    private static DefaultParameterNameDiscoverer nameDiscoverer = new DefaultParameterNameDiscoverer();
+    private static final DefaultParameterNameDiscoverer nameDiscoverer = new DefaultParameterNameDiscoverer();
 
     public static String generateKeyBySpEL(String spELString, JoinPoint joinPoint) {
         // 通过joinPoint获取被注解方法

@@ -4,7 +4,7 @@
 			<div class="form-title">
 				<img src="@/assets/img/logo.png" alt="icon">
 			</div>
-			<el-tabs v-model="activeName" @tab-click="handleClick">
+			<el-tabs v-model="activeName" @tab-click="handleTabClick">
 				<el-tab-pane label="账号密码登入" name="first">
 					<el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-width="0px"
 						class="login-form">
@@ -128,7 +128,7 @@
 					}
 				})
 			},
-			handleClick(tab, event) {
+			handleTabClick(tab, event) {
 				
 			},
 		}

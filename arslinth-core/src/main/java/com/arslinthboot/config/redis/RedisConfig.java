@@ -84,6 +84,9 @@ public class RedisConfig extends CachingConfigurerSupport {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
         return RedisCacheConfiguration.defaultCacheConfig()
+                //变双冒号为单冒号
+
+                .computePrefixWith(name ->":")
                 //.entryTtl(Duration.ofSeconds(ttl))
                 .disableCachingNullValues()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer));

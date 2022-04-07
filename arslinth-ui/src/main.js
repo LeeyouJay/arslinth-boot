@@ -5,6 +5,7 @@ import store from './store'
 import api from './api'
 import utils from './utils/index.js'
 import base from './api/base.js'
+import dict from '@/utils/dict'
 
 import 'default-passive-events'
 import './router/auth'
@@ -28,6 +29,7 @@ Vue.prototype.$utils = utils
 Vue.config.productionTip = false
 
 Vue.use(directive)
+Vue.use(dict)
 
 new Vue({
   router,

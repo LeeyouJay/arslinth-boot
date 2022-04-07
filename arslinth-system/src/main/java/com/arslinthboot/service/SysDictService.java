@@ -8,6 +8,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +27,8 @@ import java.util.List;
 public class SysDictService {
 
     private final SysDictDao sysDictDao;
+
+
 
     public Page<SysDict> getTypePage(SysDict sysDict) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
@@ -48,9 +54,11 @@ public class SysDictService {
         return sysDictDao.selectPage(page, wrapper);
     }
 
-    public List<SysDict> getValueList() {
+    @Cacheable(cacheNames = "sys_dict",key = "#parentValue", unless = "#result?.size() == 0")
+    public List<SysDict> getValueList(String parentValue) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
-        wrapper.ne("parent_Id", "0");
+        wrapper.ne("parent_Id", "0")
+                .eq("parent_value",parentValue);
         return sysDictDao.selectList(wrapper);
     }
 
@@ -64,13 +72,16 @@ public class SysDictService {
         return sysDictDao.selectById(id);
     }
 
+    @CachePut(cacheNames = "sys_dict",key = "#sysDict.parentValue")
     public void addDict(SysDict sysDict) {
         sysDictDao.insert(sysDict);
     }
 
+    @CachePut(cacheNames = "sys_dict",key = "#sysDict.parentValue")
     public int editDict(SysDict sysDict) {
         return sysDictDao.updateById(sysDict);
     }
+
 
     public int delById(String id) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
@@ -87,4 +98,11 @@ public class SysDictService {
         wrapper.in("id", ids);
         return sysDictDao.delete(wrapper);
     }
+
+    public void initDict(){
+
+    }
+
+
+
 }

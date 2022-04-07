@@ -75,9 +75,9 @@ public class SysDictController {
     /**
      * 获取所有字典值
      */
-    @GetMapping("/valueList")
-    public ApiResponse getValueList() {
-        return ApiResponse.code(SUCCESS).data("list", sysDictService.getValueList());
+    @GetMapping("/valueList/{parentValue}")
+    public ApiResponse getValueList(@PathVariable String parentValue) {
+        return ApiResponse.code(SUCCESS).data("list", sysDictService.getValueList(parentValue));
     }
 
     /**

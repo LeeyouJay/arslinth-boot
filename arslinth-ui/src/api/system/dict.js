@@ -9,8 +9,8 @@ const dict = {
   getValuePage(params, page) {
     return axios.post(`${base.requestUrl}/dict/valuePage`, params, {params: page});
   },
-  getValueList() {
-    return axios.get(`${base.requestUrl}/dict/valueList`);
+  getValueList(params) {
+    return axios.get(`${base.requestUrl}/dict/valueList`+ (params?'/'+params : ''));
   },
   getTypeList() {
     return axios.get(`${base.requestUrl}/dict/typeList`);

@@ -110,6 +110,7 @@
 		components:{
 			DictValue
 		},
+		dicts:['gender'],
 		data() {
 			return {
 				isAdd: false,
@@ -136,6 +137,10 @@
 		},
 		created() {
 			this.getData()
+			console.log(this.dict.gender)
+			// this.$api.dict.getValueList().then(res=>{
+			// 	console.log(res)
+			// })
 		},
 		methods: {
 			handleQuery() {
