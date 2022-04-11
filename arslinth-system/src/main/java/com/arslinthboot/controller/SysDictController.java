@@ -86,7 +86,6 @@ public class SysDictController {
         }
         Map<String, List<SysDict>> map = new HashMap<>();
         parentValues.forEach(p -> map.put(p, sysDictService.getValueList(p)));
-        System.out.println("加载字典");
         return ApiResponse.code(SUCCESS).data("map", map);
     }
 

@@ -36,7 +36,7 @@
 			<template slot="title">
 				<span class="dialog-title">请完成图片验证</span>
 			</template>
-			<Captcha ref="dialogopen" :captchaUUid.sync="loginForm.captchaUUid" @verify="verify"  />
+			<Captcha ref="dialogopen" :loading="loading" :captchaUUid.sync="loginForm.captchaUUid" @verify="verify"  />
 		</el-dialog>
 	</div>
 </template>
@@ -96,6 +96,7 @@
 				})
 			},
 			verify(left, stddev) {
+				this.loading = true
 				let user = {
 					username: this.loginForm.username,
 					password: this.loginForm.password,
@@ -126,6 +127,7 @@
 							this.$refs.dialogopen.refresh()
 						},1000)
 					}
+					this.loading = false
 				})
 			},
 			handleTabClick(tab, event) {

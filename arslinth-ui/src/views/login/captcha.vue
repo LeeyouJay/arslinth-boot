@@ -1,20 +1,23 @@
 <template>
-	<div id="slideVerify" class="slide-verify" :style="widthlable" onselectstart="return false;">
+	<div id="slideVerify" class="slide-verify" :style="widthlable"
+		v-loading="loading"
+	     element-loading-text="正在验证中..."
+	     element-loading-spinner="el-icon-loading"
+	     element-loading-background="rgba(0, 0, 0, 0.8)" onselectstart="return false;">
 		<canvas ref="canvas" :width="catcha.imgW" :height="catcha.imgH" />
-
 		<canvas ref="block" class="slide-verify-block" :width="catcha.imgW" :height="catcha.imgH" />
-		<div class="slide-verify-refresh-icon el-icon-refresh" @click="refresh" />
+		<div class="slide-verify-refresh-icon el-icon-refresh" @click="refresh"></div>
 		<div class="slide-verify-info" :class="{fail: fail, show: showInfo}" >{{ infoText }}</div>
 		<div class="slide-verify-slider" :style="widthlable"
-			:class="{'container-active': containerActive, 'container-success': containerSuccess, 'container-fail': containerFail}">
+			:class="{'container-active': containerActive, 'container-success': containerSuccess, 'container-fail': containerFail}" >
 			<div class="slide-verify-slider-mask" :style="{width: sliderMaskWidth}">
 				<!-- slider -->
 				<div class="slide-verify-slider-mask-item" :style="{left: sliderLeft}" @mousedown="sliderDown"
 					@touchstart="touchStartEvent" @touchmove="touchMoveEvent" @touchend="touchEndEvent">
-					<div class="slide-verify-slider-mask-item-icon el-icon-s-unfold" />
+					<div class="slide-verify-slider-mask-item-icon el-icon-s-unfold" /></div>
 				</div>
+				<span class="slide-verify-slider-text">{{ catcha.text }}</span>
 			</div>
-			<span class="slide-verify-slider-text">{{ catcha.text }}</span>
 		</div>
 	</div>
 </template>
@@ -29,6 +32,10 @@
 	export default {
 		name: 'SlideVerify',
 		props: {
+			loading: {
+				type: Boolean,
+				default: false
+			},
 			fresh: {
 				type: Boolean,
 				default: false

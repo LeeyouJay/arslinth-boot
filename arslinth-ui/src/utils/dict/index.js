@@ -8,7 +8,7 @@ class Dict {
 	async init(names) {
     const ps = [];
     let res = await dict.getValueList(names)
-    const map = res.data.map
+    const map = res.data.map || {}
     names.forEach((name) => {
       Vue.set(this.dict, name, []);
       ps.push(
