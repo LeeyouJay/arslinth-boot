@@ -3,14 +3,12 @@ package com.arslinthboot.service;
 import cn.hutool.core.util.StrUtil;
 import com.arslinthboot.dao.SysDictDao;
 import com.arslinthboot.entity.SysDict;
-import com.arslinthboot.utils.PageDomain;
+import com.arslinthboot.utils.SelectDomain;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +30,7 @@ public class SysDictService {
 
     public Page<SysDict> getTypePage(SysDict sysDict) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
-        Page<SysDict> page = PageDomain.buildPage();
+        Page<SysDict> page = SelectDomain.buildPage();
         wrapper.eq("parent_Id", "0").orderByAsc("index_num");
         if (StrUtil.isNotEmpty(sysDict.getDictName()) ||
                 StrUtil.isNotEmpty(sysDict.getDictValue())) {
@@ -45,7 +43,7 @@ public class SysDictService {
 
     public Page<SysDict> getValuePage(SysDict sysDict) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
-        Page<SysDict> page = PageDomain.buildPage();
+        Page<SysDict> page = SelectDomain.buildPage();
         wrapper.ne("parent_Id", "0").eq("parent_Id", sysDict.getParentId()).orderByAsc("index_num");
         if (StrUtil.isNotEmpty(sysDict.getDictName()) || StrUtil.isNotEmpty(sysDict.getDictValue())) {
             wrapper.and(w -> w.like("dict_name", sysDict.getDictName())

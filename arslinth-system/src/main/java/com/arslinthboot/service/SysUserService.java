@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.arslinthboot.dao.SysRoleDao;
 import com.arslinthboot.entity.SysRole;
-import com.arslinthboot.utils.PageDomain;
+import com.arslinthboot.utils.SelectDomain;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.arslinthboot.dao.SysUserDao;
 import com.arslinthboot.entity.SysUser;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,7 +42,7 @@ public class SysUserService {
 
     public Page<SysUser> getUserPage(SysUser sysUser) {
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
-        Page<SysUser> page = PageDomain.buildPage();
+        Page<SysUser> page = SelectDomain.buildPage();
         wrapper.orderByAsc("index_num");
         if (StrUtil.isNotEmpty(sysUser.getNickName())) {
             wrapper.and(w -> w.like("nick_name", sysUser.getNickName())

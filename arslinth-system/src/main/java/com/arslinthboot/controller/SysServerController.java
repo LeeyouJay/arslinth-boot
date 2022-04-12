@@ -7,7 +7,7 @@ import com.arslinthboot.config.redis.RedisTool;
 import com.arslinthboot.config.tokenConfig.LoginUser;
 import com.arslinthboot.entity.BaseEntity;
 import com.arslinthboot.entity.SysServer;
-import com.arslinthboot.utils.PageDomain;
+import com.arslinthboot.utils.SelectDomain;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -81,7 +80,7 @@ public class SysServerController {
      */
     @PostMapping("/onlineUserPage")
     public ApiResponse getOnlineUserPage(@RequestBody LoginUser<?> queryBody) {
-        Page<BaseEntity> page = PageDomain.buildPage();
+        Page<BaseEntity> page = SelectDomain.buildPage();
         long pageIndex = page.getCurrent();
         long pageSize = page.getSize();
 

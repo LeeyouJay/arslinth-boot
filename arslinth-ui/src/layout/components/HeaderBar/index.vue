@@ -3,6 +3,7 @@
 		<FoldSideMenu />
 		<BreadCrumbs />
 		<div class="header-right clear-fix">
+			<HeaderSearch/>
 			<FullScreen />
 			<!-- <LangSelect /> -->
 			<!-- <GitHubLink /> -->
@@ -14,6 +15,7 @@
 <script>
 	import FoldSideMenu from '../../../components/FoldSideMenu'
 	import BreadCrumbs from '../../../components/BreadCrumbs'
+	import HeaderSearch from '../../../components/HeaderSearch'
 	import FullScreen from '../../../components/FullScreen'
 	// import LangSelect from '../../../components/LangSelect'
 	// import GitHubLink from '../../../components/GitHubLink'
@@ -23,6 +25,7 @@
 		components: {
 			FoldSideMenu,
 			BreadCrumbs,
+			HeaderSearch,
 			FullScreen,
 			// LangSelect,
 			// GitHubLink,
@@ -33,11 +36,11 @@
 
 <style lang="less">
 	.header-bar {
+		display: flex;
 		height: 32px;
 		padding: 16px 20px;
 		.header-right {
-			float: right;
-			width: 200px;
+			flex: 1;
 			display: flex;
 			justify-content: right;
 		}

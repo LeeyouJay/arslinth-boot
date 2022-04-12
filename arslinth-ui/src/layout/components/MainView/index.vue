@@ -22,6 +22,10 @@
 </script>
 
 <style lang="less">
+	.view-page-bar {
+		height: 32px;
+		padding: 16px 20px;
+	}
 	.main-view {
 		min-height: calc(100vh - 155px);
 		width: calc(100% - 50px);

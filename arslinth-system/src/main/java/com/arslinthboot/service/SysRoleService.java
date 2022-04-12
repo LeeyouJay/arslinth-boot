@@ -2,11 +2,8 @@ package com.arslinthboot.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.arslinthboot.dao.SysRoleDao;
-import com.arslinthboot.entity.OperLog;
-import com.arslinthboot.entity.SysDict;
 import com.arslinthboot.entity.SysRole;
-import com.arslinthboot.entity.SysUser;
-import com.arslinthboot.utils.PageDomain;
+import com.arslinthboot.utils.SelectDomain;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +26,7 @@ public class SysRoleService {
 
     public Page<SysRole> getRolePage(SysRole sysRole) {
         QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
-        Page<SysRole> page = PageDomain.buildPage();
+        Page<SysRole> page = SelectDomain.buildPage();
         String roleName = sysRole.getRoleName();
         if (StrUtil.isNotEmpty(roleName)) {
             wrapper.and(w -> w.like("role_name", roleName)

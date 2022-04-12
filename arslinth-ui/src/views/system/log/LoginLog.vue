@@ -1,6 +1,6 @@
 <template>
 	<div class="view-page">
-		<div class="header-bar">
+		<div class="view-page-bar">
 			<el-form ref="formTable"  :model="queryParams" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="4">

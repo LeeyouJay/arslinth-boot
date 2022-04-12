@@ -34,7 +34,7 @@ export const constantRoutes = [{
       component: () => import('../views/Home'),
       meta: {
         title: '首页',
-        icon: 'vue-dsn-icon-index',
+        icon: 'arslinth-vue-home',
         fixed: true,
         keepAlive: true
       }

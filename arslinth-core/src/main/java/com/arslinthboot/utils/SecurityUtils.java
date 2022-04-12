@@ -6,6 +6,7 @@ import com.arslinthboot.config.tokenConfig.LoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -22,7 +23,7 @@ public class SecurityUtils {
      **/
     public static String getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getPrincipal().toString();
+        return Optional.ofNullable(authentication.getPrincipal()).map(Object::toString).orElse("未知");
     }
 
     /**

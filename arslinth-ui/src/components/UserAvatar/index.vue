@@ -65,9 +65,8 @@
 
 <style lang="less">
 	.user-avatar-wrapper {
-		float: left;
 		width: 48px;
-		padding: 3px 0 3px 20px;
+		padding-left: 20px;
 		margin-left: 20px;
 		border-left: solid 1px #ddd;
 		cursor: pointer;

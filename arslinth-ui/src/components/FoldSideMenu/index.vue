@@ -1,6 +1,6 @@
 <template>
   <div class="fold-side-menu" :class="{'vertical': collapsed}" @click="taggleSideMenu">
-    <SvgIcon class="icon" icon-class="vue-dsn-icon-menu" />
+    <SvgIcon class="icon" icon-class="arslinth-vue-fole-menu" />
   </div>
 </template>
 
@@ -22,7 +22,6 @@ export default {
 
 <style lang="less">
 .fold-side-menu {
-  float: left;
   width: 22px;
   height: 22px;
   padding: 5px;

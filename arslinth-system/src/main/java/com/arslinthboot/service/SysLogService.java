@@ -1,12 +1,10 @@
 package com.arslinthboot.service;
 
 import cn.hutool.core.util.StrUtil;
-import com.arslinthboot.config.tokenConfig.LoginUser;
 import com.arslinthboot.dao.LoginLogDao;
 import com.arslinthboot.dao.OperLogDao;
 import com.arslinthboot.entity.LoginLog;
-import com.arslinthboot.utils.PageDomain;
-import com.arslinthboot.utils.SecurityUtils;
+import com.arslinthboot.utils.SelectDomain;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.arslinthboot.entity.OperLog;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @className: SysLogService
@@ -84,7 +81,7 @@ public class SysLogService {
 
     public Page<OperLog> operLogPage(OperLog operLog) {
         QueryWrapper<OperLog> wrapper = new QueryWrapper<>();
-        Page<OperLog> page = PageDomain.buildPage();
+        Page<OperLog> page = SelectDomain.buildPage();
         String username = operLog.getUsername();
         if (StrUtil.isNotEmpty(username)) {
             wrapper.like("username", username)
@@ -100,7 +97,7 @@ public class SysLogService {
 
     public Page<LoginLog> loginLogPage(LoginLog loginLog) {
         QueryWrapper<LoginLog> wrapper = new QueryWrapper<>();
-        Page<LoginLog> page = PageDomain.buildPage();
+        Page<LoginLog> page = SelectDomain.buildPage();
         Boolean state = loginLog.getState();
         String username = loginLog.getUsername();
         if (state != null) {

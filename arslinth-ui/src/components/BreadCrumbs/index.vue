@@ -4,7 +4,7 @@
 			<transition-group name="breadcrumb" mode="out-in">
 				<el-breadcrumb-item key="home">
 					<el-button type="text" class="home-link" :disabled="!hasClick" @click="goHome">
-						<i class="icon vue-dsn-icon-index" />
+						<i class="arslinth-vue-home" />
 						首页
 					</el-button>
 				</el-breadcrumb-item>
@@ -59,40 +59,22 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	.bread-crumbs-wrapper {
-		float: left;
 		width: 35%;
 		height: 32px;
-		padding: 0 30px;
+		padding: 0 20px;
 
 		.el-breadcrumb {
 			line-height: 32px;
 		}
-
 		.home-link {
-
 			&,
 			.icon {
+				padding: 0;
 				font-weight: bold;
 				font-size: 14px;
 				color: #333 !important;
-			}
-
-			&:hover {
-				color: #409eff;
-
-				.icon {
-					color: #409eff;
-				}
-			}
-
-			&.is-disabled:hover {
-				color: #333;
-
-				.icon {
-					color: #333;
-				}
 			}
 		}
 	}

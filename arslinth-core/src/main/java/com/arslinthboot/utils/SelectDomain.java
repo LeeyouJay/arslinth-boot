@@ -12,7 +12,7 @@ import java.util.Optional;
  * @Description 分页
  * @Date 2022/3/30
  */
-public class PageDomain {
+public class SelectDomain {
 
     public static <T extends BaseEntity> Page<T> buildPage() {
         HttpServletRequest request = HttpServletUtil.getRequest();
