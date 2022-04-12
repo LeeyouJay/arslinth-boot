@@ -1,0 +1,44 @@
+{
+  "id": "3314162",
+  "name": "Arslinth-boot",
+  "font_family": "iconfont",
+  "css_prefix_text": "arslinth-vue-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4236624",
+      "name": "全屏",
+      "font_class": "fullscreen",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "4633192",
+      "name": "搜索",
+      "font_class": "search",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "5300625",
+      "name": "fold-menu",
+      "font_class": "fole-menu",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "10447169",
+      "name": "index",
+      "font_class": "home",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "25704376",
+      "name": "退出全屏",
+      "font_class": "quitfull",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    }
+  ]
+}
