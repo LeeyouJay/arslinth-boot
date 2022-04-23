@@ -80,7 +80,7 @@
 					</el-col>
 					<el-col :span="24" v-if="form.menuType != 'F'">
 						<el-form-item label="图标" key="2">
-							<e-icon-picker ref="eIconPicker" v-model="form.icon" :options="options" />
+							<e-icon-picker ref="eIconPicker" v-model="form.icon" :options="options"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
@@ -175,7 +175,7 @@
 				tableData:[],
 				label: '主目录',
 				options: {
-					ElementUI: true,
+					ElementUI: true
 				}
 			}
 		},

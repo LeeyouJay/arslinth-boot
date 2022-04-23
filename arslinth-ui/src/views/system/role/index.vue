@@ -39,7 +39,7 @@
 					<el-table-column prop="createTime" label="创建时间" />
 					<el-table-column label="操作" width="180" fixed="right">
 						<template slot-scope="scope">
-							<el-button type="text" icon="el-icon-solid" @click="handleEdit(scope.row)">修改</el-button>
+							<el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.row)">修改</el-button>
 							<el-button type="text" icon="el-icon-delete" class="red" v-hasPermi="['DelRole']" @click="handleDel(scope.row)">
 								删除
 							</el-button>
@@ -110,7 +110,7 @@
 			<template slot="title">
 				<span class="dialog-title">{{authDialogText}}</span>
 			</template>
-			<auth-select ref="authTree" positiion='center':disabled="!$utils.checkPermi(['AddRole','EditRole'])"
+			<auth-select ref="authTree0" positiion='center':disabled="!$utils.checkPermi(['AddRole','EditRole'])"
 			:strictly.sync="form.strictly" :permissions.sync="form.permissions"></auth-select>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="authVisible = false">取 消</el-button>
@@ -192,7 +192,7 @@
 				});
 			},
 			authSubmit() {
-				if (this.$refs.authTree.disabled) {
+				if (this.$refs.authTree0.disabled) {
 					this.authVisible = false
 					return
 				}
@@ -321,7 +321,7 @@
 					this.isAdd = false
 					this.authDialogText = "更改角色权限"
 					this.$nextTick(()=>{
-						this.$refs.authTree.init()
+						this.$refs.authTree0.init()
 					})
 				} else
 					this.$message.error(res.message)

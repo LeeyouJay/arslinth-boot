@@ -55,7 +55,7 @@
 					<el-table-column prop="createTime" label="操作时间" sortable />
 					<el-table-column label="操作" width="180" align="center" fixed="right">
 						<template slot-scope="scope">
-							<el-button type="text" icon="el-icon-user" @click="showDetailsFun(scope.row)">查看详情
+							<el-button type="text" icon="el-icon-search" @click="showDetailsFun(scope.row)">查看详情
 							</el-button>
 						</template>
 					</el-table-column>

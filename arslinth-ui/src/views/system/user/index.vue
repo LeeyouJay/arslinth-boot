@@ -62,7 +62,7 @@
 						<el-table-column prop="createTime" label="创建时间" min-width="150" align="center" />
 						<el-table-column label="操作" width="180" fixed="right">
 							<template slot-scope="scope" v-if="scope.row.id != 1">
-								<el-button type="text" icon="el-icon-user" @click="handleEdit(scope.row)">修改</el-button>
+								<el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.row)">修改</el-button>
 								<el-button type="text" icon="el-icon-delete" class="red" v-hasPermi="['DelUser']" @click="handleDel(scope.row)">
 									删除
 								</el-button>

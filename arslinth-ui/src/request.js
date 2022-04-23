@@ -30,10 +30,13 @@ service.interceptors.request.use(
 
 // 是否显示重新登录
 let isReloginShow;
+//重试计数
+let retryCount = 0;
 // 响应拦截器
 service.interceptors.response.use(
   // 请求成功
   res => {
+    retryCount = 0
     if (res.status != 200) return Promise.reject(res)
     let result = res.data
     if (result.code == 200) {
@@ -63,26 +66,28 @@ service.interceptors.response.use(
   },
   // 请求失败
   error => {
-    const {
-      response, message
-    } = error;
+    const {response, message, config} = error;
+    let retryTimes = config.retryTimes || 2 //重试次数
+    let retryDelay = config.retryDelay || 500 //重试延迟
     if (response) {
       errorHandle(response.status);
       return Promise.reject(response);
     } else {
       // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
       if (message == "Network Error") {
-        Notification.error({ title: '错误',message: "后端接口连接异常"})
-      }
-      else if (message.includes("timeout")) {
-        Notification.error({ title: '错误',message: "系统接口请求超时"})
+        Notification.error({title: '错误', message: "后端接口连接异常"})
+        axiosRetryInterceptor(retryTimes, retryDelay, config)
+      } else if (message.includes("timeout")) {
+        Notification.error({title: '错误', message: "系统接口请求超时"})
+        axiosRetryInterceptor(retryTimes, retryDelay, config)
       }
       else if (message.includes("Request failed with status code")) {
         Notification.error({ title: '错误',message: "系统接口" + message.substr(message.length - 3) + "异常"})
 
       }
       if (!window.navigator.onLine) {
-        Notification.error({ title: '错误',message: "网络连接中断！服务器可能不在线。"})
+        Notification.error({title: '错误', message: "网络连接中断！服务器可能不在线。"})
+        axiosRetryInterceptor(retryTimes, retryDelay, config)
       } else {
         return Promise.reject(error);
       }
@@ -106,4 +111,16 @@ const errorHandle = (status) => {
       Message.error('服务器错误！')
   }
 }
+
+//断线超时重试
+function axiosRetryInterceptor(retryTimes, retryDelay, config) {
+  if (retryCount >= retryTimes) {
+    return Promise.reject(err);
+  }
+  retryCount++
+  setTimeout(() => {
+    return service.request(config);
+  }, retryDelay);
+}
+
 export default service

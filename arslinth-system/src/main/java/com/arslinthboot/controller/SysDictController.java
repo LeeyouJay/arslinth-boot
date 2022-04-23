@@ -110,10 +110,11 @@ public class SysDictController {
      */
     @SysLog("#{'修改字典值:'+ #sysDict.dictName}")
     @PostMapping("/edit")
+    @RepeatSubmit
     @PreAuthorize("@auth.hasAnyAuthority('EditDict')")
     public ApiResponse editDict(@RequestBody SysDict sysDict) {
         int i = sysDictService.editDict(sysDict);
-        if (i == 1) {
+        if (i > 1) {
             return ApiResponse.code(SUCCESS).message("修改成功！");
         } else {
             return ApiResponse.code(FAIL).message("修改出现异常：" + i);
@@ -125,6 +126,7 @@ public class SysDictController {
      */
     @SysLog("删除字典")
     @GetMapping("/del/{id}")
+    @RepeatSubmit
     @PreAuthorize("@auth.hasAnyAuthority('DelDict')")
     public ApiResponse delDict(@PathVariable String id) {
         int i = sysDictService.delById(id);
@@ -142,6 +144,7 @@ public class SysDictController {
      */
     @SysLog("批量删除字典值")
     @PostMapping("/delDictByIds")
+    @RepeatSubmit
     @PreAuthorize("@auth.hasAnyAuthority('DelDict')")
     public ApiResponse delDictByIds(@RequestBody List<String> ids) {
         int i = sysDictService.delByIds(ids);

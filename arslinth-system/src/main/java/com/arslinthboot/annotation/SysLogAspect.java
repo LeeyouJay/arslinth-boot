@@ -17,9 +17,12 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 import static com.arslinthboot.common.ResponseCode.FAIL;
 
@@ -61,7 +64,14 @@ public class SysLogAspect {
         String requestMethod = request.getMethod();
         log.info("请求方式：{}", requestMethod);
 
-        String parameters = JSON.toJSONString(joinPoint.getArgs());
+        Object[] args = joinPoint.getArgs();
+        List<Object> list = new ArrayList<>();
+        for (Object arg : args) {
+            if (!isFilterObject(arg)) {
+                list.add(arg);
+            }
+        }
+        String parameters = JSON.toJSONString(list);
         log.info("入参：{}", parameters);
         //ip地址
         String ipAddr = IpInfoUtil.getIpAddr(request);
@@ -98,5 +108,32 @@ public class SysLogAspect {
             operLog.setResultMessage(e.getMessage());
         }
         sysLogService.saveOperLog(operLog);
+    }
+
+    /**
+     * 判断是否需要过滤的对象。
+     *
+     * @param o 对象信息。
+     * @return 如果是需要过滤的对象，则返回true；否则返回false。
+     */
+    @SuppressWarnings("rawtypes")
+    private boolean isFilterObject(final Object o) {
+        Class<?> clazz = o.getClass();
+        if (clazz.isArray()) {
+            return clazz.getComponentType().isAssignableFrom(MultipartFile.class);
+        } else if (Collection.class.isAssignableFrom(clazz)) {
+            Collection collection = (Collection) o;
+            for (Object value : collection) {
+                return value instanceof MultipartFile;
+            }
+        } else if (Map.class.isAssignableFrom(clazz)) {
+            Map map = (Map) o;
+            for (Object value : map.entrySet()) {
+                Map.Entry entry = (Map.Entry) value;
+                return entry.getValue() instanceof MultipartFile;
+            }
+        }
+        return o instanceof MultipartFile || o instanceof HttpServletRequest || o instanceof HttpServletResponse
+                || o instanceof BindingResult;
     }
 }

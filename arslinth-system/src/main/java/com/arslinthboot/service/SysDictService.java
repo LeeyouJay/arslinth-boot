@@ -77,6 +77,13 @@ public class SysDictService {
 
     @CacheEvict(cacheNames = "sys_dict", key = "#sysDict.parentValue")
     public int editDict(SysDict sysDict) {
+        String parentId = sysDict.getParentId();
+        if ("0".equals(parentId)) {
+            QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
+            wrapper.eq("parent_id", sysDict.getId());
+            sysDictDao.updateById(sysDict);
+            return sysDictDao.update(SysDict.builder().parentValue(sysDict.getDictValue()).build(), wrapper);
+        }
         return sysDictDao.updateById(sysDict);
     }
 

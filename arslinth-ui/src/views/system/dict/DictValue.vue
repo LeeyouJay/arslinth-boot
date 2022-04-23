@@ -4,17 +4,18 @@
 			<el-form ref="searchTable" :model="queryParams" @submit.native.prevent>
 				<el-row :gutter="20">
 					<el-col :span="4">
-						<el-form-item label="上级标签"  label-width="80px">
+						<el-form-item label="上级标签" label-width="80px">
 							<el-select v-model="label" placeholder="请选择上级字典名称" @change="selectChange">
-							    <el-option v-for="item in selectData"  :key="item.id" :label="item.dictName"  :value="item.id">
-							    </el-option>
-							  </el-select>
+								<el-option v-for="item in selectData" :key="item.id" :label="item.dictName"
+									:value="item.id">
+								</el-option>
+							</el-select>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
-						<el-form-item label="字典标签/值"  label-width="100px">
+						<el-form-item label="字典标签/值" label-width="100px">
 							<el-input v-model="queryParams.dictName" placeholder="请输入字典标签或值" clearable
-							@keyup.enter.native="handleQuery"></el-input>
+								@keyup.enter.native="handleQuery"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
@@ -24,59 +25,66 @@
 					</el-col>
 				</el-row>
 			</el-form>
-			<el-container>
-				<el-header height="auto">
-					<div class="table-bar">
-						<div class="table-btn">
-							<el-button type="primary" icon="el-icon-plus" size="mini" plain @click="handleAdd">新增</el-button>
-							<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0" @click="handleDelBatch">删除</el-button>
-						</div>
-						<right-toolbar @queryTable="getData" ></right-toolbar>
-					</div>
-				</el-header>
-				<el-main>
-					<el-table :data="tableData" v-loading="loading" class="table" ref="dictTable" row-key="id"
-						header-cell-class-name="table-header"
-						@selection-change="handleSelectionChange" >
-						<el-table-column type="selection" :reserve-selection="true" width="55" align="center" />
-						<el-table-column prop="indexNum" align="center" label="排序" width="80" />
-						<el-table-column prop="dictName"  align="center" label="字典标签" />
-						<el-table-column prop="dictValue" label="字典值"  align="center" />
-						<el-table-column prop="notes" align="center"  label="描述" />
-						<el-table-column prop="createTime"  align="center" label="创建时间" />
-						<el-table-column label="操作" width="180" fixed="right">
-							<template slot-scope="scope">
-								<el-button type="text" icon="el-icon-user" @click="handleEdit(scope.row)">修改</el-button>
-								<el-button type="text" icon="el-icon-delete" class="red" v-hasPermi="['DelDict']" @click="handleDel(scope.row)">删除
-								</el-button>
-							</template>
-						</el-table-column>
-					</el-table>
-					<div class="pagination">
-						 <Pagination :total="pageTotal" :pageIndex.sync="page.pageIndex" :pageSize.sync="page.pageSize" @pagination="getData" />
-					</div>
-				</el-main>
-			</el-container>
 		</div>
+		<el-container>
+			<el-header height="auto">
+				<div class="table-bar">
+					<div class="table-btn">
+						<el-button type="primary" icon="el-icon-plus" size="mini" plain @click="handleAdd">新增
+						</el-button>
+						<el-button type="danger" icon="el-icon-delete" size="mini" plain :disabled="ids.length == 0"
+							@click="handleDelBatch">删除</el-button>
+					</div>
+					<right-toolbar @queryTable="getData"></right-toolbar>
+				</div>
+			</el-header>
+			<el-main>
+				<el-table :data="tableData" v-loading="loading" class="table" ref="dictTable" row-key="id"
+					header-cell-class-name="table-header" @selection-change="handleSelectionChange">
+					<el-table-column type="selection" :reserve-selection="true" width="55" align="center" />
+					<el-table-column prop="indexNum" align="center" label="排序" width="80" />
+					<el-table-column prop="dictName" align="center" label="字典标签" />
+					<el-table-column prop="dictValue" label="字典值" align="center" />
+					<el-table-column prop="notes" align="center" label="描述" />
+					<el-table-column prop="createTime" align="center" label="创建时间" />
+					<el-table-column label="操作" width="180" fixed="right">
+						<template slot-scope="scope">
+							<el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.row)">修改</el-button>
+							<el-button type="text" icon="el-icon-delete" class="red" v-hasPermi="['DelDict']"
+								@click="handleDel(scope.row)">删除
+							</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<div class="pagination">
+					<Pagination :total="pageTotal" :pageIndex.sync="page.pageIndex" :pageSize.sync="page.pageSize"
+						@pagination="getData" />
+				</div>
+			</el-main>
+		</el-container>
 		<!-- 编辑弹出框 -->
 		<el-dialog :visible.sync="formVisible" width="35%" append-to-body center>
 			<template slot="title">
 				<span class="dialog-title">{{dialogText}}</span>
 			</template>
-			<el-form ref="formTable" :model="form" label-width="80px" :disabled="!$utils.checkPermi(['AddDict','EditDict'])">
+			<el-form ref="formTable" :model="form" label-width="80px"
+				:disabled="!$utils.checkPermi(['AddDict','EditDict'])">
 				<el-row :gutter="20">
 					<el-col :span="24">
-						<el-form-item label="字典标签" prop="dictName" :rules="[{required: true, message: '请输入字典名称', trigger: 'blur' }]">
+						<el-form-item label="字典标签" prop="dictName"
+							:rules="[{required: true, message: '请输入字典名称', trigger: 'blur' }]">
 							<el-input v-model="form.dictName" placeholder="请输入字典标签"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label="字典值" prop="dictValue" :rules="[{required: true, message: '请输入字典代号', trigger: 'blur' }]">
+						<el-form-item label="字典值" prop="dictValue"
+							:rules="[{required: true, message: '请输入字典代号', trigger: 'blur' }]">
 							<el-input v-model="form.dictValue" placeholder="请输入字典值"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label="排序" prop="indexNum" :rules="[{required: true, message: '请输入排序', trigger: 'blur' }]">
+						<el-form-item label="排序" prop="indexNum"
+							:rules="[{required: true, message: '请输入排序', trigger: 'blur' }]">
 							<el-input-number v-model="form.indexNum" :min="0"></el-input-number>
 						</el-form-item>
 					</el-col>
@@ -105,10 +113,10 @@
 				tableData: [],
 				selectData: [],
 				ids: [],
-				label:'',
+				label: '',
 				queryParams: {
-					parentId:'0',
-					parentValue:'',
+					parentId: '0',
+					parentValue: '',
 					dictName: ''
 				},
 				page: {
@@ -141,7 +149,7 @@
 					this.loading = false
 				})
 			},
-			getSelection(){
+			getSelection() {
 				this.$api.dict.getTypeList().then(res => {
 					if (res.code === 200) {
 						this.selectData = res.data.list
@@ -167,34 +175,34 @@
 				this.isAdd = true
 				this.dialogText = "修改字典"
 				this.formVisible = true
-				this.$nextTick(()=> {
-					this.form = Object.assign({},this.$options.data().form);
+				this.$nextTick(() => {
+					this.form = Object.assign({}, this.$options.data().form);
 					this.$refs.formTable.clearValidate()
 					this.form.parentId = this.queryParams.parentId
 					this.form.parentValue = this.queryParams.parentValue
-					this.form.indexNum = this.pageTotal +1
+					this.form.indexNum = this.pageTotal + 1
 				})
 			},
 			handleEdit(row) {
-				this.$api.dict.getDictById(row.id).then(res=>{
-					if(res.code === 200){
+				this.$api.dict.getDictById(row.id).then(res => {
+					if (res.code === 200) {
 						this.form = res.data.dict
 						this.isAdd = false
 						this.dialogText = "修改字典"
 						this.formVisible = true
-						this.$nextTick(()=>this.$refs.formTable.clearValidate())
-					}else
+						this.$nextTick(() => this.$refs.formTable.clearValidate())
+					} else
 						this.$message.error(res.message)
 				})
 			},
 			handleDel(row) {
-				this.handleConfirm(this.delDict,row)
+				this.handleConfirm(this.delDict, row)
 			},
 			handleDelBatch() {
-				if(this.ids.length == 0) return
+				if (this.ids.length == 0) return
 				this.handleConfirm(this.delDictBatch)
 			},
-			handleConfirm(func, arg){
+			handleConfirm(func, arg) {
 				this.$confirm('此操作将永久删除数据, 是否继续?', "提示", {
 					type: 'warning',
 					confirmButtonText: '确定',
@@ -202,45 +210,47 @@
 					center: true,
 				}).then(() => {
 					func(arg)
-				}).catch((e) => {console.log(e)})
+				}).catch((e) => {
+					console.log(e)
+				})
 			},
-			addDict(){
-				this.$api.dict.addDict(this.form).then(res=>{
-					if(res.code === 200 ){
+			addDict() {
+				this.$api.dict.addDict(this.form).then(res => {
+					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
 						this.formVisible = false;
-					}else
+					} else
 						this.$message.error(res.message)
 				})
 			},
-			editDict(){
-				this.$api.dict.editDict(this.form).then(res=>{
-					if(res.code === 200 ){
+			editDict() {
+				this.$api.dict.editDict(this.form).then(res => {
+					if (res.code === 200) {
 						this.getData()
 						this.$message.success(res.message)
 						this.formVisible = false;
-					}else
+					} else
 						this.$message.error(res.message)
 				})
 			},
-			delDict(row){
-				this.$api.dict.delDict(row.id).then(res=>{
-					if(res.code === 200 ){
+			delDict(row) {
+				this.$api.dict.delDict(row.id).then(res => {
+					if (res.code === 200) {
 						this.handleQuery()
 						this.$message.success(res.message)
-					}else
+					} else
 						this.$message.error(res.message)
 				})
 			},
-			delDictBatch(){
-				this.$api.dict.delDictByIds(this.ids).then(res=>{
-					if(res.code === 200 ){
+			delDictBatch() {
+				this.$api.dict.delDictByIds(this.ids).then(res => {
+					if (res.code === 200) {
 						this.handleQuery()
 						this.clearSelection()
 						this.$message.success(res.message)
 						this.formVisible = false;
-					}else
+					} else
 						this.$message.error(res.message)
 				})
 			},

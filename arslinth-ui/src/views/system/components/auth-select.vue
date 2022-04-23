@@ -74,6 +74,9 @@
 			//全选/全不选
 			handleCheckedTreeNodeAll(value) {
 				this.$refs.tree.setCheckedNodes(value ? this.tableTree : []);
+				this.$nextTick(()=>{
+					this.$emit('update:permissions',this.getAuths())
+				})
 			},
 			//父子联动
 			handleCheckedTreeConnect(value) {
