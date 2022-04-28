@@ -136,7 +136,7 @@
 					if (res.code === 200) {
 						this.userInfo = res.data.user 
 						if(this.userInfo.avatar) {
-							this.userInfo.avatar = this.$requestUrl + this.userInfo.avatar
+							this.userInfo.avatar = this.$base.requestUrl + this.userInfo.avatar
 							this.configObj.imgSrc = this.userInfo.avatar
 						} else{
 							this.userInfo.avatar = require("@/assets/img/avatar.png")

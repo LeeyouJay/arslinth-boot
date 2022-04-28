@@ -44,8 +44,8 @@
 						<el-table-column prop="indexNum" label="显示排序" align="center"></el-table-column>
 						<el-table-column align="center" label="头像">
 							<template slot-scope="scope">
-								<el-image class="table-avatar" :src="$requestUrl + scope.row.avatar"
-									:preview-src-list="[$requestUrl +scope.row.avatar]"></el-image>
+								<el-image class="table-avatar" :src="$base.requestUrl + scope.row.avatar"
+									:preview-src-list="[$base.requestUrl +scope.row.avatar]"></el-image>
 							</template>
 						</el-table-column>
 						<el-table-column prop="username" label="账号" align="center"></el-table-column>
@@ -411,7 +411,7 @@
 
 			},
 			preview(avatar) {
-				return avatar ? [this.$requestUrl + avatar.substr(0, avatar.lastIndexOf('-')) + '.jpg'] : []
+				return avatar ? [this.$base.requestUrl + avatar.substr(0, avatar.lastIndexOf('-')) + '.jpg'] : []
 			},
 		}
 	}

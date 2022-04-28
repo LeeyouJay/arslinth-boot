@@ -50,7 +50,7 @@
 					<el-table-column prop="loginTime" width="180" align="center" sortable label="登入时间" :formatter="dateTimeFormat"/>
 					<el-table-column label="操作" width="180" align="center" fixed="right">
 						<template slot-scope="scope">
-							<el-button type="text" icon="el-icon-delete" class="red" @click="handleLogout(scope.row)">强退
+							<el-button type="text" icon="el-icon-delete" class="red" @click="handleLogout(scope.row)" v-hasPermi="['ForceLogout']">强退
 							</el-button>
 						</template>
 					</el-table-column>

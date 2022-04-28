@@ -23,7 +23,7 @@ Vue.use(ElementUI, {size: 'small'})
 Vue.component('Pagination', Pagination)
 Vue.component('RightToolbar', RightToolbar)
 
-Vue.prototype.$requestUrl = base.requestUrl
+Vue.prototype.$base = base
 Vue.prototype.$api = api
 Vue.prototype.$utils = utils
 Vue.config.productionTip = false

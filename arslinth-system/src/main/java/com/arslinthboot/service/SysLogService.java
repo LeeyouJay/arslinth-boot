@@ -114,6 +114,12 @@ public class SysLogService {
         return loginLogDao.selectPage(page, wrapper);
     }
 
+    public LoginLog getLastLogin(String userId) {
+        QueryWrapper<LoginLog> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", userId).orderByDesc("create_time").last("LIMIT 1,1");
+        return loginLogDao.selectOne(wrapper);
+    }
+
 
     public int delOperLogByIds(List<String> ids) {
         return operLogDao.deleteBatchIds(ids);
