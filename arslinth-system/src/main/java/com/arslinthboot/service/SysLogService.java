@@ -126,8 +126,8 @@ public class SysLogService {
     }
 
 
-    public int delAllOperLog() {
-        return operLogDao.delete(null);
+    public void delAllOperLog() {
+        operLogDao.remove();
     }
 
     public int delLoginLogByIds(List<String> ids) {
@@ -135,8 +135,8 @@ public class SysLogService {
     }
 
 
-    public int delAllLoginLog() {
-        return loginLogDao.delete(null);
+    public void delAllLoginLog() {
+        loginLogDao.remove();
     }
 
 }

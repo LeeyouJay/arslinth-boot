@@ -47,5 +47,20 @@
             <groupId>net.dreamlu</groupId>
             <artifactId>mica-xss</artifactId>
         </dependency>
+        <!-- oshi读取硬件信息-->
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+        </dependency>
+        <!-- 详细IP获取工具 -->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+        </dependency>
+        <!-- 浏览器解析工具 -->
+        <dependency>
+            <groupId>nl.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -4,14 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.arslinthboot.config.redis.RedisTool;
-import com.arslinthboot.dao.SysDictDao;
-import com.arslinthboot.dao.SysMenuDao;
-import com.arslinthboot.dao.SysRoleDao;
-import com.arslinthboot.dao.SysUserDao;
-import com.arslinthboot.entity.SysDict;
-import com.arslinthboot.entity.SysMenu;
-import com.arslinthboot.entity.SysRole;
-import com.arslinthboot.entity.SysUser;
+import com.arslinthboot.dao.*;
+import com.arslinthboot.entity.*;
 import com.arslinthboot.service.SysUserService;
 import com.baomidou.mybatisplus.core.toolkit.AES;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -55,6 +49,9 @@ public class MyApplicationTest {
 
     @Autowired
     private RedisTool redisTool;
+
+    @Autowired
+    private SysJobDao sysJobDao;
 
     @Test
     void insertTest() {
@@ -117,6 +114,13 @@ public class MyApplicationTest {
     void redisTest() {
         Set<String> strings = redisTool.scanKeys(LOGIN_TOKEN_KEY);
         System.out.println(strings);
+    }
+
+    @Test
+    void booleanTest() {
+        SysJob build = SysJob.builder()
+                .jobName("测试").jobGroup("测试组").invokeTarget("2312312").status(false).build();
+        sysJobDao.insert(build);
     }
 
 

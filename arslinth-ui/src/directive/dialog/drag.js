@@ -5,18 +5,21 @@
 
 export default {
   bind(el, binding, vnode, oldVnode) {
-    const value = binding.value
-    if (value == false) return
-    // 获取拖拽内容头部
-    const dialogHeaderEl = el.querySelector('.el-dialog__header');
-    const dragDom = el.querySelector('.el-dialog');
-    dialogHeaderEl.style.cursor = 'move';
-    // 获取原有属性 ie dom元素.currentStyle 火狐谷歌 window.getComputedStyle(dom元素, null);
-    const sty = dragDom.currentStyle || window.getComputedStyle(dragDom, null);
-    dragDom.style.position = 'absolute';
-    dragDom.style.marginTop = '15vh';
-    let width = dragDom.style.width;
-    if (width.includes('%')) {
+      const value = binding.value
+      let top = 15
+      if (typeof value == 'number') {
+          top = value
+      }
+      // 获取拖拽内容头部
+      const dialogHeaderEl = el.querySelector('.el-dialog__header');
+      const dragDom = el.querySelector('.el-dialog');
+      dialogHeaderEl.style.cursor = 'move';
+      // 获取原有属性 ie dom元素.currentStyle 火狐谷歌 window.getComputedStyle(dom元素, null);
+      const sty = dragDom.currentStyle || window.getComputedStyle(dragDom, null);
+      dragDom.style.position = 'absolute';
+      dragDom.style.marginTop = top + 'vh';
+      let width = dragDom.style.width;
+      if (width.includes('%')) {
       width = +document.body.clientWidth * (+width.replace(/\%/g, '') / 100);
     } else {
       width = +width.replace(/\px/g, '');

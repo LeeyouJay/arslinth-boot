@@ -2,6 +2,7 @@ package com.arslinthboot.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.arslinthboot.entity.OperLog;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,4 +13,7 @@ import org.springframework.stereotype.Repository;
  **/
 @Repository
 public interface OperLogDao extends BaseMapper<OperLog> {
+
+    @Update("truncate table sys_oper_log")
+    void remove();
 }

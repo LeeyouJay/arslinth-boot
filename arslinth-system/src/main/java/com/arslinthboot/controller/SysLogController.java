@@ -89,12 +89,9 @@ public class SysLogController {
     @GetMapping("/delAllOperLog")
     @PreAuthorize("@auth.hasAnyAuthority('DelOperLog')")
     public ApiResponse delAllOperLog() {
-        int i = sysLogService.delAllOperLog();
-        if (i>0) {
-            return ApiResponse.code(SUCCESS).message("删除成功!");
-        } else {
-            return ApiResponse.code(FAIL).message("删除出现异常!" + i);
-        }
+        sysLogService.delAllOperLog();
+        return ApiResponse.code(SUCCESS).message("删除成功!");
+
     }
 
     /**
@@ -123,12 +120,10 @@ public class SysLogController {
     @PreAuthorize("@auth.hasAnyAuthority('DelLoginLog')")
     @GetMapping("/delAllLoginLog")
     public ApiResponse delAllLoginLog() {
-        int i = sysLogService.delAllLoginLog();
-        if (i>0) {
-            return ApiResponse.code(SUCCESS).message("删除成功!");
-        } else {
-            return ApiResponse.code(FAIL).message("删除出现异常!" + i);
-        }
+        sysLogService.delAllLoginLog();
+        return ApiResponse.code(SUCCESS).message("删除成功!");
+
+
     }
 
 }

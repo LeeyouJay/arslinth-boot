@@ -85,4 +85,12 @@
 		font-weight: bold;
 		color: #ffaa00 !important;
 	}
+	.gray {
+		font-weight: bold;
+		color: #C0C4CC !important;
+	}
+	.black {
+		font-weight: bold;
+		color: #303133 !important;
+	}
 </style>

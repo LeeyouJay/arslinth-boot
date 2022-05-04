@@ -83,4 +83,4 @@ mica:
     # clear 清理（默认），escape 转义
     mode: escape
     # 以下访问url不需要过滤
-    path-exclude-patterns: /user/edit,/user/resetPassword
+    path-exclude-patterns: /user/edit, /user/resetPassword, /job/add, /job/edit
