@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,7 @@ public class SysJobController {
      * 分页查询定时任务列表
      **/
     @PostMapping("/sysJobPage")
-//    @PreAuthorize("@auth.hasAnyAuthority('Job')")
+    @PreAuthorize("@auth.hasAnyAuthority('Job')")
     public ApiResponse getSysJobPage(@RequestBody SysJob sysJob) {
         Page<SysJob> listPage = sysJobService.getSysJobPage(sysJob);
         return ApiResponse.code(SUCCESS)
@@ -54,6 +55,7 @@ public class SysJobController {
      * 获取定时任务详细信息
      */
     @GetMapping("/getJobInfo/{id}")
+    @PreAuthorize("@auth.hasAnyAuthority('Job')")
     public ApiResponse getJobInfo(@PathVariable String id) {
         return ApiResponse.code(SUCCESS).data("job", sysJobService.getJobById(id));
     }
@@ -64,6 +66,7 @@ public class SysJobController {
     @SysLog("#{'添加定时任务:'+ #job.jobName}")
     @RepeatSubmit
     @PostMapping("/add")
+    @PreAuthorize("@auth.hasAnyAuthority('AddJob')")
     public ApiResponse addJob(@RequestBody @Validated SysJob job) throws SchedulerException, TaskException {
         if (!CronUtils.isValid(job.getCronExpression())) {
             return ApiResponse.code(FAIL).message("新增任务'" + job.getJobName() + "'失败，Cron表达式不正确");
@@ -88,6 +91,7 @@ public class SysJobController {
     @SysLog("#{'修改定时任务:'+ #job.jobName}")
     @RepeatSubmit
     @PostMapping("/edit")
+    @PreAuthorize("@auth.hasAnyAuthority('EditJob')")
     public ApiResponse editJob(@RequestBody @Validated SysJob job) throws SchedulerException, TaskException {
         if (!CronUtils.isValid(job.getCronExpression())) {
             return ApiResponse.code(FAIL).message("修改任务'" + job.getJobName() + "'失败，Cron表达式不正确");
@@ -110,6 +114,7 @@ public class SysJobController {
     @SysLog("批量删除定时任务")
     @RepeatSubmit
     @PostMapping("/delJobByIds")
+    @PreAuthorize("@auth.hasAnyAuthority('DelJob')")
     public ApiResponse deleteJobByIds(@RequestBody List<String> ids) throws SchedulerException, TaskException {
         sysJobService.deleteJobByIds(ids);
         return ApiResponse.code(SUCCESS).message("删除任务成功！");
@@ -121,6 +126,7 @@ public class SysJobController {
     @SysLog("#{'修改定时任务状态:'+ #job.jobName}")
     @RepeatSubmit
     @PostMapping("/changeStatus")
+    @PreAuthorize("@auth.hasAnyAuthority('EditJob')")
     public ApiResponse changeStatus(@RequestBody SysJob job) throws SchedulerException {
         SysJob sysJob = sysJobService.getJobById(job.getId());
         if (sysJob == null) {
@@ -135,6 +141,7 @@ public class SysJobController {
     @SysLog("#{'立即执行一次:'+ #job.jobName}")
     @RepeatSubmit
     @PostMapping("/run")
+    @PreAuthorize("@auth.hasAnyAuthority('RunJob')")
     public ApiResponse run(@RequestBody SysJob job) throws SchedulerException {
         SysJob sysJob = sysJobService.getJobById(job.getId());
         if (sysJob == null) {
