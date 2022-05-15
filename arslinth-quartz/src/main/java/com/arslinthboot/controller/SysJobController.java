@@ -69,20 +69,20 @@ public class SysJobController {
     @PreAuthorize("@auth.hasAnyAuthority('AddJob')")
     public ApiResponse addJob(@RequestBody @Validated SysJob job) throws SchedulerException, TaskException {
         if (!CronUtils.isValid(job.getCronExpression())) {
-            return ApiResponse.code(FAIL).message("新增任务'" + job.getJobName() + "'失败，Cron表达式不正确");
+            return ApiResponse.code(FAIL).message("新增任务《" + job.getJobName() + "》失败，Cron表达式不正确");
         } else if (StrUtil.containsIgnoreCase(job.getInvokeTarget(), LOOKUP_RMI)) {
-            return ApiResponse.code(FAIL).message("新增任务'" + job.getJobName() + "'失败，目标字符串不允许'rmi'调用");
+            return ApiResponse.code(FAIL).message("新增任务《" + job.getJobName() + "》失败，目标字符串不允许'rmi'调用");
         } else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), LOOKUP_LDAP, LOOKUP_LDAPS)) {
-            return ApiResponse.code(FAIL).message("新增任务'" + job.getJobName() + "'失败，目标字符串不允许'ldap(s)'调用");
+            return ApiResponse.code(FAIL).message("新增任务《" + job.getJobName() + "》失败，目标字符串不允许'ldap(s)'调用");
         } else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), HTTP, HTTPS)) {
-            return ApiResponse.code(FAIL).message("新增任务'" + job.getJobName() + "'失败，目标字符串不允许'http(s)'调用");
+            return ApiResponse.code(FAIL).message("新增任务《" + job.getJobName() + "》失败，目标字符串不允许'http(s)'调用");
         } else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), JOB_ERROR_STR)) {
-            return ApiResponse.code(FAIL).message("新增任务'" + job.getJobName() + "'失败，目标字符串存在违规");
+            return ApiResponse.code(FAIL).message("新增任务《" + job.getJobName() + "》失败，目标字符串存在违规");
         } else if (!ScheduleUtils.whiteList(job.getInvokeTarget())) {
-            return ApiResponse.code(FAIL).message("新增任务'" + job.getJobName() + "'失败，目标字符串不在白名单内");
+            return ApiResponse.code(FAIL).message("新增任务《" + job.getJobName() + "》失败，目标字符串不在白名单内");
         }
         sysJobService.insertJob(job);
-        return ApiResponse.code(SUCCESS).message("新增任务'" + job.getJobName() + "'成功!");
+        return ApiResponse.code(SUCCESS).message("新增任务《" + job.getJobName() + "》成功!");
     }
 
     /**
@@ -94,20 +94,20 @@ public class SysJobController {
     @PreAuthorize("@auth.hasAnyAuthority('EditJob')")
     public ApiResponse editJob(@RequestBody @Validated SysJob job) throws SchedulerException, TaskException {
         if (!CronUtils.isValid(job.getCronExpression())) {
-            return ApiResponse.code(FAIL).message("修改任务'" + job.getJobName() + "'失败，Cron表达式不正确");
+            return ApiResponse.code(FAIL).message("修改任务《" + job.getJobName() + "》失败，Cron表达式不正确");
         } else if (StrUtil.containsIgnoreCase(job.getInvokeTarget(), LOOKUP_RMI)) {
-            return ApiResponse.code(FAIL).message("修改任务'" + job.getJobName() + "'失败，目标字符串不允许'rmi'调用");
+            return ApiResponse.code(FAIL).message("修改任务《" + job.getJobName() + "》失败，目标字符串不允许'rmi'调用");
         } else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), LOOKUP_LDAP, LOOKUP_LDAPS)) {
-            return ApiResponse.code(FAIL).message("修改任务'" + job.getJobName() + "'失败，目标字符串不允许'ldap(s)'调用");
+            return ApiResponse.code(FAIL).message("修改任务《" + job.getJobName() + "》失败，目标字符串不允许'ldap(s)'调用");
         } else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), HTTP, HTTPS)) {
-            return ApiResponse.code(FAIL).message("修改任务'" + job.getJobName() + "'失败，目标字符串不允许'http(s)'调用");
+            return ApiResponse.code(FAIL).message("修改任务《" + job.getJobName() + "》失败，目标字符串不允许'http(s)'调用");
         } else if (StrUtil.containsAnyIgnoreCase(job.getInvokeTarget(), JOB_ERROR_STR)) {
-            return ApiResponse.code(FAIL).message("修改任务'" + job.getJobName() + "'失败，目标字符串存在违规");
+            return ApiResponse.code(FAIL).message("修改任务《" + job.getJobName() + "》失败，目标字符串存在违规");
         } else if (!ScheduleUtils.whiteList(job.getInvokeTarget())) {
-            return ApiResponse.code(FAIL).message("修改任务'" + job.getJobName() + "'失败，目标字符串不在白名单内");
+            return ApiResponse.code(FAIL).message("修改任务《" + job.getJobName() + "》失败，目标字符串不在白名单内");
         }
         sysJobService.updateJob(job);
-        return ApiResponse.code(SUCCESS).message("修改任务'" + job.getJobName() + "'成功!");
+        return ApiResponse.code(SUCCESS).message("修改任务《" + job.getJobName() + "》成功!");
     }
 
 
