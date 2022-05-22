@@ -1,10 +1,14 @@
 package com.arslinthboot.config;
 
+import com.arslinthboot.utils.ThreadUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -28,7 +32,7 @@ public class ThreadPoolTaskConfig {
     //线程池名前缀
     private static final String threadNamePrefix = "Async-Service-";
 
-    @Bean // bean的名称，默认为首字母小写的方法名
+    @Bean(name = "threadPoolTaskExecutor") // bean的名称，默认为首字母小写的方法名
     public ThreadPoolTaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(corePoolSize);
@@ -45,4 +49,19 @@ public class ThreadPoolTaskConfig {
         return executor;
     }
 
+    /**
+     * 执行周期性或定时任务
+     */
+    @Bean(name = "scheduledExecutorService")
+    protected ScheduledExecutorService scheduledExecutorService() {
+        return new ScheduledThreadPoolExecutor(corePoolSize,
+                new CustomizableThreadFactory("schedule-pool-"),
+                new ThreadPoolExecutor.CallerRunsPolicy()) {
+            @Override
+            protected void afterExecute(Runnable r, Throwable t) {
+                super.afterExecute(r, t);
+                ThreadUtils.printException(r, t);
+            }
+        };
+    }
 }
