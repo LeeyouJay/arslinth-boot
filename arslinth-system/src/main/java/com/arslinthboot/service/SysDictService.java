@@ -26,8 +26,6 @@ public class SysDictService {
 
     private final SysDictDao sysDictDao;
 
-
-
     public Page<SysDict> getTypePage(SysDict sysDict) {
         QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
         Page<SysDict> page = SelectDomain.buildPage();
@@ -105,4 +103,13 @@ public class SysDictService {
         return sysDictDao.delete(wrapper);
     }
 
+    public boolean checkDictType(SysDict sysDict) {
+        QueryWrapper<SysDict> wrapper = new QueryWrapper<>();
+        wrapper.eq("parent_Id", "0");
+        String dictValue = sysDict.getDictValue();
+        String id = sysDict.getId();
+        wrapper.eq("dict_value", dictValue)
+                .ne(StrUtil.isNotEmpty(id), "id", id);
+        return sysDictDao.selectCount(wrapper) > 0;
+    }
 }

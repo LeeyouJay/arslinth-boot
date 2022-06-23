@@ -65,7 +65,7 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="24">
-						<el-form-item label="字典代号" prop="dictValue" :rules="[{required: true, message: '请输入字典代号', trigger: 'blur' }]">
+						<el-form-item label="字典代号" prop="dictValue" :rules="[{required: true, validator: checkDictType, trigger: 'blur' }]">
 							<el-input v-model="form.dictValue" placeholder="请输入字典代号" ></el-input>
 						</el-form-item>
 					</el-col>
@@ -248,6 +248,18 @@
 						this.$message.success(res.message)
 					}else
 						this.$message.error(res.message)
+				})
+			},
+			checkDictType(rule, value, callback) {
+				if (!value) {
+					return callback(new Error('字典代号不能为空'));
+				}
+				this.$api.dict.checkDictType(this.form).then(res => {
+					if (res.code == 200) {
+						res.data.isExists ? callback(new Error('字典代号已存在')) : callback()
+					} else {
+						callback(new Error(res.message))
+					}
 				})
 			},
 		}

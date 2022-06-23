@@ -29,7 +29,10 @@ const dict = {
   },
   delDictByIds(params) {
     return axios.post(`${base.requestUrl}/dict/delDictByIds`, params);
-  }
+  },
+  checkDictType(params) {
+    return axios.post(`${base.requestUrl}/dict/checkDictType`, params);
+  },
 
 }
 export default dict;

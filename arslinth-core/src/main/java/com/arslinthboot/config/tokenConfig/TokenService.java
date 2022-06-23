@@ -42,7 +42,11 @@ public class TokenService {
     private final RedisTool redisTool;
 
 
-    //生成jwt
+    /**
+     * 生成jwt
+     *
+     * @param loginUser 经过SecurityUtils.initLoginUser包装后的登入对象
+     */
     public String createJwtToken(LoginUser<?> loginUser) {
         String token = IdUtil.randomUUID();
         loginUser.setToken(token);

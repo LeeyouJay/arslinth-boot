@@ -18,8 +18,7 @@ import java.util.Set;
 public class SecurityUtils {
 
     /**
-     * 获取用户id
-     *
+     * 获取当前用户id
      **/
     public static String getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -27,7 +26,7 @@ public class SecurityUtils {
     }
 
     /**
-     * 获取登入对象
+     * 获取当前登入对象
      *
      **/
     public static <T> LoginUser<T> getLoginUser() {
@@ -38,10 +37,10 @@ public class SecurityUtils {
     }
 
     /**
-     * 获取系统对象
+     * 获取当前用户对象
      *
-     * @Param [系统对象类]
-     **/
+     * @param c 用户实体类
+     */
     public static <T> T getUser(Class<T> c) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object credentials = authentication.getCredentials();
@@ -53,8 +52,13 @@ public class SecurityUtils {
     /**
      * 初始化登入对象
      *
-     * @Param [系统对象, 用户id, 用户类型, 权限, 数据权限]
-     **/
+     * @param t 用户实体
+     * @param userId 用户id
+     * @param username 内存中用户username
+     * @param userType 用户类型
+     * @param auths 权限
+     * @param dataScope 数据范围
+     */
     public static <T> LoginUser<T> initLoginUser(T t, String userId, String username, String userType, Set<String> auths, Set<String> dataScope) {
         return LoginUser.<T>builder()
                 .user(t)

@@ -154,4 +154,15 @@ public class SysDictController {
             return ApiResponse.code(FAIL).message("删除出现异常：" + i);
         }
     }
+
+    /**
+     * 判断字典代号是否已被占用
+     **/
+    @RepeatSubmit(interval = 200, message = "数据验证频繁，请稍候后重试！")
+    @PostMapping("/checkDictType")
+    @PreAuthorize("@auth.hasAnyAuthority('AddDict','EditDict')")
+    public ApiResponse checkDictType(@RequestBody SysDict sysDict) {
+        boolean isExists = sysDictService.checkDictType(sysDict);
+        return ApiResponse.code(SUCCESS).data("isExists", isExists);
+    }
 }

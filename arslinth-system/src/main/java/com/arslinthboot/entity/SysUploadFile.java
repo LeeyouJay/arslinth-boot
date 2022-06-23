@@ -27,6 +27,8 @@ public class SysUploadFile {
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
 
+    private String busId;
+
     private String fileName;
 
     private String realName;

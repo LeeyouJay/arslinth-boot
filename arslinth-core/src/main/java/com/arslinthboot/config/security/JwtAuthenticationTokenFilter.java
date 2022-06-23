@@ -50,14 +50,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(tokenProperty.getHeader());
-        if (StrUtil.isEmpty(header)) {
+        String parameter = request.getParameter(tokenProperty.getHeader());
+        String authorization = StrUtil.isNotEmpty(header) ? header : parameter;
+
+        if (StrUtil.isEmpty(authorization)) {
             filterChain.doFilter(request, response);
             return;
         }
         LoginUser<?> loginUser;
         try {
 
-            loginUser = tokenService.checkToken(header);
+            loginUser = tokenService.checkToken(authorization);
 
         } catch (IllegalTokenException e) {
             //这里返回具体的验证错误信息
